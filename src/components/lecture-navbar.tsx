@@ -7,7 +7,7 @@ const LectureNavbar = () => {
   return (
     <nav className="p-4 shadow">
       <div className="flex items-center justify-between w-full gap-2">
-        <Button className="p-0" variant={"ghost"}>
+        <Button className="p-0" size={"icon"} variant={"ghost"}>
           <HiMiniXMark className="h-8 w-8"></HiMiniXMark>
         </Button>
         <div className="flex items-center gap-2 w-full flex-1">
