@@ -1,8 +1,20 @@
 "use client";
 import React, { Suspense, useEffect, useRef } from "react";
 import LectureContentSection from "./lecture-content-section";
+import { MDXRemote } from "next-mdx-remote/rsc";
+import ReactMarkdown from "react-markdown";
 
-const LectureContent = () => {
+import TypographyInlineCode from "@/components/ui/typography/code";
+import TypographyP from "@/components/ui/typography/p";
+import TypographyH2 from "@/components/ui/typography/h1";
+
+const components = {
+  h2: TypographyH2,
+  p: TypographyP,
+  code: TypographyInlineCode,
+};
+
+const LectureContent = ({ data, content }: { data: any; content: any }) => {
   const [lectureContent, setLectureContent] = React.useState<string[]>([
     "lectureContent0",
   ]);
@@ -32,14 +44,7 @@ const LectureContent = () => {
 
   return (
     <div className=" container max-w-2xl">
-      {lectureContent.map((item, index) => (
-        <LectureContentSection
-          isActive={index === currentActiveIndex}
-          ref={(el) => (lectureRefs.current[index] = el)} // Store the DOM node in the refs array
-          key={item}
-          onNext={onLectureContentNext}
-        ></LectureContentSection>
-      ))}
+      <ReactMarkdown components={components}>{content}</ReactMarkdown>
     </div>
   );
 };
