@@ -4,10 +4,11 @@ import TypographyP from "./ui/typography/p";
 import TypographyH2 from "./ui/typography/h1";
 import CodeEditor from "./code-editor";
 import TypographyInlineCode from "./ui/typography/code";
+import { Quiz } from "./quiz";
 
 const LectureContent = () => {
   return (
-    <div>
+    <div className=" container max-w-2xl">
       <LectureContentSection></LectureContentSection>
     </div>
   );
@@ -29,6 +30,9 @@ const LectureContentSection = () => {
 
       <div className="mt-8">
         <CodeEditor></CodeEditor>
+      </div>
+      <div className="mt-8 bg-[#f5f5f5] p-4 rounded">
+        <Quiz></Quiz>
       </div>
     </div>
   );

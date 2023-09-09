@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/form";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/components/ui/use-toast";
+import TypographyInlineCode from "./ui/typography/code";
 
 const FormSchema = z.object({
   type: z.enum(["all", "mentions", "none"], {
@@ -22,7 +23,7 @@ const FormSchema = z.object({
   }),
 });
 
-export function RadioGroupForm() {
+export function Quiz() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
   });
@@ -40,40 +41,48 @@ export function RadioGroupForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-6">
         <FormField
           control={form.control}
           name="type"
           render={({ field }) => (
             <FormItem className="space-y-3">
-              <FormLabel>Notify me about...</FormLabel>
+              <FormLabel className="text-lg">
+                Что делает оператор{" "}
+                <TypographyInlineCode>%</TypographyInlineCode>?
+              </FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
                   defaultValue={field.value}
                   className="flex flex-col space-y-1"
                 >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormItem className="flex items-center space-x-2 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="all" />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      All new messages
+                      Это нормальное деление - так же как и{" "}
+                      <TypographyInlineCode>/</TypographyInlineCode>
                     </FormLabel>
                   </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormItem className="flex items-center space-x-2 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="mentions" />
                     </FormControl>
                     <FormLabel className="font-normal">
-                      Direct messages and mentions
+                      Это как <TypographyInlineCode>/</TypographyInlineCode>, но
+                      возвращает остаток от деления
                     </FormLabel>
                   </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
+                  <FormItem className="flex items-center space-x-2 space-y-0">
                     <FormControl>
                       <RadioGroupItem value="none" />
                     </FormControl>
-                    <FormLabel className="font-normal">Nothing</FormLabel>
+                    <FormLabel className="font-normal">
+                      Это как <TypographyInlineCode>/</TypographyInlineCode>, но
+                      возвращает результат деления в процентах
+                    </FormLabel>
                   </FormItem>
                 </RadioGroup>
               </FormControl>
@@ -81,7 +90,7 @@ export function RadioGroupForm() {
             </FormItem>
           )}
         />
-        <Button type="submit">Submit</Button>
+        <Button type="submit">Ответить</Button>
       </form>
     </Form>
   );

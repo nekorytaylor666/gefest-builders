@@ -61,7 +61,7 @@ const CodeEditor = (props: Props) => {
       </div>
       <div className="p-2 border-t  flex justify-between items-center">
         <Button>Запустить</Button>
-        <div>
+        <div className="flex items-center gap-2">
           <Button className="align-baseline" variant={"ghost"}>
             <HiMiniArrowUturnLeft className="mr-2"></HiMiniArrowUturnLeft>
             <span>Очистить</span>

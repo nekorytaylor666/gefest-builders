@@ -5,8 +5,8 @@ import { Progress } from "./ui/progress";
 
 const LectureNavbar = () => {
   return (
-    <nav className="p-4 shadow">
-      <div className="flex items-center justify-between w-full gap-2">
+    <nav className="p-4 shadow-sm lg:shadow-none">
+      <div className="flex items-center justify-between w-full gap-2 container max-w-4xl">
         <Button className="p-0" size={"icon"} variant={"ghost"}>
           <HiMiniXMark className="h-8 w-8"></HiMiniXMark>
         </Button>
