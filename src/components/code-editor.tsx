@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from "react";
+import React, { Suspense, lazy, useState } from "react";
 import { createTheme } from "@uiw/codemirror-themes";
 import { javascript } from "@codemirror/lang-javascript";
 import { tags as t } from "@lezer/highlight";
@@ -37,12 +37,35 @@ const myTheme = createTheme({
 
 const extensions = [javascript({ jsx: true })];
 
-type Props = {};
+type Props = {
+  expectedOutput?: string;
+  onRun?: () => void;
+  onSuccess?: () => void;
+  onClear?: () => void;
+  onCopy?: () => void;
+  onSkip?: () => void;
+};
 
 const CodeEditor = (props: Props) => {
+  const [editorContent, setEditorContent] = useState("");
+
   const onChange = React.useCallback((value: any, viewUpdate: any) => {
+    setEditorContent(value);
     console.log("value:", value);
   }, []);
+
+  const onHandleCodeRun = () => {
+    props.onRun && props.onRun();
+    if (editorContent === props.expectedOutput) {
+      props.onSuccess && props.onSuccess();
+    }
+  };
+
+  const onHandleReset = () => {
+    setEditorContent("");
+    props.onClear && props.onClear();
+  };
+
   return (
     <article className="border rounded">
       <div className="p-2 bg-[#f1f1f1] border-b">
@@ -51,7 +74,7 @@ const CodeEditor = (props: Props) => {
       <div className="min-h-[200px] bg-[#f5f5f5]">
         <Suspense fallback={<div>Loading...</div>}>
           <CodeMirror
-            value="console.log('hello world!');"
+            value={editorContent}
             height="200px"
             theme={myTheme}
             extensions={extensions}
@@ -60,9 +83,13 @@ const CodeEditor = (props: Props) => {
         </Suspense>
       </div>
       <div className="p-2 border-t  flex justify-between items-center">
-        <Button>Запустить</Button>
+        <Button onClick={onHandleCodeRun}>Запустить</Button>
         <div className="flex items-center gap-2">
-          <Button className="align-baseline" variant={"ghost"}>
+          <Button
+            onClick={onHandleReset}
+            className="align-baseline"
+            variant={"ghost"}
+          >
             <HiMiniArrowUturnLeft className="mr-2"></HiMiniArrowUturnLeft>
             <span>Очистить</span>
           </Button>

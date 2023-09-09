@@ -1,19 +1,27 @@
 import LectureContent from "@/components/lecture-content";
-import { serialize } from "next-mdx-remote/serialize";
 import path from "path";
 import fs from "fs/promises";
 import matter from "gray-matter";
+import { divideMarkdown, serializeAllMdxSections } from "@/lib/mdx-utils";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
-  const source = await fs.readFile(
+  const content = await fs.readFile(
     path.join(process.cwd(), "src/content", (slug + ".mdx") as string),
     "utf8"
   );
-  const resMatter = matter(source);
+  const mdxSections = divideMarkdown(content);
+
+  const resMatter = await matter(content);
+
+  const serializedSections = await serializeAllMdxSections(mdxSections);
+
   return (
     <main className="p-4">
-      <LectureContent {...resMatter}></LectureContent>
+      <LectureContent
+        {...resMatter}
+        serializedMdxSections={serializedSections}
+      ></LectureContent>
     </main>
   );
 }

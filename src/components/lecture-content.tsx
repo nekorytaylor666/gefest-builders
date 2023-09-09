@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useRef } from "react";
+import React, { Suspense, useEffect, useRef, useState } from "react";
 import LectureContentSection from "./lecture-content-section";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import ReactMarkdown from "react-markdown";
@@ -7,30 +7,32 @@ import ReactMarkdown from "react-markdown";
 import TypographyInlineCode from "@/components/ui/typography/code";
 import TypographyP from "@/components/ui/typography/p";
 import TypographyH2 from "@/components/ui/typography/h1";
+import { Button } from "./ui/button";
+import { set } from "react-hook-form";
+import { ScrollArea } from "./ui/scroll-area";
+import { TypeOf } from "zod";
+import { MDXSection, serializeAllMdxSections } from "@/lib/mdx-utils";
+import { UnwrapPromise } from "@/types";
 
-const components = {
-  h2: TypographyH2,
-  p: TypographyP,
-  code: TypographyInlineCode,
-};
+interface LectureContentProps {
+  data: any;
+  serializedMdxSections: MDXSection[];
+}
 
-const LectureContent = ({ data, content }: { data: any; content: any }) => {
-  const [lectureContent, setLectureContent] = React.useState<string[]>([
-    "lectureContent0",
-  ]);
-
-  const [currentActiveIndex, setCurrentActiveIndex] = React.useState(0);
+const LectureContent = ({
+  data,
+  serializedMdxSections,
+}: LectureContentProps) => {
+  const [currentSection, setCurrentSection] = useState(0);
 
   const lectureRefs = useRef<(HTMLDivElement | null)[]>([]); // To store the references of lectures
 
-  const addLectureContent = () => {
-    setLectureContent((prev) => [...prev, "lectureContent" + prev.length]);
-    setCurrentActiveIndex((prevIndex) => prevIndex + 1);
+  const onLectureContentNext = () => {
+    setCurrentSection((prev) => prev + 1);
   };
 
-  const onLectureContentNext = () => {
-    addLectureContent();
-    console.log("onLectureContentSuccess");
+  const handleSkip = () => {
+    setCurrentSection((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -40,11 +42,22 @@ const LectureContent = ({ data, content }: { data: any; content: any }) => {
         lectureRefs.current[lectureRefs.current.length - 1];
       lastLectureRef?.scrollIntoView({ behavior: "smooth" });
     }
-  }, [lectureContent.length]);
+  }, [currentSection]);
 
   return (
     <div className=" container max-w-2xl">
-      <ReactMarkdown components={components}>{content}</ReactMarkdown>
+      {serializedMdxSections
+        .slice(0, currentSection + 1)
+        .map((section, index) => (
+          <LectureContentSection
+            key={index}
+            ref={(el) => (lectureRefs.current[index] = el)}
+            section={section}
+            isActive={index === currentSection}
+            onNext={onLectureContentNext}
+          ></LectureContentSection>
+        ))}
+      <button onClick={handleSkip}>Skip</button>
     </div>
   );
 };
