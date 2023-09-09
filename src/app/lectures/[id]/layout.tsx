@@ -9,7 +9,7 @@ export default function DashboardLayout({
     <section>
       <LectureNavbar></LectureNavbar>
 
-      <div className="mt-6">{children}</div>
+      <div>{children}</div>
     </section>
   );
 }
