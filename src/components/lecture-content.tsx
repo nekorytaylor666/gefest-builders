@@ -45,7 +45,7 @@ const LectureContent = ({
   }, [currentSection]);
 
   return (
-    <div className=" container max-w-2xl">
+    <div className=" container max-w-2xl ">
       {serializedMdxSections
         .slice(0, currentSection + 1)
         .map((section, index) => (
@@ -57,7 +57,7 @@ const LectureContent = ({
             onNext={onLectureContentNext}
           ></LectureContentSection>
         ))}
-      <button onClick={handleSkip}>Skip</button>
+      <Button onClick={handleSkip}>Следующая</Button>
     </div>
   );
 };

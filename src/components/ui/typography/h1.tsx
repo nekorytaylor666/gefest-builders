@@ -4,7 +4,7 @@ type Props = {
   children: React.ReactNode;
 };
 
-const TypographyH2 = (props: Props) => {
+const TypographyH1 = (props: Props) => {
   return (
     <h1 className="scroll-m-20 text-3xl font-extrabold tracking-tight lg:text-5xl">
       {props.children}
@@ -12,4 +12,4 @@ const TypographyH2 = (props: Props) => {
   );
 };
 
-export default TypographyH2;
+export default TypographyH1;

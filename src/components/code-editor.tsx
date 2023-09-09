@@ -67,7 +67,7 @@ const CodeEditor = (props: Props) => {
   };
 
   return (
-    <article className="border rounded">
+    <article className="border rounded my-4">
       <div className="p-2 bg-[#f1f1f1] border-b">
         <span className="text-sm font-bold font-mono ">Javascript</span>
       </div>
