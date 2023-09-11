@@ -2,7 +2,6 @@
 import React, { Suspense, useEffect, useRef, useState } from "react";
 import LectureContentSection from "./lecture-content-section";
 import { MDXRemote } from "next-mdx-remote/rsc";
-import ReactMarkdown from "react-markdown";
 
 import TypographyInlineCode from "@/components/ui/typography/code";
 import TypographyP from "@/components/ui/typography/p";
@@ -13,6 +12,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { TypeOf } from "zod";
 import { MDXSection, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { UnwrapPromise } from "@/types";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
 interface LectureContentProps {
   data: any;
@@ -46,6 +46,8 @@ const LectureContent = ({
 
   return (
     <div className=" container max-w-2xl ">
+      <a href="/api/auth/login">Login</a>
+      <a href="/api/auth/logout">Logout</a>
       {serializedMdxSections
         .slice(0, currentSection + 1)
         .map((section, index) => (
