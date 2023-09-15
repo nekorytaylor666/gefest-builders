@@ -74,3 +74,79 @@
     @apply bg-background text-foreground;
   }
 }
+
+.css-tm6kk8 {
+  display: inline-block;
+  line-height: 1em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  vertical-align: middle;
+  width: 485px;
+  height: 177px;
+  z-index: -1;
+  fill: none;
+}
+
+.css-1lj00nd {
+  display: inline-block;
+  line-height: 1em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  color: var(--chakra-colors-gray-300);
+  vertical-align: middle;
+  width: 228px;
+  height: 263px;
+  fill: none;
+  visibility: visible;
+}
+
+.css-1bcz88j {
+  line-height: 1em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  color: var(--chakra-colors-gray-300);
+  vertical-align: middle;
+  width: 228px;
+  height: 263px;
+  fill: none;
+  visibility: visible;
+  display: initial;
+}
+
+.css-z7sfse {
+  display: inline-block;
+  line-height: 1em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  color: var(--chakra-colors-gray-300);
+  vertical-align: middle;
+  width: 454px;
+  height: 126px;
+  fill: none;
+  visibility: visible;
+}
+
+.css-1tonol0 {
+  display: inline-block;
+  line-height: 1em;
+  -webkit-flex-shrink: 0;
+  -ms-flex-negative: 0;
+  flex-shrink: 0;
+  color: var(--chakra-colors-gray-300);
+  vertical-align: middle;
+  width: 454px;
+  height: 168px;
+  fill: none;
+  visibility: visible;
+}
+
+.lesson-map-container {
+  background-image: url("/lesson-path-bg-pattern.svg");
+  background-repeat: repeat;
+  background-position: center;
+  fill: red;
+}

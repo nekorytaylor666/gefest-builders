@@ -9,7 +9,7 @@ export default function DashboardLayout({
   return (
     <section>
       <LectureNavbar></LectureNavbar>
-      <div>{children}</div>
+      <div className="container max-w-2xl p-1">{children}</div>
     </section>
   );
 }

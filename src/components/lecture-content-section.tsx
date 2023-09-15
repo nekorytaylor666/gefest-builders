@@ -21,7 +21,7 @@ const LectureContentSection = React.forwardRef<
   HTMLDivElement,
   LectureContentSectionProps
 >(({ onNext, isActive, section }, ref) => {
-  const isActiveClasses = isActive ? "py-48" : "pointer-events-none";
+  const isActiveClasses = isActive ? "pb-20" : "pointer-events-none";
   const containerClasses = "py-4 height-auto";
 
   const components = {

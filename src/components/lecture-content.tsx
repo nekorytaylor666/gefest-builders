@@ -40,14 +40,12 @@ const LectureContent = ({
     if (lectureRefs.current.length) {
       const lastLectureRef: HTMLDivElement | null =
         lectureRefs.current[lectureRefs.current.length - 1];
-      lastLectureRef?.scrollIntoView({ behavior: "smooth" });
+      lastLectureRef?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [currentSection]);
 
   return (
-    <div className=" container max-w-2xl ">
-      <a href="/api/auth/login">Login</a>
-      <a href="/api/auth/logout">Logout</a>
+    <div className="">
       {serializedMdxSections
         .slice(0, currentSection + 1)
         .map((section, index) => (
