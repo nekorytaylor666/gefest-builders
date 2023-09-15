@@ -1,7 +1,15 @@
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import { useCallback } from "react";
 
-function CourseMilestoneNodeButton() {
+interface CourseMilestoneNodeButtonProps {
+  onClick: () => void;
+  label: string;
+}
+
+function CourseMilestoneNodeButton({
+  onClick,
+  label,
+}: CourseMilestoneNodeButtonProps) {
   const { RiveComponent, rive } = useRive({
     src: "/milestone.riv",
     stateMachines: "State Machine 1",
@@ -17,44 +25,44 @@ function CourseMilestoneNodeButton() {
     if (rive && hoverInput) {
       hoverInput.value = true;
     }
-  }, [hoverInput]);
+  }, [hoverInput, rive]);
 
   const handleMouseLeave = useCallback(() => {
     if (rive && hoverInput) {
       hoverInput.value = false;
     }
-  }, [hoverInput]);
+  }, [hoverInput, rive]);
 
   const handleMouseDown = useCallback(() => {
     if (rive && pressedInput) {
       pressedInput.value = true;
     }
-  }, [pressedInput]);
+  }, [pressedInput, rive]);
 
   const handleMouseUp = useCallback(() => {
     if (rive && pressedInput) {
       pressedInput.value = false;
     }
-  }, [pressedInput]);
+  }, [pressedInput, rive]);
 
   const handleTouchStart = useCallback(() => {
     if (rive && pressedInput) {
       pressedInput.value = true;
     }
-  }, [pressedInput]);
+  }, [pressedInput, rive]);
 
   const handleTouchEnd = useCallback(() => {
     if (rive && pressedInput) {
       pressedInput.value = false;
     }
-  }, [pressedInput]);
+  }, [pressedInput, rive]);
 
   return (
     <div
       className="flex flex-col justify-center items-center "
       onClick={() =>
         setTimeout(() => {
-          alert("Переменные");
+          onClick();
         }, 500)
       }
       onMouseEnter={handleMouseEnter}
@@ -65,7 +73,7 @@ function CourseMilestoneNodeButton() {
       onTouchEnd={handleTouchEnd}
     >
       <RiveComponent className="h-24 w-24" />
-      <p className="w-24 text-center flex justify-center">Переменные</p>
+      <p className="w-24 text-center flex justify-center font-bold">{label}</p>
     </div>
   );
 }
