@@ -7,9 +7,14 @@ import { divideMarkdown, serializeAllMdxSections } from "@/lib/mdx-utils";
 export default async function Page({ params }: { params: { slug: string } }) {
   const { slug } = params;
   const content = await fs.readFile(
-    path.join(process.cwd(), "src/content", (slug + ".mdx") as string),
+    path.join(
+      process.cwd(),
+      "src/content/chatgpt-course/lectures/1",
+      (slug + ".mdx") as string
+    ),
     "utf8"
   );
+
   const mdxSections = divideMarkdown(content);
 
   const resMatter = await matter(content);
