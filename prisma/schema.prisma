@@ -3,31 +3,54 @@
 
 generator client {
   provider = "prisma-client-js"
+  seed     = "ts-node prisma/seed.ts"
+
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+
 }
 
+enum UserRole {
+  USER
+  ADMIN
+}
 
 model User {
   id        Int      @id @default(autoincrement())
   email     String   @unique
-  fullName      String?
+  fullName     String?
   phoneNumber  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  paidCourses Courses[] @relation("PaidCourses")
+  courses   Course[]
+  lessons   Lesson[]
+  role      UserRole  @default(USER) // Default to USER role
+
 }
 
-model Courses {
-  id        Int      @id @default(autoincrement())
-  title     String   @unique
-  description      String?
-  contentFilePath  String
-  price  Int?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users User[] @relation("PaidCourses") 
+model Course {
+  id          Int       @id @default(autoincrement())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+  lessons     Lesson[]
+}
+
+model Lesson {
+  id        Int       @id @default(autoincrement())
+  courseId  Int
+  title     String
+  isMdx     Boolean   @default(true)
+  mdxContentPath String?
+  content   String?    // MDX content, you might want to adjust the type based on content length and structure.
+  order     Int
+  course    Course    @relation(fields: [courseId], references: [id])
+  creator   User      @relation(fields: [creatorId], references: [id])
+  creatorId Int
 }
