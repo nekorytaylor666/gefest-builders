@@ -5,7 +5,6 @@ import { Quiz } from "./quiz";
 import TypographyInlineCode from "./ui/typography/code";
 import TypographyH2 from "./ui/typography/h1";
 import TypographyP from "./ui/typography/p";
-import ReactMarkdown from "react-markdown";
 import { MDXProvider } from "@mdx-js/react";
 import { MDXRemote } from "next-mdx-remote";
 import { MDXSection } from "@/lib/mdx-utils";

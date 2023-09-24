@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import Provider from "./_trpc/Provider";
+import "swiper/css";
+import Navbar from "@/components/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +22,10 @@ export default function RootLayout({
     <html lang="en">
       <UserProvider>
         <Provider>
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <Navbar></Navbar>
+            <div className="pt-8">{children}</div>
+          </body>
         </Provider>
       </UserProvider>
     </html>

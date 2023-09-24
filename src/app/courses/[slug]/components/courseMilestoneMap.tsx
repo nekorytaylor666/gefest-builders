@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import CourseMilestoneNodeButton from "./courseMilestoneNode";
 
@@ -20,7 +21,12 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="w-full flex justify-center">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
           </div>
           <div className="row-start-2 col-start-1 col-span-3 row-span-2 items-center  self-center content-center relative w-full">
@@ -40,13 +46,23 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="flex items-end relative bottom-4 left-4">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
           </div>
 
           <div className=" row-start-3 col-start-2 row-span-2 self-center relative">
             <div className="relative top-4">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
             <svg
               viewBox="0 0 228 263"
@@ -80,7 +96,12 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="relative ">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>{" "}
           </div>
         </div>
@@ -104,7 +125,12 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="w-full flex justify-center">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
           </div>
           <div className="row-start-2 col-start-1 col-span-3 row-span-2 items-center  self-center content-center relative w-full">
@@ -124,13 +150,23 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="flex items-end relative bottom-4 left-4">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
           </div>
 
           <div className=" row-start-3 col-start-2 row-span-2 self-center relative">
             <div className="relative top-4">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
             <svg
               viewBox="0 0 228 263"
@@ -164,7 +200,12 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="relative ">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>{" "}
           </div>
         </div>
@@ -188,7 +229,12 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="w-full flex justify-center">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
           </div>
           <div className="row-start-2 col-start-1 col-span-3 row-span-2 items-center  self-center content-center relative w-full">
@@ -208,13 +254,23 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="flex items-end relative bottom-4 left-4">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
           </div>
 
           <div className=" row-start-3 col-start-2 row-span-2 self-center relative">
             <div className="relative top-4">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>
             <svg
               viewBox="0 0 228 263"
@@ -248,7 +304,12 @@ const CourseMilestoneMap = (props: Props) => {
               ></path>
             </svg>
             <div className="relative ">
-              <CourseMilestoneNodeButton></CourseMilestoneNodeButton>
+              <CourseMilestoneNodeButton
+                onClick={function (): void {
+                  throw new Error("Function not implemented.");
+                }}
+                label={""}
+              ></CourseMilestoneNodeButton>
             </div>{" "}
           </div>
         </div>

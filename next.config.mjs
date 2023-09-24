@@ -6,5 +6,8 @@ const withMDX = createWithMDX({
 
 export default withMDX({
   reactStrictMode: true,
+  images: {
+    domains: ["gefest.b-cdn.net"],
+  },
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
 });

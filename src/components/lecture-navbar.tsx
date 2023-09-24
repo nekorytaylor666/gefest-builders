@@ -3,8 +3,6 @@ import { HiMiniXMark, HiFire } from "react-icons/hi2";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { getSession } from "@auth0/nextjs-auth0";
-import { Avatar, AvatarImage, AvatarFallback } from "@radix-ui/react-avatar";
-import Image from "next/image";
 
 const LectureNavbar = async () => {
   const session = await getSession();
