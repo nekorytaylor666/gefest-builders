@@ -35,22 +35,25 @@ model Course {
   id          Int       @id @default(autoincrement())
   title       String
   description String
+  thumbnailPath String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
   lessons     Lesson[]
+  slug        String   @unique @default(uuid())
 }
 
 model Lesson {
   id        Int       @id @default(autoincrement())
   courseId  Int
   title     String
-  isMdx     Boolean   @default(true)
+  thumbnailPath String?
   mdxContentPath String?
-  content   String?    // MDX content, you might want to adjust the type based on content length and structure.
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
   order     Int
   course    Course    @relation(fields: [courseId], references: [id])
-  creator   User      @relation(fields: [creatorId], references: [id])
-  creatorId Int
+  author   User      @relation(fields: [authorId], references: [id])
+  authorId Int
 }

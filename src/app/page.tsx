@@ -1,6 +1,8 @@
 import Image from "next/image";
+import { serverClient } from "./_trpc/serverClient";
 
-export default function Home() {
+export default async function Home() {
+  const courses = await serverClient.courses.listCourses();
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24">
       <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
@@ -75,7 +77,9 @@ export default function Home() {
             Learn about Next.js in an interactive course with&nbsp;quizzes!
           </p>
         </a>
-
+        {courses.map((course) => (
+          <div key={course.id}>{course.title}</div>
+        ))}
         <a
           href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
           className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
