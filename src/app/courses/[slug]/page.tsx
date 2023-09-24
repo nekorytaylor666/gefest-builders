@@ -59,7 +59,9 @@ export default async function Page({ params }: { params: CoursePageParams }) {
       </div>
 
       <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth lg:col-start-3 lg:col-span-3">
-        <CourseMilestoneMap></CourseMilestoneMap>
+        <CourseMilestoneMap
+          lessons={course?.lessons ?? []}
+        ></CourseMilestoneMap>
       </ScrollArea>
     </div>
   );

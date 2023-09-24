@@ -73,7 +73,9 @@ function CourseMilestoneNodeButton({
       onTouchEnd={handleTouchEnd}
     >
       <RiveComponent className="h-24 w-24" />
-      <p className="w-24 text-center flex justify-center font-bold">{label}</p>
+      <p className="w-24 text-center flex justify-center font-bold text-sm">
+        {label}
+      </p>
     </div>
   );
 }

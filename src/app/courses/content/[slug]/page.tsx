@@ -27,14 +27,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
   );
 }
 
-export async function generateStaticParams() {
-  const contentDirectory = path.join(process.cwd(), "src/content");
-  const filenames = await fs.readdir(contentDirectory);
+// export async function generateStaticParams() {
+//   const contentDirectory = path.join(process.cwd(), "src/content");
+//   const filenames = await fs.readdir(contentDirectory);
 
-  return filenames.map((filename) => ({
-    slug: filename.replace(/\.md$/, ""),
-  }));
-}
+//   return filenames.map((filename) => ({
+//     slug: filename.replace(/\.md$/, ""),
+//   }));
+// }
 // export async function getStaticProps() {
 //   // MDX text - can be from a local file, database, anywhere
 //   // fetch md file from src/content/lectures/slug.mdx
