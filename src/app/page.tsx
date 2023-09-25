@@ -24,7 +24,7 @@ export default async function Home() {
     <main className="container py-12 max-w-screen-xl">
       <TypographyH1>Что ты хочешь узнать сегодня?</TypographyH1>
       <section className="pt-8">
-        <div className="grid grid-cols-3">
+        <div className="grid grid-cols-1 lg:grid-cols-3">
           {courses.map((course) => (
             <Card key={course.id}>
               <CardHeader>
