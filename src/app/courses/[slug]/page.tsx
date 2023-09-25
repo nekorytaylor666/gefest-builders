@@ -2,8 +2,8 @@ import Image from "next/image";
 import Rive, { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import { useState, useEffect, useCallback } from "react";
 import TypographyP from "@/components/ui/typography/p";
-import CourseMilestoneNodeButton from "./components/courseMilestoneNode";
-import CourseMilestoneMap from "./components/courseMilestoneMap";
+import CourseMilestoneNodeButton from "./_components/courseMilestoneNode";
+import CourseMilestoneMap from "./_components/courseMilestoneMap";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import TypographyH1 from "@/components/ui/typography/h1";
 import {
@@ -60,6 +60,7 @@ export default async function Page({ params }: { params: CoursePageParams }) {
 
       <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth lg:col-start-3 lg:col-span-3">
         <CourseMilestoneMap
+          courseSlug={course?.slug ?? ""}
           lessons={course?.lessons ?? []}
         ></CourseMilestoneMap>
       </ScrollArea>

@@ -3,6 +3,7 @@ import { HiMiniXMark, HiFire } from "react-icons/hi2";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { getSession } from "@auth0/nextjs-auth0";
+import { useRouter } from "next/navigation";
 
 const LectureNavbar = async () => {
   const session = await getSession();

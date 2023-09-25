@@ -1,16 +1,18 @@
 "use client";
 import React from "react";
 import CourseMilestoneNodeButton from "./courseMilestoneNode";
-import { Lesson } from "@prisma/client";
+import { Course, Lesson } from "@prisma/client";
 import { useRouter } from "next/navigation";
 
-type Props = {
+interface Props {
   lessons: Lesson[];
-};
+  courseSlug: string;
+}
 const AMOUNT_LESSONS_ON_PATTERN = 4;
 
 const CourseMilestoneMap = (props: Props) => {
   const lessons = props.lessons;
+  const courseSlug = props.courseSlug;
 
   const patternAmount = lessons.length / 4;
   const roundedPatternAmount = Math.ceil(patternAmount);
@@ -23,6 +25,7 @@ const CourseMilestoneMap = (props: Props) => {
       <CourseMilestonePattern
         key={0}
         cursor={0}
+        courseSlug={courseSlug}
         lessons={lessons}
       ></CourseMilestonePattern>
     </div>
@@ -31,6 +34,7 @@ const CourseMilestoneMap = (props: Props) => {
 
 const CourseMilestonePattern = (props: {
   cursor: number;
+  courseSlug: string;
   lessons: Lesson[];
 }) => {
   const router = useRouter();
@@ -54,7 +58,12 @@ const CourseMilestonePattern = (props: {
           <div className="w-full flex justify-center">
             <CourseMilestoneNodeButton
               onClick={function (): void {
-                router.push("/courses/content/1");
+                router.push(
+                  "/courses/" +
+                    props.courseSlug +
+                    "/lessons/" +
+                    lessonsToRender[0].id
+                );
               }}
               label={lessonsToRender[0]?.title}
             ></CourseMilestoneNodeButton>
