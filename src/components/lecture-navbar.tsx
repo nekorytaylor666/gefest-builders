@@ -1,12 +1,14 @@
+"use client";
 import React from "react";
 import { HiMiniXMark, HiFire } from "react-icons/hi2";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { getSession } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/navigation";
+import { useUser } from "@auth0/nextjs-auth0/client";
 
-const LectureNavbar = async () => {
-  const session = await getSession();
+const LectureNavbar = () => {
+  const session = useUser();
 
   const user = session?.user;
   console.log(user);
@@ -18,10 +20,7 @@ const LectureNavbar = async () => {
             <HiMiniXMark className="h-8 w-8"></HiMiniXMark>
           </Button>
           <div className="flex items-center gap-2 w-full flex-1">
-            <Progress value={0.5}></Progress>
-            <Progress value={0}></Progress>
-            <Progress value={0}></Progress>
-            <Progress value={0}></Progress>
+            <Progress value={80}></Progress>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex gap-0.5 items-center">

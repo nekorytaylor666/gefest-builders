@@ -4,6 +4,7 @@ import { javascript } from "@codemirror/lang-javascript";
 import { tags as t } from "@lezer/highlight";
 import { Button } from "./ui/button";
 import { HiMiniArrowUturnLeft } from "react-icons/hi2";
+import { useMutation } from "@tanstack/react-query";
 const CodeMirror = lazy(() => import("@uiw/react-codemirror"));
 const myTheme = createTheme({
   theme: "light",
@@ -49,16 +50,52 @@ type Props = {
 const CodeEditor = (props: Props) => {
   const [editorContent, setEditorContent] = useState("");
 
+  const executeCodeMutation = useMutation(async (content: string) => {
+    const response = await fetch("https://emkc.org/api/v2/piston/execute", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        language: "javascript",
+        version: "1.32.3",
+        files: [
+          {
+            name: "my_cool_code.js",
+            content,
+          },
+        ],
+        stdin: "",
+        args: ["1", "2", "3"],
+        compile_timeout: 10000,
+        run_timeout: 3000,
+        compile_memory_limit: -1,
+        run_memory_limit: -1,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return response.json();
+  });
+
   const onChange = React.useCallback((value: any, viewUpdate: any) => {
     setEditorContent(value);
-    console.log("value:", value);
   }, []);
 
   const onHandleCodeRun = () => {
     props.onRun && props.onRun();
-    if (editorContent === props.expectedOutput) {
-      props.onSuccess && props.onSuccess();
-    }
+    executeCodeMutation.mutate(editorContent, {
+      onSuccess: (data: any) => {
+        const jobOutput = data.run.output;
+        console.log(jobOutput, props.expectedOutput);
+        if (jobOutput === props.expectedOutput) {
+          props.onSuccess && props.onSuccess();
+        }
+      },
+    });
   };
 
   const onHandleReset = () => {

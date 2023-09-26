@@ -9,6 +9,7 @@ import { MDXProvider } from "@mdx-js/react";
 import { MDXRemote } from "next-mdx-remote";
 import { MDXSection } from "@/lib/mdx-utils";
 import TypographyH1 from "./ui/typography/h1";
+import { Button } from "./ui/button";
 
 interface LectureContentSectionProps {
   onNext: () => void;
@@ -20,7 +21,7 @@ const LectureContentSection = React.forwardRef<
   HTMLDivElement,
   LectureContentSectionProps
 >(({ onNext, isActive, section }, ref) => {
-  const isActiveClasses = isActive ? "pb-20" : "pointer-events-none";
+  const isActiveClasses = isActive ? "pb-20" : "";
   const containerClasses = "py-4 height-auto";
 
   const components = {
@@ -32,6 +33,13 @@ const LectureContentSection = React.forwardRef<
     ),
     CodeEditor: (props: any) => (
       <CodeEditor {...props} onSuccess={onNext} onSkip={onNext} />
+    ),
+    Quiz: (props: any) => <Quiz {...props} onSuccess={onNext} />,
+
+    Next: (props: any) => (
+      <Button {...props} onClick={onNext}>
+        Дальше
+      </Button>
     ),
   };
   return (
@@ -46,6 +54,7 @@ const LectureContentSection = React.forwardRef<
       <MDXProvider components={components}>
         <MDXRemote {...section} />
       </MDXProvider>
+      <Button onClick={onNext}>Дальше</Button>
     </div>
   );
 });

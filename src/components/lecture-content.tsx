@@ -13,6 +13,7 @@ import { TypeOf } from "zod";
 import { MDXSection, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { UnwrapPromise } from "@/types";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import LectureNavbar from "./lecture-navbar";
 
 interface LectureContentProps {
   data: any;
@@ -46,18 +47,20 @@ const LectureContent = ({
 
   return (
     <div className="">
-      {serializedMdxSections
-        .slice(0, currentSection + 1)
-        .map((section, index) => (
-          <LectureContentSection
-            key={index}
-            ref={(el) => (lectureRefs.current[index] = el)}
-            section={section}
-            isActive={index === currentSection}
-            onNext={onLectureContentNext}
-          ></LectureContentSection>
-        ))}
-      <Button onClick={handleSkip}>Следующая</Button>
+      <LectureNavbar></LectureNavbar>
+      <div className=" container max-w-screen-md">
+        {serializedMdxSections
+          .slice(0, currentSection + 1)
+          .map((section, index) => (
+            <LectureContentSection
+              key={index}
+              ref={(el) => (lectureRefs.current[index] = el)}
+              section={section}
+              isActive={index === currentSection}
+              onNext={onLectureContentNext}
+            ></LectureContentSection>
+          ))}
+      </div>
     </div>
   );
 };

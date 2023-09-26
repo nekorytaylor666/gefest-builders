@@ -6,10 +6,5 @@ export default function DashboardLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <section>
-      <LectureNavbar></LectureNavbar>
-      <div className="container max-w-2xl p-1">{children}</div>
-    </section>
-  );
+  return <section>{children}</section>;
 }
