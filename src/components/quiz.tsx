@@ -34,7 +34,7 @@ export function Quiz({
       <div className="text-lg pt-4 px-4">{question}</div>
       <RadioGroup
         onValueChange={setSelectedOption}
-        defaultValue={selectedOption}
+        defaultValue={selectedOption ?? ""}
         className="flex flex-col pt-4"
       >
         {options.map((option, index) => (

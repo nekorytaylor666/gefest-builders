@@ -35,7 +35,7 @@ const LectureNavbar = () => {
                 className="absolute inset-0 object-cover"
                 width={80}
                 height={80}
-                src={user?.picture}
+                src={user?.picture ?? ""}
                 alt=""
               />
             </div>

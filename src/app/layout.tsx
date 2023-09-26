@@ -5,7 +5,8 @@ import { UserProvider } from "@auth0/nextjs-auth0/client";
 import Provider from "./_trpc/Provider";
 import "swiper/css";
 import Navbar from "@/components/navbar";
-
+//@ts-ignore
+import riveWASMResource from "node_modules/@rive-app/canvas/rive.wasm";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,6 +21,14 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="preload"
+          href={riveWASMResource}
+          as="fetch"
+          crossOrigin="anonymous"
+        />
+      </head>
       <UserProvider>
         <Provider>
           <body className={inter.className}>

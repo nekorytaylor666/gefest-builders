@@ -9,5 +9,14 @@ export default withMDX({
   images: {
     domains: ["gefest.b-cdn.net"],
   },
+
+  webpack: (config, options) => {
+    config.module.rules.push({
+      test: /\.wasm$/,
+      use: ["url-loader"],
+    });
+
+    return config;
+  },
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
 });
