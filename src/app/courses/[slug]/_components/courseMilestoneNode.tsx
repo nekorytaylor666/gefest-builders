@@ -63,7 +63,7 @@ function CourseMilestoneNodeButton({
       onClick={() =>
         setTimeout(() => {
           onClick();
-        }, 500)
+        }, 100)
       }
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}

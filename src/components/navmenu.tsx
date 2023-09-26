@@ -13,25 +13,13 @@ import {
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import Image from "next/image";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { Skeleton } from "./ui/skeleton";
 
 export function NavMenu() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        <NavigationMenuItem>
-          <NavigationMenuTrigger>Путеводители</NavigationMenuTrigger>
-          <NavigationMenuContent>
-            <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px]">
-              <ListItem href="/guides/frontend" title="Фронтенд">
-                Информация о фронтенд разработке.
-              </ListItem>
-              <ListItem href="/guides/fullstack" title="Фуллстек">
-                Информация о фуллстек разработке.
-              </ListItem>
-            </ul>
-          </NavigationMenuContent>
-        </NavigationMenuItem>
-
         <NavigationMenuItem>
           <Link href="/courses" legacyBehavior passHref>
             <NavigationMenuLink className={navigationMenuTriggerStyle()}>
@@ -47,10 +35,51 @@ export function NavMenu() {
             </NavigationMenuLink>
           </Link>
         </NavigationMenuItem>
+        <LoginMenuItem></LoginMenuItem>
       </NavigationMenuList>
     </NavigationMenu>
   );
 }
+
+const LoginMenuItem = () => {
+  const user = useUser();
+  if (user.isLoading) {
+    return <Skeleton className="w-[100px] h-[32px] rounded-md" />;
+  }
+  return user.user?.email ? (
+    <NavigationMenuItem>
+      <NavigationMenuTrigger>Аккаунт</NavigationMenuTrigger>
+      <NavigationMenuContent>
+        <ul className="grid gap-3 p-4 md:w-[400px] lg:w-[500px]">
+          <ListItem title="Имя">
+            {" "}
+            <span className="text-muted-foreground">{user.user.name}</span>
+          </ListItem>
+          <ListItem title="Email">
+            <span className="text-muted-foreground"> {user.user.email}</span>
+          </ListItem>
+          <ListItem
+            href="/api/auth/logout"
+            className="group hover:bg-destructive "
+          >
+            <span className="text-destructive group-hover:text-white">
+              {" "}
+              Выйти
+            </span>
+          </ListItem>
+        </ul>
+      </NavigationMenuContent>
+    </NavigationMenuItem>
+  ) : (
+    <NavigationMenuItem>
+      <a href="/api/auth/login">
+        <NavigationMenuLink className={navigationMenuTriggerStyle()}>
+          Войти
+        </NavigationMenuLink>
+      </a>
+    </NavigationMenuItem>
+  );
+};
 
 const ListItem = React.forwardRef<
   React.ElementRef<"a">,
@@ -68,9 +97,7 @@ const ListItem = React.forwardRef<
           {...props}
         >
           <div className="text-sm font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
+          <p className="line-clamp-2 text-sm leading-snug">{children}</p>
         </a>
       </NavigationMenuLink>
     </li>
