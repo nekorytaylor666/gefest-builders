@@ -27,7 +27,7 @@ model User {
   lessons              Lesson[]
   role                 UserRole         @default(USER) // Default to USER role
   lessonProgress       LessonProgress[]
-  externalSourceUserId Int?             @unique
+  externalSourceUserId String?             @unique
   externalMetadata     Json?            @default("{}")
 }
 

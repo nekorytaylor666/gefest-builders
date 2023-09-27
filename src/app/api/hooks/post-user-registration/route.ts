@@ -38,6 +38,7 @@ export async function POST(request: Request) {
       fullName: fullName,
       phoneNumber: phoneNumber,
       externalSourceUserId: externalUserId,
+      externalMetadata: metadata,
       // Add other fields as necessary
     },
   });

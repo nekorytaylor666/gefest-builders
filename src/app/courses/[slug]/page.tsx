@@ -36,7 +36,7 @@ type CoursePageProps = {
 export default withPageAuthRequired(
   async function Page(context) {
     const user = await getSession();
-    console.log(user);
+    console.log(user?.user);
     const courseData = await serverClient.courses.getCourseDataWithUserProgress(
       {
         courseSlug: context?.params?.slug as string,
