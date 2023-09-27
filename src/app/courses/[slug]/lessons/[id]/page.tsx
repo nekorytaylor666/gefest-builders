@@ -23,8 +23,9 @@ export default async function Page({
   const serializedSections = await serializeAllMdxSections(mdxSections);
 
   return (
-    <main className="p-4">
+    <main>
       <LectureContent
+        courseSlug={slug}
         {...resMatter}
         serializedMdxSections={serializedSections}
       ></LectureContent>

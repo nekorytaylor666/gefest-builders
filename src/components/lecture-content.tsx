@@ -14,26 +14,39 @@ import { MDXSection, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { UnwrapPromise } from "@/types";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import LectureNavbar from "./lecture-navbar";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 interface LectureContentProps {
   data: any;
+  courseSlug: string;
   serializedMdxSections: MDXSection[];
 }
 
 const LectureContent = ({
   data,
+  courseSlug,
   serializedMdxSections,
 }: LectureContentProps) => {
   const [currentSection, setCurrentSection] = useState(0);
+  const router = useRouter();
 
   const lectureRefs = useRef<(HTMLDivElement | null)[]>([]); // To store the references of lectures
 
   const onLectureContentNext = () => {
-    setCurrentSection((prev) => prev + 1);
+    if (currentSection === serializedMdxSections.length) {
+      router.push("/success");
+    } else {
+      setCurrentSection((prev) => prev + 1);
+    }
   };
 
   const handleSkip = () => {
     setCurrentSection((prev) => prev + 1);
+  };
+
+  const onLessonFinishButtonClick = () => {
+    router.push("/courses/" + courseSlug);
   };
 
   useEffect(() => {
@@ -45,11 +58,29 @@ const LectureContent = ({
     }
   }, [currentSection]);
 
+  const progress = (currentSection / serializedMdxSections.length) * 100;
+
   return (
     <div className="">
-      <LectureNavbar></LectureNavbar>
-      <div className=" container max-w-screen-md">
-        {serializedMdxSections
+      <LectureNavbar progress={progress}></LectureNavbar>
+      <div className="lg:grid lg:grid-cols-2 flex flex-col-reverse items-center gap-4 w-full h-full max-w-screen-2xl mx-auto p-2">
+        <div className="flex flex-col gap-4 lg:items-start text-center p-4 ">
+          <TypographyH2>Вы закончили урок</TypographyH2>
+          <p className="text-lg">Теперь надо закрепить материал!</p>
+          <Button onClick={onLessonFinishButtonClick} size={"lg"}>
+            Продолжить изучение!
+          </Button>
+        </div>
+        <div className="w-full flex justify-center items-center h-full">
+          <img
+            className="lg:w-2/3 w-full"
+            src="/success.svg"
+            alt="success"
+          ></img>
+        </div>
+      </div>
+      <div className=" lg:container lg:max-w-screen-md p-4">
+        {/* {serializedMdxSections
           .slice(0, currentSection + 1)
           .map((section, index) => (
             <LectureContentSection
@@ -59,7 +90,7 @@ const LectureContent = ({
               isActive={index === currentSection}
               onNext={onLectureContentNext}
             ></LectureContentSection>
-          ))}
+          ))} */}
       </div>
     </div>
   );

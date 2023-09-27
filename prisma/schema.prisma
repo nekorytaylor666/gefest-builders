@@ -4,13 +4,11 @@
 generator client {
   provider = "prisma-client-js"
   seed     = "ts-node prisma/seed.ts"
-
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-
 }
 
 enum UserRole {
@@ -19,41 +17,62 @@ enum UserRole {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  fullName     String?
-  phoneNumber  String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  courses   Course[]
-  lessons   Lesson[]
-  role      UserRole  @default(USER) // Default to USER role
-
+  id             Int              @id @default(autoincrement())
+  email          String           @unique
+  fullName       String?
+  phoneNumber    String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  courses        Course[]
+  lessons        Lesson[]
+  role           UserRole         @default(USER) // Default to USER role
+  CourseProgress CourseProgress[]
+  LessonProgress LessonProgress[]
 }
 
 model Course {
-  id          Int       @id @default(autoincrement())
-  title       String
-  description String
-  thumbnailPath String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  author      User     @relation(fields: [authorId], references: [id])
-  authorId    Int
-  lessons     Lesson[]
-  slug        String   @unique @default(uuid())
+  id             Int              @id @default(autoincrement())
+  title          String
+  description    String
+  thumbnailPath  String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  author         User             @relation(fields: [authorId], references: [id])
+  authorId       Int
+  lessons        Lesson[]
+  slug           String           @unique @default(uuid())
+  CourseProgress CourseProgress[]
 }
 
 model Lesson {
-  id        Int       @id @default(autoincrement())
-  courseId  Int
-  title     String
-  thumbnailPath String?
+  id             Int              @id @default(autoincrement())
+  courseId       Int
+  title          String
+  thumbnailPath  String?
   mdxContentPath String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  order     Int
-  course    Course    @relation(fields: [courseId], references: [id])
-  author   User      @relation(fields: [authorId], references: [id])
-  authorId Int
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  order          Int
+  course         Course           @relation(fields: [courseId], references: [id])
+  author         User             @relation(fields: [authorId], references: [id])
+  authorId       Int
+  LessonProgress LessonProgress[]
+}
+
+model CourseProgress {
+  id       Int    @id @default(autoincrement())
+  userId   Int
+  courseId Int
+  progress Int    @default(0)
+  user     User   @relation(fields: [userId], references: [id])
+  course   Course @relation(fields: [courseId], references: [id])
+}
+
+model LessonProgress {
+  id        Int     @id @default(autoincrement())
+  userId    Int
+  lessonId  Int
+  completed Boolean @default(false)
+  user      User    @relation(fields: [userId], references: [id])
+  lesson    Lesson  @relation(fields: [lessonId], references: [id])
 }
