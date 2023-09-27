@@ -32,6 +32,7 @@ export default function RootLayout({
       <UserProvider>
         <Provider>
           <body className={inter.className}>
+            <Navbar></Navbar>
             <div className="pt-8">{children}</div>
           </body>
         </Provider>

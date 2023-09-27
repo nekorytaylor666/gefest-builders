@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Rive, { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import { useState, useEffect, useCallback } from "react";
 import TypographyP from "@/components/ui/typography/p";
@@ -20,50 +19,41 @@ import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { trpc } from "@/app/_trpc/client";
 import { serverClient } from "@/app/_trpc/serverClient";
+import { AppRouterPageRoute, getSession } from "@auth0/nextjs-auth0";
+import CoursePageContainer from "@/components/pages/coursePage/coursePageContainer";
+import { withPageAuthRequired } from "@auth0/nextjs-auth0";
+import { ProcedureReturnType } from "@/lib/utils";
 
 type CoursePageParams = {
   slug: string;
 };
-export default async function Page({ params }: { params: CoursePageParams }) {
-  const course = await serverClient.courses.getCourseBySlug(params.slug);
-  return (
-    <div className="grid grid-cols-1 items-start lg:grid-cols-5 container max-w-screen-xl p-0">
-      <div className="p-4 lg:col-span-2">
-        <Button asChild className="text-muted-foreground" variant={"ghost"}>
-          <Link href={"/"}>
-            <ArrowLeftIcon className="mr-2"></ArrowLeftIcon>
-            Назад
-          </Link>
-        </Button>
-        <Card className="mt-4">
-          <CardHeader>
-            <div className="flex items-center justify-center">
-              <Image
-                width={250}
-                height={250}
-                src={"https://gefest.b-cdn.net/" + course?.thumbnailPath}
-                alt={course?.title ?? "course-thumbnail"}
-              />
-            </div>
-            <TypographyH2>{course?.title}</TypographyH2>
-            <CardDescription className="text-md">
-              {course?.description}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Уроков - {course?.lessons.length}
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+type CoursePageProps = {
+  course: ProcedureReturnType<
+    (typeof serverClient)["courses"]["getCourseBySlug"]
+  >; // Замените CourseType на тип вашего курса
+};
 
-      <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth lg:col-start-3 lg:col-span-3">
-        <CourseMilestoneMap
-          courseSlug={course?.slug ?? ""}
-          lessons={course?.lessons ?? []}
-        ></CourseMilestoneMap>
-      </ScrollArea>
-    </div>
-  );
-}
+export default withPageAuthRequired(
+  async function Page(context) {
+    const course = await serverClient.courses.getCourseBySlug(
+      context?.params?.slug as string
+    );
+    return <CoursePageContainer course={course}></CoursePageContainer>;
+  },
+  {
+    returnTo({ params }) {
+      return ("courses/" + params?.slug) as string;
+    },
+  }
+);
+
+// export const getServerSideProps = withPageAuthRequired({
+//   async getServerSideProps(context) {
+//     const course = await serverClient.courses.getCourseBySlug(
+//       context?.params?.slug as string
+//     );
+//     return { props: { course } };
+//   },
+// });
+
+// export default Page;
