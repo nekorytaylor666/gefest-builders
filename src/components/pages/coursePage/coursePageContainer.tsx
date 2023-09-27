@@ -8,7 +8,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 const CoursePageContainer = (props: CoursePageProps) => {
   // const { user, isLoading: isUserLoading } = useUser();
-  const { course } = props;
+  const { courseDataWithUserProgress } = props;
   const {
     userProgress,
     addOrUpdateUserLessonProgress,
@@ -18,8 +18,9 @@ const CoursePageContainer = (props: CoursePageProps) => {
   } = useCourseProgressStore();
 
   const user = "testid";
-  const courseId = course?.slug ?? "test";
-  const lessonId = course?.lessons[0].courseId.toString() ?? "test";
+  const courseId = courseDataWithUserProgress?.course?.slug ?? "test";
+  const lessonId =
+    courseDataWithUserProgress?.lessons[0].courseId.toString() ?? "test";
 
   useEffect(() => {
     if (!userProgress[user]?.[courseId]?.[lessonId]) {
@@ -27,7 +28,11 @@ const CoursePageContainer = (props: CoursePageProps) => {
     }
   }, [courseId, lessonId, userProgress, user, addOrUpdateUserLessonProgress]);
 
-  return <CoursePageView course={course}></CoursePageView>;
+  return (
+    <CoursePageView
+      course={courseDataWithUserProgress?.course}
+    ></CoursePageView>
+  );
 };
 
 export default CoursePageContainer;

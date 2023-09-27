@@ -35,10 +35,20 @@ type CoursePageProps = {
 
 export default withPageAuthRequired(
   async function Page(context) {
-    const course = await serverClient.courses.getCourseBySlug(
-      context?.params?.slug as string
+    const user = await getSession();
+    console.log(user);
+    const courseData = await serverClient.courses.getCourseDataWithUserProgress(
+      {
+        courseSlug: context?.params?.slug as string,
+        userId: user?.user?.email,
+      }
     );
-    return <CoursePageContainer course={course}></CoursePageContainer>;
+    console.log(courseData);
+    return (
+      <CoursePageContainer
+        courseDataWithUserProgress={courseData}
+      ></CoursePageContainer>
+    );
   },
   {
     returnTo({ params }) {

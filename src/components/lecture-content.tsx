@@ -7,7 +7,6 @@ import TypographyInlineCode from "@/components/ui/typography/code";
 import TypographyP from "@/components/ui/typography/p";
 import TypographyH2 from "@/components/ui/typography/h1";
 import { Button } from "./ui/button";
-import { set } from "react-hook-form";
 import { ScrollArea } from "./ui/scroll-area";
 import { TypeOf } from "zod";
 import { MDXSection, serializeAllMdxSections } from "@/lib/mdx-utils";
@@ -16,37 +15,85 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import LectureNavbar from "./lecture-navbar";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import useCourseProgressStore from "@/store/courseProgressStore";
 
 interface LectureContentProps {
-  data: any;
   courseSlug: string;
+  lessonId: string;
   serializedMdxSections: MDXSection[];
 }
 
 const LectureContent = ({
-  data,
   courseSlug,
+  lessonId,
   serializedMdxSections,
 }: LectureContentProps) => {
+  const { user } = useUser();
+  const userId = user?.email ?? "";
+  const {
+    userProgress,
+    addOrUpdateUserLessonProgress,
+    completeBlock,
+    getLessonProgress,
+    isLessonCompleted,
+  } = useCourseProgressStore();
+
+  const handleBlockCompletion = () => {
+    if (!userProgress[userId]?.[courseSlug]?.[lessonId]) {
+      addOrUpdateUserLessonProgress(userId, courseSlug, lessonId, 10); // Assuming 10 blocks for this lesson
+    }
+    completeBlock(userId, courseSlug, lessonId);
+  };
+
+  const progressPercentage = getLessonProgress(
+    userProgress,
+    userId,
+    courseSlug,
+    lessonId
+  );
+
+  const [showSuccess, setShowSuccess] = useState(false);
+
+  return (
+    <div className="">
+      <LectureNavbar progress={progressPercentage}></LectureNavbar>
+
+      <div className=" lg:container lg:max-w-screen-md p-4">
+        {!showSuccess ? (
+          <LectureContentPlot
+            serializedMdxSections={serializedMdxSections}
+            onLecturePlotFinish={() => setShowSuccess(true)}
+            onSectionChange={(contentIndex) => {
+              handleBlockCompletion();
+            }}
+          ></LectureContentPlot>
+        ) : (
+          <SuccessSection courseSlug={courseSlug}></SuccessSection>
+        )}
+      </div>
+    </div>
+  );
+};
+
+const LectureContentPlot = (props: {
+  onLecturePlotFinish: () => void;
+  serializedMdxSections: MDXSection[];
+  onSectionChange: (contentIndex: number) => void;
+}) => {
+  const { serializedMdxSections, onLecturePlotFinish, onSectionChange } = props;
   const [currentSection, setCurrentSection] = useState(0);
-  const router = useRouter();
 
   const lectureRefs = useRef<(HTMLDivElement | null)[]>([]); // To store the references of lectures
 
   const onLectureContentNext = () => {
-    if (currentSection === serializedMdxSections.length) {
-      router.push("/success");
+    if (currentSection >= serializedMdxSections.length) {
+      onLecturePlotFinish();
     } else {
-      setCurrentSection((prev) => prev + 1);
+      setCurrentSection((prev) => {
+        onSectionChange(prev + 1);
+        return prev + 1;
+      });
     }
-  };
-
-  const handleSkip = () => {
-    setCurrentSection((prev) => prev + 1);
-  };
-
-  const onLessonFinishButtonClick = () => {
-    router.push("/courses/" + courseSlug);
   };
 
   useEffect(() => {
@@ -58,39 +105,40 @@ const LectureContent = ({
     }
   }, [currentSection]);
 
-  const progress = (currentSection / serializedMdxSections.length) * 100;
+  return (
+    <div>
+      {serializedMdxSections
+        .slice(0, currentSection + 1)
+        .map((section, index) => (
+          <LectureContentSection
+            key={index}
+            ref={(el) => (lectureRefs.current[index] = el)}
+            section={section}
+            isActive={index === currentSection}
+            onNext={onLectureContentNext}
+          ></LectureContentSection>
+        ))}
+    </div>
+  );
+};
+
+const SuccessSection = ({ courseSlug }: { courseSlug: string }) => {
+  const router = useRouter();
+  const onLessonFinishButtonClick = () => {
+    router.push("/courses/" + courseSlug);
+  };
 
   return (
-    <div className="">
-      <LectureNavbar progress={progress}></LectureNavbar>
-      <div className="lg:grid lg:grid-cols-2 flex flex-col-reverse items-center gap-4 w-full h-full max-w-screen-2xl mx-auto p-2">
-        <div className="flex flex-col gap-4 lg:items-start text-center p-4 ">
-          <TypographyH2>Вы закончили урок</TypographyH2>
-          <p className="text-lg">Теперь надо закрепить материал!</p>
-          <Button onClick={onLessonFinishButtonClick} size={"lg"}>
-            Продолжить изучение!
-          </Button>
-        </div>
-        <div className="w-full flex justify-center items-center h-full">
-          <img
-            className="lg:w-2/3 w-full"
-            src="/success.svg"
-            alt="success"
-          ></img>
-        </div>
+    <div className="lg:grid lg:grid-cols-2 flex flex-col-reverse items-center gap-4 w-full h-full max-w-screen-2xl mx-auto p-2">
+      <div className="flex flex-col gap-4 lg:items-start text-center p-4 ">
+        <TypographyH2>Вы закончили урок</TypographyH2>
+        <p className="text-lg">Теперь надо закрепить материал!</p>
+        <Button onClick={onLessonFinishButtonClick} size={"lg"}>
+          Продолжить изучение!
+        </Button>
       </div>
-      <div className=" lg:container lg:max-w-screen-md p-4">
-        {/* {serializedMdxSections
-          .slice(0, currentSection + 1)
-          .map((section, index) => (
-            <LectureContentSection
-              key={index}
-              ref={(el) => (lectureRefs.current[index] = el)}
-              section={section}
-              isActive={index === currentSection}
-              onNext={onLectureContentNext}
-            ></LectureContentSection>
-          ))} */}
+      <div className="w-full flex justify-center items-center h-full">
+        <img className="lg:w-2/3 w-full" src="/success.svg" alt="success"></img>
       </div>
     </div>
   );

@@ -8,9 +8,9 @@ import { Card, CardHeader, CardDescription, CardContent } from "../../ui/card";
 import TypographyH2 from "../../ui/typography/h2";
 import Image from "next/image";
 import { AppRouter, ReactQueryOptions } from "@/server";
-import { CoursePageProps } from "./type";
+import { CourseData, CoursePageProps } from "./type";
 
-const CoursePageView = (props: CoursePageProps) => {
+const CoursePageView = (props: { course: CourseData }) => {
   const { course } = props;
   return (
     <div className="grid grid-cols-1 items-start lg:grid-cols-5 container max-w-screen-xl p-0">
