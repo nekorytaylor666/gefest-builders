@@ -7,5 +7,4 @@ export type CoursePageProps = {
   >;
 };
 
-export type CourseData =
-  CoursePageProps["courseDataWithUserProgress"]["course"];
+export type CourseData = CoursePageProps["courseDataWithUserProgress"];

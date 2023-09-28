@@ -1,12 +1,14 @@
 "use client";
 import React from "react";
 import CourseMilestoneNodeButton from "./courseMilestoneNode";
-import { Course, Lesson } from "@prisma/client";
+import { Lesson } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { CourseData } from "@/components/pages/coursePage/type";
 
 interface Props {
-  lessons: Lesson[];
+  lessons: CourseData["lessons"];
   courseSlug: string;
+  finishedLessons: CourseData["lessonProgress"];
 }
 const AMOUNT_LESSONS_ON_PATTERN = 4;
 
@@ -27,6 +29,7 @@ const CourseMilestoneMap = (props: Props) => {
         cursor={0}
         courseSlug={courseSlug}
         lessons={lessons}
+        finishedLessons={props.finishedLessons}
       ></CourseMilestonePattern>
     </div>
   );
@@ -36,6 +39,7 @@ const CourseMilestonePattern = (props: {
   cursor: number;
   courseSlug: string;
   lessons: Lesson[];
+  finishedLessons: CourseData["lessonProgress"];
 }) => {
   const router = useRouter();
   const start = props.cursor * AMOUNT_LESSONS_ON_PATTERN;
@@ -57,6 +61,11 @@ const CourseMilestonePattern = (props: {
           </svg>
           <div className="w-full flex justify-center">
             <CourseMilestoneNodeButton
+              completed={
+                !!props.finishedLessons.find(
+                  ({ lessonId }) => lessonId === lessonsToRender[0].id
+                )
+              }
               onClick={function (): void {
                 router.push(
                   "/courses/" +

@@ -4,11 +4,13 @@ import { lessonsRouter } from "./routers/lessons";
 import { inferReactQueryProcedureOptions } from "@trpc/react-query";
 import { inferRouterInputs, inferRouterOutputs } from "@trpc/server";
 import { userRouter } from "./routers/user";
+import { progressRouter } from "./routers/progress";
 
 export const appRouter = router({
   courses: coursesRouter,
   lessons: lessonsRouter,
   user: userRouter,
+  progress: progressRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -1,14 +1,17 @@
+import { cn } from "@/lib/utils";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import { useCallback } from "react";
 
 interface CourseMilestoneNodeButtonProps {
   onClick: () => void;
   label: string;
+  completed: boolean;
 }
 
 function CourseMilestoneNodeButton({
   onClick,
   label,
+  completed,
 }: CourseMilestoneNodeButtonProps) {
   const { RiveComponent, rive } = useRive({
     src: "/milestone.riv",
@@ -73,7 +76,14 @@ function CourseMilestoneNodeButton({
       onTouchEnd={handleTouchEnd}
     >
       <RiveComponent className="h-24 w-24" />
-      <p className="w-24 text-center flex justify-center font-bold text-sm">
+      <p
+        className={cn(
+          "w-24 text-center flex justify-center font-bold text-sm",
+          {
+            "text-green-500": completed,
+          }
+        )}
+      >
         {label}
       </p>
     </div>

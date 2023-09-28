@@ -26,7 +26,7 @@ export default async function Page({
     <main>
       <LectureContent
         courseSlug={slug}
-        lessonId={id}
+        lessonId={parseInt(id)}
         {...resMatter}
         serializedMdxSections={serializedSections}
       ></LectureContent>

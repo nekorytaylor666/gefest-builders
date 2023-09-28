@@ -10,8 +10,9 @@ import Image from "next/image";
 import { AppRouter, ReactQueryOptions } from "@/server";
 import { CourseData, CoursePageProps } from "./type";
 
-const CoursePageView = (props: { course: CourseData }) => {
+const CoursePageView = (props: CourseData & { other?: any }) => {
   const { course } = props;
+
   return (
     <div className="grid grid-cols-1 items-start lg:grid-cols-5 container max-w-screen-xl p-0">
       <div className="p-4 lg:col-span-2">
@@ -40,12 +41,14 @@ const CoursePageView = (props: { course: CourseData }) => {
             <p className="text-sm text-muted-foreground">
               Уроков - {course?.lessons.length}
             </p>
+            <p>Завершено - {props.lessonProgress.length}</p>
           </CardContent>
         </Card>
       </div>
 
       <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth lg:col-start-3 lg:col-span-3">
         <CourseMilestoneMap
+          finishedLessons={props.lessonProgress}
           courseSlug={course?.slug ?? ""}
           lessons={course?.lessons ?? []}
         ></CourseMilestoneMap>

@@ -16,10 +16,11 @@ import LectureNavbar from "./lecture-navbar";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import useCourseProgressStore from "@/store/courseProgressStore";
+import { trpc } from "@/app/_trpc/client";
 
 interface LectureContentProps {
   courseSlug: string;
-  lessonId: string;
+  lessonId: number;
   serializedMdxSections: MDXSection[];
 }
 
@@ -29,7 +30,7 @@ const LectureContent = ({
   serializedMdxSections,
 }: LectureContentProps) => {
   const { user } = useUser();
-  const userId = user?.email ?? "";
+  const userId = user?.id as number;
   const {
     userProgress,
     addOrUpdateUserLessonProgress,
@@ -37,34 +38,46 @@ const LectureContent = ({
     getLessonProgress,
     isLessonCompleted,
   } = useCourseProgressStore();
+  const data = trpc.progress.markLessonAsCompleted.useMutation();
 
-  const handleBlockCompletion = () => {
-    if (!userProgress[userId]?.[courseSlug]?.[lessonId]) {
-      addOrUpdateUserLessonProgress(userId, courseSlug, lessonId, 10); // Assuming 10 blocks for this lesson
-    }
-    completeBlock(userId, courseSlug, lessonId);
+  // const handleBlockCompletion = () => {
+  //   if (!userProgress[userId]?.[courseSlug]?.[lessonId]) {
+  //     addOrUpdateUserLessonProgress(userId, courseSlug, lessonId, 10); // Assuming 10 blocks for this lesson
+  //   }
+  //   completeBlock(userId, courseSlug, lessonId);
+  // };
+  const onLessonComplete = () => {
+    setShowSuccess(true);
+    data.mutate(
+      { userId, courseId: 1, lessonId },
+      {
+        onSuccess(res) {
+          console.log(res);
+        },
+      }
+    );
   };
 
-  const progressPercentage = getLessonProgress(
-    userProgress,
-    userId,
-    courseSlug,
-    lessonId
-  );
+  // const progressPercentage = getLessonProgress(
+  //   userProgress,
+  //   userId,
+  //   courseSlug,
+  //   lessonId
+  // );
 
   const [showSuccess, setShowSuccess] = useState(false);
 
   return (
     <div className="">
-      <LectureNavbar progress={progressPercentage}></LectureNavbar>
+      <LectureNavbar progress={50}></LectureNavbar>
 
       <div className=" lg:container lg:max-w-screen-md p-4">
         {!showSuccess ? (
           <LectureContentPlot
             serializedMdxSections={serializedMdxSections}
-            onLecturePlotFinish={() => setShowSuccess(true)}
+            onLecturePlotFinish={onLessonComplete}
             onSectionChange={(contentIndex) => {
-              handleBlockCompletion();
+              // handleBlockCompletion();
             }}
           ></LectureContentPlot>
         ) : (

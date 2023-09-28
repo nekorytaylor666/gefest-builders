@@ -40,7 +40,7 @@ export default withPageAuthRequired(
     const courseData = await serverClient.courses.getCourseDataWithUserProgress(
       {
         courseSlug: context?.params?.slug as string,
-        userId: user?.user?.email,
+        userId: user?.user?.id,
       }
     );
     console.log(courseData);
