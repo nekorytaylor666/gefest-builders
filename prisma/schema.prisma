@@ -17,7 +17,7 @@ enum UserRole {
 }
 
 model User {
-  id                   Int              @id @default(autoincrement())
+  id             String       @id @default(uuid())
   email                String           @unique
   fullName             String?
   phoneNumber          String?
@@ -39,7 +39,7 @@ model Course {
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   author         User             @relation(fields: [authorId], references: [id])
-  authorId       Int
+  authorId       String
   lessons        Lesson[]
   slug           String           @unique @default(uuid())
   LessonProgress LessonProgress[]
@@ -56,13 +56,13 @@ model Lesson {
   order          Int
   course         Course           @relation(fields: [courseId], references: [id])
   author         User             @relation(fields: [authorId], references: [id])
-  authorId       Int
+  authorId       String
   lessonProgress LessonProgress[]
 }
 
 model LessonProgress {
   id        Int     @id @default(autoincrement())
-  userId    Int
+  userId    String
   lessonId  Int
   courseId  Int
   completed Boolean @default(false)

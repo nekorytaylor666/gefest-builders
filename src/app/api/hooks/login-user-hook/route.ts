@@ -13,13 +13,17 @@ export async function POST(request: Request) {
   if (existingUser) {
     const user = await db.user.update({
       where: { email: email },
-      data: { externalMetadata: metadata },
+      data: {
+        externalMetadata: metadata,
+        externalSourceUserId: externalUserId,
+      },
     });
     return NextResponse.json({ user, message: "user updated" });
   }
   if (!existingUser) {
     const user = await db.user.create({
       data: {
+        id: externalUserId as string,
         email: email,
         fullName: fullName,
         phoneNumber: phoneNumber,

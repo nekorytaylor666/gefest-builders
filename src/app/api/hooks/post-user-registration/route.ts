@@ -34,12 +34,12 @@ export async function POST(request: Request) {
 
   const user = await db.user.create({
     data: {
+      id: externalUserId,
       email: email,
       fullName: fullName,
       phoneNumber: phoneNumber,
       externalSourceUserId: externalUserId,
       externalMetadata: metadata,
-      // Add other fields as necessary
     },
   });
   return NextResponse.json({ ...user });
