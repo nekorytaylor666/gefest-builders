@@ -10,13 +10,13 @@ export const userRouter = t.router({
         where: { externalSourceUserId: input },
       });
     }),
-  getUserData: publicProcedure.input(z.number()).query(async ({ input }) => {
+  getUserData: publicProcedure.input(z.string()).query(async ({ input }) => {
     return await db.user.findUnique({
       where: { id: input },
     });
   }),
   getUserLessonProgress: publicProcedure
-    .input(z.number())
+    .input(z.string())
     .query(async ({ input }) => {
       return await db.lessonProgress.findMany({
         where: { userId: input },

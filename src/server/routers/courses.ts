@@ -16,7 +16,7 @@ export const coursesRouter = t.router({
         title: z.string(),
         description: z.string(),
         thumbnailPath: z.string().optional(),
-        authorId: z.number(),
+        authorId: z.string(),
         slug: z.string(),
       })
     )
@@ -44,7 +44,7 @@ export const coursesRouter = t.router({
   getCourseDataWithUserProgress: publicProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.string(),
         courseSlug: z.string(),
       })
     )

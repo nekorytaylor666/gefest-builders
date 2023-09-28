@@ -5,7 +5,7 @@ import { useCallback } from "react";
 interface CourseMilestoneNodeButtonProps {
   onClick: () => void;
   label: string;
-  completed: boolean;
+  completed?: boolean;
 }
 
 function CourseMilestoneNodeButton({

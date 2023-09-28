@@ -30,7 +30,7 @@ const LectureContent = ({
   serializedMdxSections,
 }: LectureContentProps) => {
   const { user } = useUser();
-  const userId = user?.id as number;
+  const userId = user?.id as string;
   const {
     userProgress,
     addOrUpdateUserLessonProgress,

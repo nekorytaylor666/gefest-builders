@@ -6,7 +6,7 @@ export const progressRouter = t.router({
   markLessonAsCompleted: publicProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.string(),
         lessonId: z.number(),
         courseId: z.number(),
       })
@@ -34,7 +34,7 @@ export const progressRouter = t.router({
   getProgressOfCourseByUserId: publicProcedure
     .input(
       z.object({
-        userId: z.number(),
+        userId: z.string(),
         courseId: z.number(),
       })
     )
