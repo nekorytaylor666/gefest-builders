@@ -17,39 +17,38 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import useCourseProgressStore from "@/store/courseProgressStore";
 import { trpc } from "@/app/_trpc/client";
+import { Course } from "@prisma/client";
+import { serverClient } from "@/app/_trpc/serverClient";
+import { ProcedureReturnType } from "@/lib/utils";
 
 interface LectureContentProps {
-  courseSlug: string;
+  course: ProcedureReturnType<
+    (typeof serverClient)["courses"]["getCourseBySlug"]
+  >;
   lessonId: number;
   serializedMdxSections: MDXSection[];
 }
 
 const LectureContent = ({
-  courseSlug,
+  course,
   lessonId,
   serializedMdxSections,
 }: LectureContentProps) => {
+  const [currentSection, setCurrentSection] = useState(0);
+
+  const [showSuccess, setShowSuccess] = useState(true);
   const { user } = useUser();
   const userId = user?.id as string;
-  const {
-    userProgress,
-    addOrUpdateUserLessonProgress,
-    completeBlock,
-    getLessonProgress,
-    isLessonCompleted,
-  } = useCourseProgressStore();
+
   const data = trpc.progress.markLessonAsCompleted.useMutation();
 
-  // const handleBlockCompletion = () => {
-  //   if (!userProgress[userId]?.[courseSlug]?.[lessonId]) {
-  //     addOrUpdateUserLessonProgress(userId, courseSlug, lessonId, 10); // Assuming 10 blocks for this lesson
-  //   }
-  //   completeBlock(userId, courseSlug, lessonId);
-  // };
   const onLessonComplete = () => {
+    console.log(course);
+    if (!course?.id) return;
+
     setShowSuccess(true);
     data.mutate(
-      { userId, courseId: 1, lessonId },
+      { userId, courseId: course!.id, lessonId },
       {
         onSuccess(res) {
           console.log(res);
@@ -58,30 +57,41 @@ const LectureContent = ({
     );
   };
 
-  // const progressPercentage = getLessonProgress(
-  //   userProgress,
-  //   userId,
-  //   courseSlug,
-  //   lessonId
-  // );
+  console.log(currentSection, serializedMdxSections.length);
 
-  const [showSuccess, setShowSuccess] = useState(false);
+  const onLectureContentNext = () => {
+    if (currentSection >= serializedMdxSections.length) {
+      console.log("alert");
+      onLessonComplete();
+    } else {
+      setCurrentSection((prev) => {
+        return prev + 1;
+      });
+    }
+  };
+
+  const progress = () => {
+    return (currentSection / serializedMdxSections.length) * 100;
+  };
 
   return (
     <div className="">
-      <LectureNavbar progress={50}></LectureNavbar>
+      <LectureNavbar progress={progress()}></LectureNavbar>
 
-      <div className=" lg:container lg:max-w-screen-md p-4">
+      <div className="  p-4">
         {!showSuccess ? (
-          <LectureContentPlot
-            serializedMdxSections={serializedMdxSections}
-            onLecturePlotFinish={onLessonComplete}
-            onSectionChange={(contentIndex) => {
-              // handleBlockCompletion();
-            }}
-          ></LectureContentPlot>
+          <div>
+            <LectureContentPlot
+              serializedMdxSections={serializedMdxSections}
+              onNextSection={onLectureContentNext}
+              currentSection={currentSection}
+            ></LectureContentPlot>
+            <Button variant={"ghost"} onClick={onLectureContentNext}>
+              Пропустить
+            </Button>
+          </div>
         ) : (
-          <SuccessSection courseSlug={courseSlug}></SuccessSection>
+          <SuccessSection courseSlug={course!.slug}></SuccessSection>
         )}
       </div>
     </div>
@@ -89,25 +99,13 @@ const LectureContent = ({
 };
 
 const LectureContentPlot = (props: {
-  onLecturePlotFinish: () => void;
   serializedMdxSections: MDXSection[];
-  onSectionChange: (contentIndex: number) => void;
+  onNextSection: () => void;
+  currentSection: number;
 }) => {
-  const { serializedMdxSections, onLecturePlotFinish, onSectionChange } = props;
-  const [currentSection, setCurrentSection] = useState(0);
+  const { serializedMdxSections, onNextSection, currentSection } = props;
 
   const lectureRefs = useRef<(HTMLDivElement | null)[]>([]); // To store the references of lectures
-
-  const onLectureContentNext = () => {
-    if (currentSection >= serializedMdxSections.length) {
-      onLecturePlotFinish();
-    } else {
-      setCurrentSection((prev) => {
-        onSectionChange(prev + 1);
-        return prev + 1;
-      });
-    }
-  };
 
   useEffect(() => {
     // When lectureContent length changes, it means a new item is added. We'll scroll to that.
@@ -119,7 +117,7 @@ const LectureContentPlot = (props: {
   }, [currentSection]);
 
   return (
-    <div>
+    <div className="lg:container lg:max-w-screen-md">
       {serializedMdxSections
         .slice(0, currentSection + 1)
         .map((section, index) => (
@@ -128,7 +126,7 @@ const LectureContentPlot = (props: {
             ref={(el) => (lectureRefs.current[index] = el)}
             section={section}
             isActive={index === currentSection}
-            onNext={onLectureContentNext}
+            onNext={onNextSection}
           ></LectureContentSection>
         ))}
     </div>

@@ -21,7 +21,7 @@ const LectureContentSection = React.forwardRef<
   HTMLDivElement,
   LectureContentSectionProps
 >(({ onNext, isActive, section }, ref) => {
-  const isActiveClasses = isActive ? "pb-20" : "";
+  const isActiveClasses = isActive ? "pb-20" : "pointer-events-none";
   const containerClasses = "py-4 height-auto";
 
   const components = {
@@ -46,7 +46,7 @@ const LectureContentSection = React.forwardRef<
     <div
       ref={ref}
       className={cn(
-        "transition-all ease-in-out duration-200",
+        "transition-all ease-in-out duration-200 ",
         containerClasses,
         isActiveClasses
       )}
@@ -54,7 +54,6 @@ const LectureContentSection = React.forwardRef<
       <MDXProvider components={components}>
         <MDXRemote {...section} />
       </MDXProvider>
-      <Button onClick={onNext}>Дальше</Button>
     </div>
   );
 });

@@ -96,8 +96,18 @@ const CourseMilestonePattern = (props: {
           </svg>
           <div className="flex items-end relative bottom-4 left-4">
             <CourseMilestoneNodeButton
+              completed={
+                !!props.finishedLessons.find(
+                  ({ lessonId }) => lessonId === lessonsToRender[1].id
+                )
+              }
               onClick={function (): void {
-                throw new Error("Function not implemented.");
+                router.push(
+                  "/courses/" +
+                    props.courseSlug +
+                    "/lessons/" +
+                    lessonsToRender[1].id
+                );
               }}
               label={lessonsToRender[1]?.title}
             ></CourseMilestoneNodeButton>

@@ -11,6 +11,7 @@ export default async function Page({
   params: { slug: string; id: string };
 }) {
   const { slug, id } = params;
+  const course = await serverClient.courses.getCourseBySlug(slug);
   const response = await fetch(
     `https://gefest.b-cdn.net/${slug}/lessons/${id}/content.mdx`
   );
@@ -25,7 +26,7 @@ export default async function Page({
   return (
     <main>
       <LectureContent
-        courseSlug={slug}
+        course={course}
         lessonId={parseInt(id)}
         {...resMatter}
         serializedMdxSections={serializedSections}
@@ -34,18 +35,18 @@ export default async function Page({
   );
 }
 
-// export async function generateStaticParams() {
-//   const courses = await serverClient.courses.listCourses();
+export async function generateStaticParams() {
+  const courses = await serverClient.courses.listCourses();
 
-//   const contentPaths = new Map<string, { lessonId: number[] }>();
-//   for (const course of courses) {
-//     const lessonIds = course.lessons.map((lesson) => lesson.id);
-//     contentPaths.set(course.slug, { lessonId: lessonIds });
-//   }
-//   const contentPathsArray = Array.from(contentPaths.entries());
-//   const contentPathsCombinations = contentPathsArray.flatMap(
-//     ([slug, { lessonId }]) =>
-//       lessonId.map((id) => `/${slug}/lessons/${id}/content.mdx`)
-//   );
-//   return contentPathsCombinations;
-// }
+  const contentPaths = new Map<string, { lessonId: number[] }>();
+  for (const course of courses) {
+    const lessonIds = course.lessons.map((lesson) => lesson.id);
+    contentPaths.set(course.slug, { lessonId: lessonIds });
+  }
+  const contentPathsArray = Array.from(contentPaths.entries());
+  const contentPathsCombinations = contentPathsArray.flatMap(
+    ([slug, { lessonId }]) =>
+      lessonId.map((id) => `/${slug}/lessons/${id}/content.mdx`)
+  );
+  return contentPathsCombinations;
+}

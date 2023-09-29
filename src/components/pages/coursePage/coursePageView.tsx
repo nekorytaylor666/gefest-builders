@@ -9,6 +9,7 @@ import TypographyH2 from "../../ui/typography/h2";
 import Image from "next/image";
 import { AppRouter, ReactQueryOptions } from "@/server";
 import { CourseData, CoursePageProps } from "./type";
+import { Progress } from "@/components/ui/progress";
 
 const CoursePageView = (props: CourseData & { other?: any }) => {
   const { course } = props;
@@ -32,16 +33,17 @@ const CoursePageView = (props: CourseData & { other?: any }) => {
                 alt={course?.title ?? "course-thumbnail"}
               />
             </div>
+            <p className="text-sm text-muted-foreground">
+              Уроков - {course?.lessons.length}
+            </p>
             <TypographyH2>{course?.title}</TypographyH2>
             <CardDescription className="text-md">
               {course?.description}
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">
-              Уроков - {course?.lessons.length}
-            </p>
-            <p>Завершено - {props.lessonProgress.length}</p>
+            <p className="pb-2 font-semibold">Прогресс:</p>
+            <Progress value={props.courseProgress}></Progress>
           </CardContent>
         </Card>
       </div>
