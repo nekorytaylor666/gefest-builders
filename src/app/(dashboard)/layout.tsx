@@ -1,12 +1,10 @@
-import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
+import Provider from "../_trpc/Provider";
 import "swiper/css";
 import Navbar from "@/components/navbar";
 //@ts-ignore
 import riveWASMResource from "node_modules/@rive-app/canvas/rive.wasm";
-import Provider from "./_trpc/Provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,20 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <head>
-        <link
-          rel="preload"
-          href={riveWASMResource}
-          as="fetch"
-          crossOrigin="anonymous"
-        />
-      </head>
-      <UserProvider>
-        <Provider>
-          <body className={inter.className}>{children}</body>
-        </Provider>
-      </UserProvider>
-    </html>
+    <>
+      <Navbar></Navbar>
+      <div className="pt-8">{children}</div>
+    </>
   );
 }

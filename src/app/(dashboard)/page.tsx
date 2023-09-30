@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { serverClient } from "./_trpc/serverClient";
+import { serverClient } from "../_trpc/serverClient";
 import TypographyH1 from "@/components/ui/typography/h1";
 import { Toggle } from "@/components/ui/toggle";
 import {

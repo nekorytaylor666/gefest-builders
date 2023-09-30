@@ -98,7 +98,7 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }) => lessonId === lessonsToRender[1].id
+                  ({ lessonId }) => lessonId === lessonsToRender[1]?.id
                 )
               }
               onClick={function (): void {
@@ -106,7 +106,7 @@ const CourseMilestonePattern = (props: {
                   "/courses/" +
                     props.courseSlug +
                     "/lessons/" +
-                    lessonsToRender[1].id
+                    lessonsToRender[1]?.id
                 );
               }}
               label={lessonsToRender[1]?.title}

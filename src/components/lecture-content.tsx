@@ -78,7 +78,7 @@ const LectureContent = ({
     <div className="">
       <LectureNavbar progress={progress()}></LectureNavbar>
 
-      <div className="  p-4">
+      <div className="pt-20   p-4">
         {!showSuccess ? (
           <div>
             <LectureContentPlot
@@ -86,9 +86,11 @@ const LectureContent = ({
               onNextSection={onLectureContentNext}
               currentSection={currentSection}
             ></LectureContentPlot>
-            <Button variant={"ghost"} onClick={onLectureContentNext}>
-              Пропустить
-            </Button>
+            <div className="flex justify-end">
+              <Button variant={"ghost"} onClick={onLectureContentNext}>
+                Пропустить
+              </Button>
+            </div>
           </div>
         ) : (
           <SuccessSection courseSlug={course!.slug}></SuccessSection>

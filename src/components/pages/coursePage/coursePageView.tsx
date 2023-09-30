@@ -1,5 +1,5 @@
 import React from "react";
-import CourseMilestoneMap from "@/app/courses/[slug]/_components/courseMilestoneMap";
+import CourseMilestoneMap from "@/app/(dashboard)/courses/[slug]/_components/courseMilestoneMap";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import Link from "next/link";
