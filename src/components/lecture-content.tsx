@@ -36,7 +36,7 @@ const LectureContent = ({
 }: LectureContentProps) => {
   const [currentSection, setCurrentSection] = useState(0);
 
-  const [showSuccess, setShowSuccess] = useState(true);
+  const [showSuccess, setShowSuccess] = useState(false);
   const { user } = useUser();
   const userId = user?.id as string;
 

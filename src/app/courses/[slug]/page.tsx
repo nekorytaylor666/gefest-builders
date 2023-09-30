@@ -37,13 +37,13 @@ export default withPageAuthRequired(
   async function Page(context) {
     const user = await getSession();
     console.log(user?.user);
+    const userId = user?.user?.id ?? user?.user?.sid;
     const courseData = await serverClient.courses.getCourseDataWithUserProgress(
       {
         courseSlug: context?.params?.slug as string,
-        userId: user?.user?.id,
+        userId,
       }
     );
-    console.log(courseData);
     return (
       <CoursePageContainer
         courseDataWithUserProgress={courseData}
