@@ -10,10 +10,26 @@ import Image from "next/image";
 import { AppRouter, ReactQueryOptions } from "@/server";
 import { CourseData, CoursePageProps } from "./type";
 import { Progress } from "@/components/ui/progress";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { trpc } from "@/app/_trpc/client";
+import { Skeleton } from "@/components/ui/skeleton";
 
-const CoursePageView = (props: CourseData & { other?: any }) => {
+const CoursePageView = (props: { course: CourseData; other?: any }) => {
   const { course } = props;
-
+  const { user, isLoading: isUserLoading } = useUser();
+  const userId = (user?.id as string) ?? (user?.sid as string);
+  const {
+    data,
+    isLoading: isProgressLoading,
+    error,
+  } = trpc.courses.getCourseDataWithUserProgress.useQuery(
+    {
+      userId,
+      courseSlug: course?.slug as string,
+    },
+    { enabled: !!userId }
+  );
+  console.log(isProgressLoading, error);
   return (
     <div className="grid grid-cols-1 items-start lg:grid-cols-5 container max-w-screen-xl p-0">
       <div className="p-4 lg:col-span-2">
@@ -43,14 +59,17 @@ const CoursePageView = (props: CourseData & { other?: any }) => {
           </CardHeader>
           <CardContent>
             <p className="pb-2 font-semibold">Прогресс:</p>
-            <Progress value={props.courseProgress}></Progress>
+            <CourseProgressBar
+              courseProgress={data?.courseProgress}
+              courseSlug={course?.slug ?? ""}
+            ></CourseProgressBar>
           </CardContent>
         </Card>
       </div>
 
       <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth lg:col-start-3 lg:col-span-3">
         <CourseMilestoneMap
-          finishedLessons={props.lessonProgress}
+          finishedLessons={data?.lessonProgress ?? []}
           courseSlug={course?.slug ?? ""}
           lessons={course?.lessons ?? []}
         ></CourseMilestoneMap>
@@ -58,5 +77,23 @@ const CoursePageView = (props: CourseData & { other?: any }) => {
     </div>
   );
 };
+
+export function CourseProgressBar({
+  courseSlug,
+  courseProgress,
+}: {
+  courseProgress: number | undefined;
+  courseSlug: string;
+}) {
+  return (
+    <div>
+      {courseProgress === undefined ? (
+        <Skeleton className="w-full h-2"> </Skeleton>
+      ) : (
+        <Progress value={courseProgress}></Progress>
+      )}
+    </div>
+  );
+}
 
 export default CoursePageView;

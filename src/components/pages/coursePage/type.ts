@@ -2,9 +2,9 @@ import { serverClient } from "@/app/_trpc/serverClient";
 import { ProcedureReturnType } from "@/lib/utils";
 
 export type CoursePageProps = {
-  courseDataWithUserProgress: ProcedureReturnType<
-    (typeof serverClient)["courses"]["getCourseDataWithUserProgress"]
+  course: ProcedureReturnType<
+    (typeof serverClient)["courses"]["getCourseBySlug"]
   >;
 };
 
-export type CourseData = CoursePageProps["courseDataWithUserProgress"];
+export type CourseData = CoursePageProps["course"];

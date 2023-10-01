@@ -33,37 +33,29 @@ type CoursePageProps = {
   >; // Замените CourseType на тип вашего курса
 };
 
-export default withPageAuthRequired(
-  async function Page(context) {
-    const user = await getSession();
-    console.log(user?.user);
-    const userId = user?.user?.id ?? user?.user?.sid;
-    const courseData = await serverClient.courses.getCourseDataWithUserProgress(
-      {
-        courseSlug: context?.params?.slug as string,
-        userId,
-      }
-    );
-    return (
-      <CoursePageContainer
-        courseDataWithUserProgress={courseData}
-      ></CoursePageContainer>
-    );
-  },
-  {
-    returnTo({ params }) {
-      return ("courses/" + params?.slug) as string;
-    },
-  }
-);
+async function Page(context: any) {
+  // const userId = user?.user?.id ?? user?.user?.sid;
+  // const courseData = await serverClient.courses.getCourseDataWithUserProgress(
+  //   {
+  //     courseSlug: context?.params?.slug as string,
+  //     userId,
+  //   }
+  // );
+  const course = await serverClient.courses.getCourseBySlug(
+    context?.params?.slug
+  );
+  return (
+    <CoursePageContainer
+      course={course}
+      // courseDataWithUserProgress={courseData}
+    ></CoursePageContainer>
+  );
+}
 
-// export const getServerSideProps = withPageAuthRequired({
-//   async getServerSideProps(context) {
-//     const course = await serverClient.courses.getCourseBySlug(
-//       context?.params?.slug as string
-//     );
-//     return { props: { course } };
-//   },
-// });
+export async function generateStaticParams() {
+  const courses = await serverClient.courses.listCourses();
 
-// export default Page;
+  return courses.map((el) => el.id);
+}
+
+export default Page;

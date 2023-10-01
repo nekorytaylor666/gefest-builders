@@ -7,9 +7,9 @@ import useCourseProgressStore from "@/store/courseProgressStore";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 const CoursePageContainer = (props: CoursePageProps) => {
-  const { courseDataWithUserProgress } = props;
+  const { course } = props;
 
-  return <CoursePageView {...courseDataWithUserProgress}></CoursePageView>;
+  return <CoursePageView course={course}></CoursePageView>;
 };
 
 export default CoursePageContainer;

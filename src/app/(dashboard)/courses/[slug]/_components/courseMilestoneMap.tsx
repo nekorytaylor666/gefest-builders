@@ -6,9 +6,9 @@ import { useRouter } from "next/navigation";
 import { CourseData } from "@/components/pages/coursePage/type";
 
 interface Props {
-  lessons: CourseData["lessons"];
+  lessons: any;
   courseSlug: string;
-  finishedLessons: CourseData["lessonProgress"];
+  finishedLessons: any;
 }
 const AMOUNT_LESSONS_ON_PATTERN = 4;
 
@@ -39,7 +39,7 @@ const CourseMilestonePattern = (props: {
   cursor: number;
   courseSlug: string;
   lessons: Lesson[];
-  finishedLessons: CourseData["lessonProgress"];
+  finishedLessons: any;
 }) => {
   const router = useRouter();
   const start = props.cursor * AMOUNT_LESSONS_ON_PATTERN;
@@ -63,7 +63,7 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }) => lessonId === lessonsToRender[0].id
+                  ({ lessonId }: any) => lessonId === lessonsToRender[0].id
                 )
               }
               onClick={function (): void {
@@ -98,7 +98,7 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }) => lessonId === lessonsToRender[1]?.id
+                  ({ lessonId }: any) => lessonId === lessonsToRender[1]?.id
                 )
               }
               onClick={function (): void {
