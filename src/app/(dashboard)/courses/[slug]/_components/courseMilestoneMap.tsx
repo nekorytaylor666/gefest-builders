@@ -63,7 +63,7 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }: any) => lessonId === lessonsToRender[0].id
+                  ({ lessonId }: any) => lessonId === lessonsToRender[0].order
                 )
               }
               onClick={function (): void {
@@ -98,7 +98,7 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }: any) => lessonId === lessonsToRender[1]?.id
+                  ({ lessonId }: any) => lessonId === lessonsToRender[1]?.order
                 )
               }
               onClick={function (): void {
