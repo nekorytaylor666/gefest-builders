@@ -25,7 +25,7 @@ const CoursesPageView = (props: CoursesPageViewProps) => {
     <main className="container py-12 max-w-screen-xl">
       <TypographyH1>Что ты хочешь узнать сегодня?</TypographyH1>
       <section className="pt-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
           {courses.map((course) => (
             <Card key={course.id}>
               <CardHeader>
@@ -38,7 +38,7 @@ const CoursesPageView = (props: CoursesPageViewProps) => {
                   />
                 </div>
               </CardHeader>
-              <CardContent>
+              <CardContent className="min-h-[200px]">
                 <div className="flex items-center flex-wrap justify-between">
                   <span className="font-medium text-muted-foreground ">
                     Уроков {course.lessons.length}

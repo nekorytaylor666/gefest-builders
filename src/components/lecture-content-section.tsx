@@ -10,6 +10,8 @@ import { MDXRemote } from "next-mdx-remote";
 import { MDXSection } from "@/lib/mdx-utils";
 import TypographyH1 from "./ui/typography/h1";
 import { Button } from "./ui/button";
+import VideoEmbed from "./video-embed";
+import ErrorBoundary from "./error-boundary";
 
 interface LectureContentSectionProps {
   onNext: () => void;
@@ -35,7 +37,7 @@ const LectureContentSection = React.forwardRef<
       <CodeEditor {...props} onSuccess={onNext} onSkip={onNext} />
     ),
     Quiz: (props: any) => <Quiz {...props} onSuccess={onNext} />,
-
+    VideoEmbed: (props: any) => <VideoEmbed {...props}></VideoEmbed>,
     Next: (props: any) => (
       <Button {...props} onClick={onNext}>
         Дальше
@@ -43,18 +45,20 @@ const LectureContentSection = React.forwardRef<
     ),
   };
   return (
-    <div
-      ref={ref}
-      className={cn(
-        "transition-all ease-in-out duration-200 ",
-        containerClasses,
-        isActiveClasses
-      )}
-    >
-      <MDXProvider components={components}>
-        <MDXRemote {...section} />
-      </MDXProvider>
-    </div>
+    <ErrorBoundary>
+      <div
+        ref={ref}
+        className={cn(
+          "transition-all ease-in-out duration-200 ",
+          containerClasses,
+          isActiveClasses
+        )}
+      >
+        <MDXProvider components={components}>
+          <MDXRemote {...section} />
+        </MDXProvider>
+      </div>
+    </ErrorBoundary>
   );
 });
 LectureContentSection.displayName = "LectureContentSection";

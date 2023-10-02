@@ -40,6 +40,7 @@ async function Page(context: any) {
   //     courseSlug: context?.params?.slug as string,
   //     userId,
   //   }
+
   // );
   const course = await serverClient.courses.getCourseBySlug(
     context?.params?.slug

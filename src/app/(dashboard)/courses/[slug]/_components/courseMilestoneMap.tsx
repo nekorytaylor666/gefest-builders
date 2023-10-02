@@ -71,7 +71,7 @@ const CourseMilestonePattern = (props: {
                   "/courses/" +
                     props.courseSlug +
                     "/lessons/" +
-                    lessonsToRender[0].id
+                    lessonsToRender[0].order
                 );
               }}
               label={lessonsToRender[0]?.title}
@@ -106,7 +106,7 @@ const CourseMilestonePattern = (props: {
                   "/courses/" +
                     props.courseSlug +
                     "/lessons/" +
-                    lessonsToRender[1]?.id
+                    lessonsToRender[1]?.order
                 );
               }}
               label={lessonsToRender[1]?.title}

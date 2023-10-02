@@ -41,15 +41,18 @@ const extensions = [javascript({ jsx: true })];
 type Props = {
   expectedOutput?: string;
   onRun?: () => void;
+  value?: string;
   onSuccess?: () => void;
   onClear?: () => void;
   onCopy?: () => void;
   onSkip?: () => void;
+  lang?: string;
+  disabled?: boolean;
 };
 
 const CodeEditor = (props: Props) => {
-  const [editorContent, setEditorContent] = useState("");
-
+  const [editorContent, setEditorContent] = useState(props.value ?? "");
+  console.log(props.value);
   const executeCodeMutation = useMutation(async (content: string) => {
     const response = await fetch("https://emkc.org/api/v2/piston/execute", {
       method: "POST",
@@ -81,9 +84,13 @@ const CodeEditor = (props: Props) => {
     return response.json();
   });
 
-  const onChange = React.useCallback((value: any, viewUpdate: any) => {
-    setEditorContent(value);
-  }, []);
+  const onChange = React.useCallback(
+    (value: any, viewUpdate: any) => {
+      if (props.disabled) return;
+      setEditorContent(value);
+    },
+    [props.disabled]
+  );
 
   const onHandleCodeRun = () => {
     props.onRun && props.onRun();
@@ -106,35 +113,39 @@ const CodeEditor = (props: Props) => {
   return (
     <article className="border rounded my-4">
       <div className="p-2 bg-[#f1f1f1] border-b">
-        <span className="text-sm font-bold font-mono ">Javascript</span>
+        <span className="text-sm font-bold font-mono ">
+          {props?.lang ?? "Код"}
+        </span>
       </div>
       <div className="min-h-[200px] bg-[#f5f5f5]">
         <Suspense fallback={<div>Loading...</div>}>
           <CodeMirror
             value={editorContent}
-            height="200px"
+            height="auto"
             theme={myTheme}
             extensions={extensions}
             onChange={onChange}
           />
         </Suspense>
       </div>
-      <div className="p-2 border-t  flex justify-between items-center">
-        <Button onClick={onHandleCodeRun}>Запустить</Button>
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={onHandleReset}
-            className="align-baseline"
-            variant={"ghost"}
-          >
-            <HiMiniArrowUturnLeft className="mr-2"></HiMiniArrowUturnLeft>
-            <span>Очистить</span>
-          </Button>
-          <Button className="hidden lg:block" variant={"ghost"}>
-            Копировать
-          </Button>
+      {props.onRun && (
+        <div className="p-2 border-t  flex justify-between items-center">
+          <Button onClick={onHandleCodeRun}>Запустить</Button>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={onHandleReset}
+              className="align-baseline"
+              variant={"ghost"}
+            >
+              <HiMiniArrowUturnLeft className="mr-2"></HiMiniArrowUturnLeft>
+              <span>Очистить</span>
+            </Button>
+            <Button className="hidden lg:block" variant={"ghost"}>
+              Копировать
+            </Button>
+          </div>
         </div>
-      </div>
+      )}
     </article>
   );
 };
