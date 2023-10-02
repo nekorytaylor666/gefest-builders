@@ -40,7 +40,7 @@ export async function generateStaticParams() {
 
   const contentPaths = new Map<string, { lessonId: number[] }>();
   for (const course of courses) {
-    const lessonIds = course.lessons.map((lesson) => lesson.id);
+    const lessonIds = course.lessons.map((lesson) => lesson.order);
     contentPaths.set(course.slug, { lessonId: lessonIds });
   }
   const contentPathsArray = Array.from(contentPaths.entries());
