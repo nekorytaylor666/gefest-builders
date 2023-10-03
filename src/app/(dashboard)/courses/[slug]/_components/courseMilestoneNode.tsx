@@ -26,17 +26,64 @@ function CourseMilestoneNodeButton({
     src: "/milestone.riv",
     stateMachines: "State Machine 1",
     autoplay: true,
+    shouldDisableRiveListeners: true,
   });
-  const labelDic = {
-    practice: "Практика",
-    lecture: "Лекция",
-  };
+  const hoverInput = useStateMachineInput(rive, "State Machine 1", "Hovered");
+  const pressedInput = useStateMachineInput(rive, "State Machine 1", "Clicked");
+
+  const handleMouseEnter = useCallback(() => {
+    if (rive && hoverInput) {
+      hoverInput.value = true;
+    }
+  }, [hoverInput, rive]);
+
+  const handleMouseLeave = useCallback(() => {
+    if (rive && hoverInput) {
+      hoverInput.value = false;
+    }
+  }, [hoverInput, rive]);
+
+  const handleMouseDown = useCallback(() => {
+    if (rive && pressedInput) {
+      pressedInput.value = true;
+    }
+  }, [pressedInput, rive]);
+
+  const handleMouseUp = useCallback(() => {
+    if (rive && pressedInput) {
+      pressedInput.value = false;
+    }
+  }, [pressedInput, rive]);
+
+  const handleTouchStart = useCallback(() => {
+    if (rive && pressedInput) {
+      pressedInput.value = true;
+    }
+  }, [pressedInput, rive]);
+
+  const handleTouchEnd = useCallback(() => {
+    if (rive && pressedInput) {
+      pressedInput.value = false;
+    }
+  }, [pressedInput, rive]);
+
   return (
     <Popover>
-      <PopoverTrigger>
-        <div className="flex items-center flex-col">
+      <PopoverTrigger
+        className="cursor-pointer"
+        asChild
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div className="relative flex items-center justify-center">
           <RiveComponent className="h-24 w-24" />
-          <p className="font-semibold">{label}</p>
+          <p className="absolute text-sm font-semibold w-40 text-center top-24">
+            {label}
+          </p>
         </div>
       </PopoverTrigger>
       <PopoverContent className="flex flex-col items-center justify-center text-center gap-4">

@@ -5,6 +5,7 @@ import { tags as t } from "@lezer/highlight";
 import { Button } from "./ui/button";
 import { HiMiniArrowUturnLeft } from "react-icons/hi2";
 import { useMutation } from "@tanstack/react-query";
+import { isString } from "util";
 const CodeMirror = lazy(() => import("@uiw/react-codemirror"));
 const myTheme = createTheme({
   theme: "light",
@@ -42,6 +43,7 @@ type Props = {
   expectedOutput?: string;
   onRun?: () => void;
   value?: string;
+  children?: React.ReactNode;
   onSuccess?: () => void;
   onClear?: () => void;
   onCopy?: () => void;
@@ -50,9 +52,10 @@ type Props = {
   disabled?: boolean;
 };
 
-const CodeEditor = (props: Props) => {
-  const [editorContent, setEditorContent] = useState(props.value ?? "");
-  console.log(props.value);
+const CodeEditor: React.FC<Props> = (props) => {
+  const value =
+    typeof props.children === "string" ? props.children : props.value ?? "";
+  const [editorContent, setEditorContent] = useState(value);
   const executeCodeMutation = useMutation(async (content: string) => {
     const response = await fetch("https://emkc.org/api/v2/piston/execute", {
       method: "POST",

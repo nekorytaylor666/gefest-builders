@@ -10,27 +10,31 @@ interface Props {
   courseSlug: string;
   finishedLessons: any;
 }
-const AMOUNT_LESSONS_ON_PATTERN = 4;
+const AMOUNT_LESSONS_ON_PATTERN = 5;
 
 const CourseMilestoneMap = (props: Props) => {
   const lessons = props.lessons;
   const courseSlug = props.courseSlug;
 
-  const patternAmount = lessons.length / 4;
-  const roundedPatternAmount = Math.ceil(patternAmount);
-  console.log(roundedPatternAmount);
-  const leftOverLessons = lessons.length % AMOUNT_LESSONS_ON_PATTERN;
-  console.log(lessons, patternAmount);
+  const chunkedLessons = React.useMemo(() => {
+    const result = [];
+    for (let i = 0; i < lessons.length; i += AMOUNT_LESSONS_ON_PATTERN) {
+      result.push(lessons.slice(i, i + AMOUNT_LESSONS_ON_PATTERN));
+    }
+    return result;
+  }, [lessons]);
 
   return (
-    <div className="lesson-map-container py-40 w-full max-w-[700px] mx-auto">
-      <CourseMilestonePattern
-        key={0}
-        cursor={0}
-        courseSlug={courseSlug}
-        lessons={lessons}
-        finishedLessons={props.finishedLessons}
-      ></CourseMilestonePattern>
+    <div className="lesson-map-container  w-full max-w-[700px] mx-auto">
+      {chunkedLessons.map((el) => (
+        <CourseMilestonePattern
+          key={0}
+          cursor={0}
+          courseSlug={courseSlug}
+          lessons={el}
+          finishedLessons={props.finishedLessons}
+        ></CourseMilestonePattern>
+      ))}
     </div>
   );
 };
@@ -41,14 +45,15 @@ const CourseMilestonePattern = (props: {
   lessons: Lesson[];
   finishedLessons: any;
 }) => {
+  console.log(props.lessons);
   const router = useRouter();
   const start = props.cursor * AMOUNT_LESSONS_ON_PATTERN;
   const end = start + AMOUNT_LESSONS_ON_PATTERN;
   const lessonsToRender = props.lessons.slice(start, end);
   return (
-    <div className="w-full overflow-hidden h-[580px]">
+    <div className="w-full overflow-x-hidden h-[650px] pt-10">
       <div className="grid grid-cols-3 grid-rows-5 h-[500px] w-[320px]  mx-auto ">
-        <div className="relative row-start-1 col-start-1 col-span-3 row-span-2 overflow-hidden ">
+        <div className="relative row-start-1 col-start-1 col-span-3 row-span-2  bottom-6">
           <svg
             viewBox="0 0 454 160"
             focusable="false"
@@ -160,6 +165,16 @@ const CourseMilestonePattern = (props: {
                 throw new Error("Function not implemented.");
               }}
               label={lessonsToRender[3]?.title}
+            ></CourseMilestoneNodeButton>
+          </div>{" "}
+        </div>
+        <div className=" row-start-7 col-start-1 col-span-3 row-span-2 justify-self-center self-center relative">
+          <div className="relative top-8">
+            <CourseMilestoneNodeButton
+              onClick={function (): void {
+                throw new Error("Function not implemented.");
+              }}
+              label={lessonsToRender[4]?.title}
             ></CourseMilestoneNodeButton>
           </div>{" "}
         </div>

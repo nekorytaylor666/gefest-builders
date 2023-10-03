@@ -38,6 +38,7 @@ const LectureContentSection = React.forwardRef<
     ),
     Quiz: (props: any) => <Quiz {...props} onSuccess={onNext} />,
     VideoEmbed: (props: any) => <VideoEmbed {...props}></VideoEmbed>,
+
     Next: (props: any) => (
       <Button {...props} onClick={onNext}>
         Дальше
