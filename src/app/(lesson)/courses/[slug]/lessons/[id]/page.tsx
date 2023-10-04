@@ -46,7 +46,7 @@ export async function generateStaticParams() {
   const contentPathsArray = Array.from(contentPaths.entries());
   const contentPathsCombinations = contentPathsArray.flatMap(
     ([slug, { lessonId }]) => {
-      return { slug, id: String(lessonId) };
+      return lessonId.map((id) => ({ slug, id: String(id) }));
     }
   );
 

@@ -86,11 +86,6 @@ const LectureContent = ({
               onNextSection={onLectureContentNext}
               currentSection={currentSection}
             ></LectureContentPlot>
-            <div className="flex justify-end">
-              <Button variant={"ghost"} onClick={onLectureContentNext}>
-                Пропустить
-              </Button>
-            </div>
           </div>
         ) : (
           <SuccessSection courseSlug={course!.slug}></SuccessSection>
@@ -131,6 +126,11 @@ const LectureContentPlot = (props: {
             onNext={onNextSection}
           ></LectureContentSection>
         ))}
+      <div className="w-full flex justify-end">
+        <Button variant={"default"} onClick={onNextSection}>
+          Далее
+        </Button>
+      </div>
     </div>
   );
 };
