@@ -22,12 +22,46 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        <title>Gefest Builders</title>
         <link
           rel="preload"
           href={riveWASMResource}
           as="fetch"
           crossOrigin="anonymous"
         />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="32x32"
+          href="/favicon-32x32.png"
+        />
+        <link
+          rel="icon"
+          type="image/png"
+          sizes="16x16"
+          href="/favicon-16x16.png"
+        />
+        {/* <meta
+          property="og:image"
+          content="https://popupsmart.com/blog/user/pages/365.free-keyword-research-tools/Free-keyword-research-tools-cover.png"
+        />
+
+        <meta property="og:title" content="Your Title" />
+
+        <meta
+          property="og:description"
+          content="A full description of the page."
+        />
+
+        <meta property="og:image:width" content="1200" />
+
+        <meta property="og:image:height" content="630" /> */}
+        <link rel="manifest" href="/site.webmanifest" />
       </head>
       <UserProvider>
         <Provider>
