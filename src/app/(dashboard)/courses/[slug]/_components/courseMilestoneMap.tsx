@@ -122,8 +122,18 @@ const CourseMilestonePattern = (props: {
         <div className=" row-start-3 col-start-2 row-span-2 self-center relative">
           <div className="relative top-4">
             <CourseMilestoneNodeButton
+              completed={
+                !!props.finishedLessons.find(
+                  ({ lessonId }: any) => lessonId === lessonsToRender[2].order
+                )
+              }
               onClick={function (): void {
-                throw new Error("Function not implemented.");
+                router.push(
+                  "/courses/" +
+                    props.courseSlug +
+                    "/lessons/" +
+                    lessonsToRender[2].order
+                );
               }}
               label={lessonsToRender[2]?.title}
             ></CourseMilestoneNodeButton>
@@ -161,8 +171,18 @@ const CourseMilestonePattern = (props: {
           </svg>
           <div className="relative ">
             <CourseMilestoneNodeButton
+              completed={
+                !!props.finishedLessons.find(
+                  ({ lessonId }: any) => lessonId === lessonsToRender[3].order
+                )
+              }
               onClick={function (): void {
-                throw new Error("Function not implemented.");
+                router.push(
+                  "/courses/" +
+                    props.courseSlug +
+                    "/lessons/" +
+                    lessonsToRender[3].order
+                );
               }}
               label={lessonsToRender[3]?.title}
             ></CourseMilestoneNodeButton>
@@ -171,8 +191,18 @@ const CourseMilestonePattern = (props: {
         <div className=" row-start-7 col-start-1 col-span-3 row-span-2 justify-self-center self-center relative">
           <div className="relative top-8">
             <CourseMilestoneNodeButton
+              completed={
+                !!props.finishedLessons.find(
+                  ({ lessonId }: any) => lessonId === lessonsToRender[4].order
+                )
+              }
               onClick={function (): void {
-                throw new Error("Function not implemented.");
+                router.push(
+                  "/courses/" +
+                    props.courseSlug +
+                    "/lessons/" +
+                    lessonsToRender[4].order
+                );
               }}
               label={lessonsToRender[4]?.title}
             ></CourseMilestoneNodeButton>

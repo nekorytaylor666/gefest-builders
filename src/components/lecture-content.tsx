@@ -1,5 +1,5 @@
 "use client";
-import React, { Suspense, useEffect, useRef, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import LectureContentSection from "./lecture-content-section";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
@@ -112,6 +112,9 @@ const LectureContentPlot = (props: {
       lastLectureRef?.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }, [currentSection]);
+  const isLastSection = useMemo(() => {
+    return currentSection === serializedMdxSections.length - 1;
+  }, [currentSection, serializedMdxSections.length]);
 
   return (
     <div className="lg:container lg:max-w-screen-md">
@@ -128,7 +131,7 @@ const LectureContentPlot = (props: {
         ))}
       <div className="w-full flex justify-end">
         <Button variant={"default"} onClick={onNextSection}>
-          Далее
+          {isLastSection ? "Завершить" : "Далее"}
         </Button>
       </div>
     </div>
