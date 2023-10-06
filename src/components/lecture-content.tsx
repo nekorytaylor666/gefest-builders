@@ -71,7 +71,7 @@ const LectureContent = ({
   };
 
   const progress = () => {
-    return (currentSection / serializedMdxSections.length) * 100;
+    return (currentSection / (serializedMdxSections.length - 1)) * 100;
   };
 
   return (

@@ -1,7 +1,6 @@
 import LectureContent from "@/components/lecture-content";
 import path from "path";
 import fs from "fs/promises";
-import matter from "gray-matter";
 import { divideMarkdown, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { serverClient } from "@/app/_trpc/serverClient";
 
@@ -19,8 +18,6 @@ export default async function Page({
 
   const mdxSections = divideMarkdown(content);
 
-  const resMatter = await matter(content);
-
   const serializedSections = await serializeAllMdxSections(mdxSections);
 
   return (
@@ -28,7 +25,6 @@ export default async function Page({
       <LectureContent
         course={course}
         lessonId={parseInt(id)}
-        {...resMatter}
         serializedMdxSections={serializedSections}
       ></LectureContent>
     </main>
