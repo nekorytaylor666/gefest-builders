@@ -34,6 +34,8 @@ model User {
   lessonProgress       LessonProgress[]
   externalSourceUserId String?          @unique
   externalMetadata     Json?            @default("{}")
+  submissions          Submission[]
+
 }
 
 model Course {
@@ -49,6 +51,8 @@ model Course {
   slug           String           @unique @default(uuid())
   LessonProgress LessonProgress[]
   disabled       Boolean          @default(false)
+  homeworks      Homework[]
+
 }
 
 model Lesson {
@@ -75,4 +79,24 @@ model LessonProgress {
   user      User    @relation(fields: [userId], references: [id])
   lesson    Lesson  @relation(fields: [lessonId], references: [id])
   course    Course  @relation(fields: [courseId], references: [id])
+}
+
+model Homework {
+  id          Int          @id @default(autoincrement())
+  courseId    Int
+  order       Int
+  course      Course       @relation(fields: [courseId], references: [id])
+  submissions Submission[]
+}
+
+model Submission {
+  id         Int      @id @default(autoincrement())
+  homeworkId Int
+  userId     String
+  fileUrl    String?
+  mark       Int?
+  comment    String?
+  aiComment  String?
+  homework   Homework @relation(fields: [homeworkId], references: [id])
+  user       User     @relation(fields: [userId], references: [id])
 }

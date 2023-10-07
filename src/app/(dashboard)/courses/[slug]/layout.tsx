@@ -13,7 +13,7 @@ export default function CoursePageLayout({
 }) {
   return (
     <section>
-      <div className="pt-16">{children}</div>
+      <div className="lg:pt-16">{children}</div>
     </section>
   );
 }
