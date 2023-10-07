@@ -20,21 +20,6 @@ export function NavMenu() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
-        {/* <NavigationMenuItem>
-          <Link href="/courses" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              Курсы
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem>
-
-        <NavigationMenuItem>
-          <Link href="/about" legacyBehavior passHref>
-            <NavigationMenuLink className={navigationMenuTriggerStyle()}>
-              О нас
-            </NavigationMenuLink>
-          </Link>
-        </NavigationMenuItem> */}
         <LoginMenuItem></LoginMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

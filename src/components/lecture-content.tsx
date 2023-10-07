@@ -20,6 +20,7 @@ import { trpc } from "@/app/_trpc/client";
 import { Course } from "@prisma/client";
 import { serverClient } from "@/app/_trpc/serverClient";
 import { ProcedureReturnType } from "@/lib/utils";
+import { toast, useToast } from "./ui/use-toast";
 
 interface LectureContentProps {
   course: ProcedureReturnType<
@@ -36,6 +37,8 @@ const LectureContent = ({
 }: LectureContentProps) => {
   const [currentSection, setCurrentSection] = useState(0);
 
+  const { toast } = useToast();
+
   const [showSuccess, setShowSuccess] = useState(false);
   const { user } = useUser();
   const userId = user?.id as string;
@@ -43,7 +46,10 @@ const LectureContent = ({
   const data = trpc.progress.markLessonAsCompleted.useMutation();
 
   const onLessonComplete = () => {
-    console.log(course);
+    toast({
+      title: "Урок закончен!",
+      description: "Продолжайте в том же духе :)",
+    });
     if (!course?.id) return;
 
     setShowSuccess(true);

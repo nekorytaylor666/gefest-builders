@@ -1,6 +1,4 @@
 import LectureContent from "@/components/lecture-content";
-import path from "path";
-import fs from "fs/promises";
 import { divideMarkdown, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { serverClient } from "@/app/_trpc/serverClient";
 
