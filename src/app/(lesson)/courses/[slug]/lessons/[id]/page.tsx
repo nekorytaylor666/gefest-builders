@@ -1,6 +1,7 @@
 import LectureContent from "@/components/lecture-content";
 import { divideMarkdown, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { serverClient } from "@/app/_trpc/serverClient";
+import fs from "fs";
 
 export default async function Page({
   params,
@@ -9,10 +10,21 @@ export default async function Page({
 }) {
   const { slug, id } = params;
   const course = await serverClient.courses.getCourseBySlug(slug);
-  const response = await fetch(
-    `https://gefest.b-cdn.net/${slug}/lessons/${id}/content.mdx`
-  );
-  const content = await response.text();
+  let content;
+  if (process.env.NODE_ENV === "development") {
+    const path = `src/content/${slug}/lessons/${id}/content.mdx`;
+    try {
+      content = fs.readFileSync(path, "utf8");
+    } catch (err) {
+      console.error(`Error: ${err}`);
+    }
+  } else {
+    const response = await fetch(
+      `https://gefest.b-cdn.net/${slug}/lessons/${id}/content.mdx`
+    );
+    content = await response.text();
+  }
+  console.log(content);
 
   const mdxSections = divideMarkdown(content);
 

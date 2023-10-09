@@ -16,14 +16,15 @@ import ErrorBoundary from "./error-boundary";
 interface LectureContentSectionProps {
   onNext: () => void;
   isActive: boolean;
+  interactiveWhenNotActive: boolean;
   section: MDXSection;
 }
 
 const LectureContentSection = React.forwardRef<
   HTMLDivElement,
   LectureContentSectionProps
->(({ onNext, isActive, section }, ref) => {
-  const isActiveClasses = isActive ? "pb-20" : "pointer-events-none";
+>(({ onNext, isActive, section, interactiveWhenNotActive }, ref) => {
+  const isActiveClasses = isActive ? "pb-20" : "";
   const containerClasses = "py-4 height-auto";
 
   const components = {

@@ -1,7 +1,28 @@
 /** @type {import('next').NextConfig} */
 import createWithMDX from "@next/mdx";
+import remarkFrontmatter from "remark-frontmatter";
+import remarkGfm from "remark-gfm";
+import rehypeExternalLinks from "rehype-external-links";
+
+import fauxRemarkEmbedder from "@remark-embedder/core";
+import fauxOembedTransformer from "@remark-embedder/transformer-oembed";
+const remarkEmbedder = fauxRemarkEmbedder.default;
+const oembedTransformer = fauxOembedTransformer.default;
+
+const CodeSandboxTransformer = {
+  name: "CodeSandbox",
+};
+
 const withMDX = createWithMDX({
   extension: /\.mdx?$/,
+  options: {
+    rehypePlugins: [rehypeExternalLinks],
+    remarkPlugins: [
+      remarkGfm,
+      remarkFrontmatter,
+      [remarkEmbedder, { transformers: [oembedTransformer] }],
+    ],
+  },
 });
 
 export default withMDX({

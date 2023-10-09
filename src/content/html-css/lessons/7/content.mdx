@@ -1,0 +1,55 @@
+# Таблицы
+
+<div
+  style={{
+    position: "relative",
+    paddingBottom: "56.25%",
+    height: 0,
+    marginBottom: 24,
+    marginTop: 24,
+  }}
+>
+  <iframe
+    src="https://www.loom.com/embed/8ad1529461cb43fda07eec2b9f068b68?sid=53aa64c6-3bd3-432d-a4bf-83e0b18d8ba8"
+    frameBorder="0"
+    webkitAllowFullScreen
+    mozallowfullscreen
+    allowFullScreen
+    style={{
+      position: "absolute",
+      top: 0,
+      left: 0,
+      width: "100%",
+      height: "100%",
+    }}
+  ></iframe>
+</div>
+
+HTML предоставляет возможность создания таблиц с помощью элементов `<table>`, `<tr>`, `<th>`, и `<td>`. Вот пример кода, иллюстрирующий создание таблицы:
++++
+
+<CodeEditor disabled lang="HTML">
+  {`
+<table>
+  <tr>
+    <th>Заголовок 1</th>
+    <th>Заголовок 2</th>
+    <th>Заголовок 3</th>
+  </tr>
+  <tr>
+    <td>Ячейка 1</td>
+    <td>Ячейка 2</td>
+    <td>Ячейка 3</td>
+  </tr>
+  <tr>
+    <td>Ячейка 4</td>
+    <td>Ячейка 5</td>
+    <td>Ячейка 6</td>
+  </tr>
+</table>
+`}
+</CodeEditor>
+
+В этом примере у нас есть таблица с 2 строками и 3 столбцами. Первая строка является заголовком таблицы и содержит элементы `<th>`, а остальные строки содержат данные и используют элементы `<td>`. Элементы `<th>` и `<td>` должны быть вложены в элемент `<tr>`, который представляет собой строку.
+
+Таким образом, вы можете создавать таблицы в HTML, указывая заголовки и данные для каждой ячейки.

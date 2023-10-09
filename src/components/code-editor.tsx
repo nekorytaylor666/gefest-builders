@@ -125,7 +125,7 @@ const CodeEditor: React.FC<Props> = (props) => {
           <CodeMirror
             value={editorContent}
             height="auto"
-            theme={myTheme}
+            // theme={myTheme}
             extensions={extensions}
             onChange={onChange}
           />
