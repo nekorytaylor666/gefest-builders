@@ -11,7 +11,11 @@ export async function serializeAllMdxSections(mdxSections: string[]) {
   );
   return serializedSections;
 }
-export function divideMarkdown(markdownContent: string, delimiter = "+++") {
+export function divideMarkdown(
+  markdownContent: string | undefined,
+  delimiter = "+++"
+) {
+  if (markdownContent === undefined) return [];
   return markdownContent.split(delimiter).map((block) => block.trim());
 }
 

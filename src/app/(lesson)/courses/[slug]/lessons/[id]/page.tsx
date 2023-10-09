@@ -24,7 +24,6 @@ export default async function Page({
     );
     content = await response.text();
   }
-  console.log(content);
 
   const mdxSections = divideMarkdown(content);
 
