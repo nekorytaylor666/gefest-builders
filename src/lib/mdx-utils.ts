@@ -19,6 +19,6 @@ export function divideMarkdown(
   return markdownContent.split(delimiter).map((block) => block.trim());
 }
 
-export type MDXSection = UnwrapArray<
+export type MDXContent = UnwrapArray<
   UnwrapPromise<ReturnType<typeof serializeAllMdxSections>>
 >;

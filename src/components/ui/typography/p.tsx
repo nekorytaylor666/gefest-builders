@@ -6,7 +6,7 @@ type Props = {
 
 const TypographyP = (props: Props) => {
   return (
-    <p className="leading-7 [&:not(:first-child)]:mt-6">{props.children}</p>
+    <p className="leading-loose [&:not(:first-child)]:mt-6">{props.children}</p>
   );
 };
 

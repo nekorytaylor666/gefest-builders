@@ -7,36 +7,85 @@ import { HiMiniArrowUturnLeft } from "react-icons/hi2";
 import { useMutation } from "@tanstack/react-query";
 import { isString } from "util";
 const CodeMirror = lazy(() => import("@uiw/react-codemirror"));
-const myTheme = createTheme({
-  theme: "light",
+const smoothy = createTheme({
+  variant: "light",
   settings: {
-    background: "#f5f5f5", // Light grey background
-    foreground: "#333333", // Dark grey text
-    caret: "#000000", // Black caret
-    selection: "#d3d3d3", // Light grey selection
-    selectionMatch: "#d3d3d3",
-    lineHighlight: "#e8e8e8", // Slightly darker grey for line highlights
-    gutterBackground: "#f5f5f5",
-    gutterForeground: "#a9a9a9", // Dark grey for gutter text
+    fontFamily: "monospace",
+    background: "#FFFFFF",
+    foreground: "#000000",
+    caret: "#000000",
+    selection: "#FFFD0054",
+    gutterBackground: "#FFFFFF",
+    gutterForeground: "#00000070",
+    lineHighlight: "#00000008",
   },
   styles: [
-    { tag: t.comment, color: "#808080" }, // Standard grey for comments
-    { tag: t.variableName, color: "#000000" }, // Black for variable names
-    { tag: [t.string, t.special(t.brace)], color: "#696969" }, // Dim grey for strings and braces
-    { tag: t.number, color: "#696969" },
-    { tag: t.bool, color: "#696969" },
-    { tag: t.null, color: "#696969" },
-    { tag: t.keyword, color: "#696969" },
-    { tag: t.operator, color: "#696969" },
-    { tag: t.className, color: "#696969" },
-    { tag: t.definition(t.typeName), color: "#696969" },
-    { tag: t.typeName, color: "#696969" },
-    { tag: t.angleBracket, color: "#696969" },
-    { tag: t.tagName, color: "#696969" },
-    { tag: t.attributeName, color: "#696969" },
+    {
+      tag: t.comment,
+      color: "#CFCFCF",
+    },
+    {
+      tag: [t.number, t.bool, t.null],
+      color: "#E66C29",
+    },
+    {
+      tag: [
+        t.className,
+        t.definition(t.propertyName),
+        t.function(t.variableName),
+        t.labelName,
+        t.definition(t.typeName),
+      ],
+      color: "#2EB43B",
+    },
+    {
+      tag: t.keyword,
+      color: "#D8B229",
+    },
+    {
+      tag: t.operator,
+      color: "#4EA44E",
+      fontWeight: "bold",
+    },
+    {
+      tag: [t.definitionKeyword, t.modifier],
+      color: "#925A47",
+    },
+    {
+      tag: t.string,
+      color: "#704D3D",
+    },
+    {
+      tag: t.typeName,
+      color: "#2F8996",
+    },
+    {
+      tag: [t.variableName, t.propertyName],
+      color: "#77ACB0",
+    },
+    {
+      tag: t.self,
+      color: "#77ACB0",
+      fontWeight: "bold",
+    },
+    {
+      tag: t.regexp,
+      color: "#E3965E",
+    },
+    {
+      tag: [t.tagName, t.angleBracket],
+      color: "#BAA827",
+    },
+    {
+      tag: t.attributeName,
+      color: "#B06520",
+    },
+    {
+      tag: t.derefOperator,
+      color: "#000",
+    },
   ],
 });
-
 const extensions = [javascript({ jsx: true })];
 
 type Props = {
@@ -125,7 +174,7 @@ const CodeEditor: React.FC<Props> = (props) => {
           <CodeMirror
             value={editorContent}
             height="auto"
-            // theme={myTheme}
+            theme={smoothy}
             extensions={extensions}
             onChange={onChange}
           />

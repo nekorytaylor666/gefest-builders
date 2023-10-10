@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import LectureContentSection from "./lecture-content-section";
+import MDXRenderer from "./mdx-renderer";
 import { MDXRemote } from "next-mdx-remote/rsc";
 
 import TypographyInlineCode from "@/components/ui/typography/code";
@@ -9,7 +9,7 @@ import TypographyH2 from "@/components/ui/typography/h1";
 import { Button } from "./ui/button";
 import { ScrollArea } from "./ui/scroll-area";
 import { TypeOf } from "zod";
-import { MDXSection, serializeAllMdxSections } from "@/lib/mdx-utils";
+import { MDXContent, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { UnwrapPromise } from "@/types";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import LectureNavbar from "./lecture-navbar";
@@ -27,7 +27,7 @@ interface LectureContentProps {
     (typeof serverClient)["courses"]["getCourseBySlug"]
   >;
   lessonId: number;
-  serializedMdxSections: MDXSection[];
+  serializedMdxSections: MDXContent[];
 }
 
 const LectureContent = ({
@@ -102,7 +102,7 @@ const LectureContent = ({
 };
 
 const LectureContentPlot = (props: {
-  serializedMdxSections: MDXSection[];
+  serializedMdxSections: MDXContent[];
   onNextSection: () => void;
   currentSection: number;
 }) => {
@@ -127,13 +127,13 @@ const LectureContentPlot = (props: {
       {serializedMdxSections
         .slice(0, currentSection + 1)
         .map((section, index) => (
-          <LectureContentSection
+          <MDXRenderer
             key={index}
             ref={(el) => (lectureRefs.current[index] = el)}
-            section={section}
+            content={section}
             isActive={index === currentSection}
             onNext={onNextSection}
-          ></LectureContentSection>
+          ></MDXRenderer>
         ))}
       <div className="w-full flex justify-end">
         <Button variant={"default"} onClick={onNextSection}>
