@@ -35,7 +35,7 @@ model User {
   externalSourceUserId String?          @unique
   externalMetadata     Json?            @default("{}")
   submissions          Submission[]
-
+  reviews              Review[]
 }
 
 model Course {
@@ -52,7 +52,6 @@ model Course {
   LessonProgress LessonProgress[]
   disabled       Boolean          @default(false)
   homeworks      Homework[]
-
 }
 
 model Lesson {
@@ -99,4 +98,23 @@ model Submission {
   aiComment  String?
   homework   Homework @relation(fields: [homeworkId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
+  reviews    Review[]
+}
+
+enum ReviewType {
+  TEACHER
+  AI
+}
+
+model Review {
+  id           Int        @id @default(autoincrement())
+  submissionId Int
+  userId       String
+  type         ReviewType
+  comment      String?
+  mark         Int?
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+  submission   Submission @relation(fields: [submissionId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
 }

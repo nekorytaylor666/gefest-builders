@@ -19,8 +19,13 @@ export default function RootLayout({
 }) {
   return (
     <>
-      <Navbar></Navbar>
-      <div className="pt-8">{children}</div>
+      <head>
+        <title>Gefest Builders</title>
+      </head>
+      <body>
+        <Navbar></Navbar>
+        <div className="pt-8">{children}</div>
+      </body>
     </>
   );
 }
