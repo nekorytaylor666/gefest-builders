@@ -31,7 +31,6 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
       h2: (props: any) => <TypographyH2 {...props}></TypographyH2>,
       p: (props: any) => <TypographyP {...props}></TypographyP>,
       code: (props: any) => {
-        console.log(props);
         // Проверяем, содержит ли дети символы новой строки
         const isBlockCode =
           typeof props.children === "string" && props.children.includes("\n");

@@ -28,10 +28,11 @@ export function NavMenu() {
 
 const LoginMenuItem = () => {
   const user = useUser();
+  console.log(user);
   if (user.isLoading) {
     return <Skeleton className="w-[100px] h-[32px] rounded-md" />;
   }
-  return user.user?.email ? (
+  return user.user?.sub ? (
     <NavigationMenuItem>
       <NavigationMenuTrigger>Аккаунт</NavigationMenuTrigger>
       <NavigationMenuContent>
