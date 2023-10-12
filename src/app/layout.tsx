@@ -4,6 +4,8 @@ import { Inter } from "next/font/google";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
 import "swiper/css";
 import Navbar from "@/components/navbar";
+import { Analytics } from "@vercel/analytics/react";
+
 //@ts-ignore
 import riveWASMResource from "node_modules/@rive-app/canvas/rive.wasm";
 import Provider from "./_trpc/Provider";
@@ -69,6 +71,7 @@ export default function RootLayout({
           <body className={inter.className}>
             {children}
             <Toaster />
+            <Analytics />
           </body>
         </Provider>
       </UserProvider>
