@@ -5,7 +5,7 @@ import { tags as t } from "@lezer/highlight";
 
 const CodeMirror = lazy(() => import("@uiw/react-codemirror"));
 const smoothy = createTheme({
-  variant: "light",
+  theme: "light",
   settings: {
     fontFamily: "monospace",
     background: "#FFFFFF",

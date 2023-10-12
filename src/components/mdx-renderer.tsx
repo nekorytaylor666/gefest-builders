@@ -12,7 +12,6 @@ import TypographyH1 from "./ui/typography/h1";
 import { Button } from "./ui/button";
 import VideoEmbed from "./video-embed";
 import ErrorBoundary from "./error-boundary";
-import TypographyBlockCode from "./ui/typography/code-block";
 import CodeMirrorView from "./codemirror";
 
 interface MDXRendererProps {
