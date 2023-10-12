@@ -13,6 +13,7 @@ import { Button } from "./ui/button";
 import VideoEmbed from "./video-embed";
 import ErrorBoundary from "./error-boundary";
 import CodeMirrorView from "./codemirror";
+import TypographyH3 from "./ui/typography/h3";
 
 interface MDXRendererProps {
   onNext?: () => void;
@@ -28,6 +29,15 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
     const components = {
       h1: (props: any) => <TypographyH1 {...props}></TypographyH1>,
       h2: (props: any) => <TypographyH2 {...props}></TypographyH2>,
+      h3: (props: any) => <TypographyH3 {...props}></TypographyH3>,
+      a: (props: any) => (
+        <a
+          {...props}
+          className="font-medium text-primary underline underline-offset-4"
+        >
+          {props.children}
+        </a>
+      ),
       p: (props: any) => <TypographyP {...props}></TypographyP>,
       code: (props: any) => {
         // Проверяем, содержит ли дети символы новой строки
