@@ -9,9 +9,6 @@ import { NextApiRequest } from "next";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = handleAuth({
-  onError(err: any) {
-    console.error(err);
-  },
   profile: async (req: NextRequest, ctx: AppRouteHandlerFnContext) => {
     return await handleProfile(req, ctx, {
       refetch: true,
