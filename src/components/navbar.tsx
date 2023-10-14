@@ -2,6 +2,7 @@ import React from "react";
 import { NavMenu } from "./navmenu";
 import Image from "next/image";
 import Link from "next/link";
+import { UserNav } from "./user-nav";
 const Navbar = () => {
   return (
     <div className=" bg-white  py-4 px-4 lg:px-16 container">
@@ -15,8 +16,7 @@ const Navbar = () => {
             alt="logo"
           ></Image>
         </Link>
-
-        <NavMenu></NavMenu>
+        <UserNav></UserNav>
       </div>
     </div>
   );
