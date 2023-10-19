@@ -23,7 +23,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="ru">
       <head>
         <title>Gefest Builders</title>
         <link
@@ -49,21 +49,6 @@ export default function RootLayout({
           sizes="16x16"
           href="/favicon-16x16.png"
         />
-        {/* <meta
-          property="og:image"
-          content="https://popupsmart.com/blog/user/pages/365.free-keyword-research-tools/Free-keyword-research-tools-cover.png"
-        />
-
-        <meta property="og:title" content="Your Title" />
-
-        <meta
-          property="og:description"
-          content="A full description of the page."
-        />
-
-        <meta property="og:image:width" content="1200" />
-
-        <meta property="og:image:height" content="630" /> */}
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <UserProvider>
