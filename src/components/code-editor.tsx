@@ -169,7 +169,7 @@ const CodeEditor: React.FC<Props> = (props) => {
           {props?.lang ?? "Код"}
         </span>
       </div>
-      <div className="min-h-[200px] bg-[#f5f5f5]">
+      <div className="bg-[#f5f5f5]">
         <Suspense fallback={<div>Loading...</div>}>
           <CodeMirror
             value={editorContent}
