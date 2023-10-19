@@ -8,7 +8,7 @@ export default function HomeworkLayout({
   children: React.ReactNode;
 }) {
   return (
-    <>
+    <html>
       <head>
         <title>Homework</title>
       </head>
@@ -16,6 +16,6 @@ export default function HomeworkLayout({
         <Navbar></Navbar>
         <div className="pt-8">{children}</div>
       </body>
-    </>
+    </html>
   );
 }

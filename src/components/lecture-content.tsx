@@ -115,7 +115,12 @@ const LectureContentPlot = (props: {
     if (lectureRefs.current.length) {
       const lastLectureRef: HTMLDivElement | null =
         lectureRefs.current[lectureRefs.current.length - 1];
-      lastLectureRef?.scrollIntoView({ behavior: "smooth", block: "start" });
+      if (lastLectureRef?.parentNode) {
+        lastLectureRef?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      }
     }
   }, [currentSection]);
   const isLastSection = useMemo(() => {
