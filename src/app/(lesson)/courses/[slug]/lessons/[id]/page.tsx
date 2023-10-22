@@ -13,12 +13,14 @@ export default async function Page({
   let content;
   if (process.env.NODE_ENV === "development") {
     const path = `src/content/${slug}/lessons/${id}/content.mdx`;
+    console.log("fetchin locally");
     try {
       content = fs.readFileSync(path, "utf8");
     } catch (err) {
       console.error(`Error: ${err}`);
     }
   } else {
+    console.log("fetching remotely");
     const response = await fetch(
       `https://gefest.b-cdn.net/${slug}/lessons/${id}/content.mdx`
     );

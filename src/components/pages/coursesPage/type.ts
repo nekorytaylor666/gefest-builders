@@ -8,7 +8,6 @@ export type ListCoursesOutput = ProcedureReturnType<
 
 export type CoursesPageContainerProps = {
   courses: ListCoursesOutput;
-  user: Session["user"] | undefined;
 };
 
 export type CoursesPageViewProps = {

@@ -63,11 +63,8 @@ const LectureContent = ({
     );
   };
 
-  console.log(currentSection, serializedMdxSections.length);
-
   const onLectureContentNext = () => {
     if (currentSection >= serializedMdxSections.length - 1) {
-      console.log("alert");
       onLessonComplete();
     } else {
       setCurrentSection((prev) => {

@@ -16,7 +16,6 @@ export default function Provider({ children }: { children: React.ReactNode }) {
       ],
     })
   );
-  console.log("base url", process.env.BASE_URL);
   return (
     <trpc.Provider client={trpcClient} queryClient={queryClient}>
       <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>

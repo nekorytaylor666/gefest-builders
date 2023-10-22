@@ -45,7 +45,6 @@ const CourseMilestonePattern = (props: {
   lessons: Lesson[];
   finishedLessons: any;
 }) => {
-  console.log(props.lessons);
   const router = useRouter();
   const start = props.cursor * AMOUNT_LESSONS_ON_PATTERN;
   const end = start + AMOUNT_LESSONS_ON_PATTERN;

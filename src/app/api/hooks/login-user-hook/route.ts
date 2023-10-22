@@ -7,7 +7,6 @@ export async function POST(request: Request) {
   const body = await request.json();
   const { email, fullName, phoneNumber, picture, metadata, externalUserId } =
     body as any;
-  console.log(body);
 
   const existingUser = await db.user.findFirst({ where: { email } });
   if (existingUser) {

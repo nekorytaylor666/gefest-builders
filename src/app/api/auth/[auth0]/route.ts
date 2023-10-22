@@ -20,7 +20,6 @@ export const GET = handleAuth({
           ...session.user,
           ...user,
         };
-        console.log(session.user);
         return session;
       },
     });

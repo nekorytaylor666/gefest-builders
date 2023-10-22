@@ -149,7 +149,6 @@ const CodeEditor: React.FC<Props> = (props) => {
     executeCodeMutation.mutate(editorContent, {
       onSuccess: (data: any) => {
         const jobOutput = data.run.output;
-        console.log(jobOutput, props.expectedOutput);
         if (jobOutput === props.expectedOutput) {
           props.onSuccess && props.onSuccess();
         }

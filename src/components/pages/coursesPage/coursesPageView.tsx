@@ -21,8 +21,6 @@ import { serverClient } from "@/app/_trpc/serverClient";
 
 const CoursesPageView = (props: CoursesPageViewProps) => {
   const { courses } = props;
-  const { checkSession, user } = useUser();
-  console.log(checkSession, user);
   return (
     <main className="container py-12 max-w-screen-xl">
       <TypographyH1>Что ты хочешь узнать сегодня?</TypographyH1>
