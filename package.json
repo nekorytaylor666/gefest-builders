@@ -46,6 +46,7 @@
     "@uiw/react-codemirror": "^4.21.13",
     "@vercel/analytics": "^1.1.0",
     "autoprefixer": "10.4.15",
+    "aws-sdk": "^2.1478.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",
     "eslint": "8.47.0",

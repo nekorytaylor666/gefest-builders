@@ -1,26 +1,17 @@
 "use client";
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import MDXRenderer from "./mdx-renderer";
-import { MDXRemote } from "next-mdx-remote/rsc";
 
-import TypographyInlineCode from "@/components/ui/typography/code";
-import TypographyP from "@/components/ui/typography/p";
 import TypographyH2 from "@/components/ui/typography/h1";
 import { Button } from "./ui/button";
-import { ScrollArea } from "./ui/scroll-area";
-import { TypeOf } from "zod";
-import { MDXContent, serializeAllMdxSections } from "@/lib/mdx-utils";
-import { UnwrapPromise } from "@/types";
+import { MDXContent } from "@/lib/mdx-utils";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import LectureNavbar from "./lecture-navbar";
 import { useRouter } from "next/navigation";
-import Image from "next/image";
-import useCourseProgressStore from "@/store/courseProgressStore";
 import { trpc } from "@/app/_trpc/client";
-import { Course } from "@prisma/client";
 import { serverClient } from "@/app/_trpc/serverClient";
 import { ProcedureReturnType } from "@/lib/utils";
-import { toast, useToast } from "./ui/use-toast";
+import { useToast } from "./ui/use-toast";
 
 interface LectureContentProps {
   course: ProcedureReturnType<
@@ -130,6 +121,7 @@ const LectureContentPlot = (props: {
         .slice(0, currentSection + 1)
         .map((section, index) => (
           <MDXRenderer
+          
             key={index}
             ref={(el) => (lectureRefs.current[index] = el)}
             content={section}
