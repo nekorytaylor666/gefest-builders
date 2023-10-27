@@ -24,6 +24,7 @@ import HomeworkContent from "./_components/homework-content";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
+import HomeworkSubmission from "./_components/homework-submission";
 
 export default async function Page({
   params,
@@ -68,10 +69,10 @@ export default async function Page({
       </div>
       <Tabs defaultValue="content" className="my-8 h-full ">
         <TabsList className="w-full grid grid-cols-2 h-12">
-          <TabsTrigger className="h-full" value="content">
+          <TabsTrigger data-disabled className="h-full" value="content">
             Задание
           </TabsTrigger>
-          <TabsTrigger className="h-full" value="submission">
+          <TabsTrigger data-disabled className="h-full" value="submission">
             Ваш ответ
           </TabsTrigger>
         </TabsList>
@@ -108,14 +109,14 @@ export default async function Page({
                 </h2>
               </CardTitle>
               <CardDescription className="h-full flex flex-col justify-center">
-                <div>Deploy your new project in one-click.</div>
+                <div>
+                  Загрузите файлы вашего ответа на домашнее задание сюда.
+                </div>
               </CardDescription>
             </CardHeader>
-            <CardContent></CardContent>
-            <CardFooter className="flex justify-between">
-              <Button variant="outline">Cancel</Button>
-              <Button>Deploy</Button>
-            </CardFooter>
+            <CardContent>
+              <HomeworkSubmission></HomeworkSubmission>
+            </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
