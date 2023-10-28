@@ -28,6 +28,7 @@ type Course = inferAsyncReturnType<
 const formSchema = z.object({
   id: z.number(),
   title: z.string(),
+  slug: z.string(),
   description: z.string(),
   disabled: z.boolean(),
 });
@@ -36,7 +37,10 @@ export function CouseEditForm({ course }: { course: Course }) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      ...course,
+      title: course.title,
+      slug: course.slug,
+      description: course.description,
+      disabled: course.disabled,
     },
   });
 
@@ -57,6 +61,22 @@ export function CouseEditForm({ course }: { course: Course }) {
                 <Input placeholder="Без заголовка" {...field} />
               </FormControl>
               <FormDescription>Заголовок вашего курса</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="slug"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Слаг</FormLabel>
+              <FormControl>
+                <Input placeholder="Без слага" {...field} />
+              </FormControl>
+              <FormDescription>
+                Слаг по которому будут находить ваш курс
+              </FormDescription>
               <FormMessage />
             </FormItem>
           )}
