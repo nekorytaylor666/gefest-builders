@@ -28,6 +28,10 @@ export const coursesRouter = t.router({
   getCourseById: publicProcedure.input(z.number()).query(async ({ input }) => {
     return await db.course.findUnique({
       where: { id: input },
+      include: {
+        lessons: true,
+        homeworks: true,
+      },
     });
   }),
   getCourseBySlug: publicProcedure
