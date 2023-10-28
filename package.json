@@ -37,6 +37,7 @@
     "@remark-embedder/transformer-oembed": "^3.0.0",
     "@rive-app/react-canvas": "^4.2.1",
     "@tanstack/react-query": "^4.35.3",
+    "@tanstack/react-table": "^8.10.7",
     "@trpc/client": "^10.38.4",
     "@trpc/next": "^10.38.4",
     "@trpc/react-query": "^10.38.4",
