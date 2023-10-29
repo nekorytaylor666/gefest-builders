@@ -13,7 +13,6 @@ const CoursePage = async ({ params }: { params: { courseId: number } }) => {
     Number(params.courseId)
   );
   if (!course) {
-    // Обработка случая, когда курс не найден
     return <div>Курс не найден</div>;
   }
   return (

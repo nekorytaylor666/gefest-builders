@@ -65,6 +65,9 @@ const LectureContent = ({
   };
 
   const progress = () => {
+    if (!serializedMdxSections) {
+      return 0;
+    }
     return (currentSection / (serializedMdxSections.length - 1)) * 100;
   };
 
@@ -121,7 +124,6 @@ const LectureContentPlot = (props: {
         .slice(0, currentSection + 1)
         .map((section, index) => (
           <MDXRenderer
-          
             key={index}
             ref={(el) => (lectureRefs.current[index] = el)}
             content={section}
