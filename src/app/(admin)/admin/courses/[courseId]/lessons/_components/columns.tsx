@@ -51,7 +51,9 @@ export const columns: ColumnDef<Lesson>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Действия</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link href={`/admin/courses/${course.id}`}>
+              <Link
+                href={`/admin/courses/${row.original.courseId}/lessons/${row.original.id}/editor`}
+              >
                 Редактировать урок
               </Link>
             </DropdownMenuItem>

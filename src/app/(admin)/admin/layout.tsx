@@ -10,7 +10,7 @@ import {
   HomeIcon,
   PersonIcon,
 } from "@radix-ui/react-icons";
-
+import "@mdxeditor/editor/style.css";
 export default function RootLayout({
   children,
 }: {

@@ -16,4 +16,16 @@ export const lessonsRouter = t.router({
         },
       });
     }),
+  getLessonByCourseIdAndLessonId: publicProcedure
+    .input(
+      z.object({
+        courseId: z.number(),
+        lessonId: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await db.lesson.findUnique({
+        where: { id: input.lessonId, courseId: input.courseId },
+      });
+    }),
 });
