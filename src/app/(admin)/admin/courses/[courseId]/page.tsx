@@ -21,15 +21,25 @@ const CoursePage = async ({ params }: { params: { courseId: number } }) => {
         heading={course?.title ?? "Курс без заголовка"}
         text="Управляйте своим курсом"
       >
-        <Button>
-          <Link
-            className="flex items-center gap-2"
-            href={`/admin/courses/${course.id}/lessons`}
-          >
-            <ActivityLogIcon></ActivityLogIcon>
-            Уроки курса
-          </Link>
-        </Button>
+        <div className="flex items-center gap-4">
+          <Button>
+            <Link
+              className="flex items-center gap-2"
+              href={`/admin/courses/${course.id}/lessons`}
+            >
+              <ActivityLogIcon></ActivityLogIcon>
+              Уроки курса
+            </Link>
+          </Button>
+          <Button>
+            <Link
+              className="flex items-center gap-2"
+              href={`/admin/courses/${course.id}/homeworks`}
+            >
+              Домашние задания курса
+            </Link>
+          </Button>
+        </div>
       </DashboardHeader>
       <CouseEditForm course={course}></CouseEditForm>
     </DashboardShell>

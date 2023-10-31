@@ -84,6 +84,10 @@ model Homework {
   id          Int          @id @default(autoincrement())
   courseId    Int
   order       Int
+  title          String
+  mdxContentPath String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
   course      Course       @relation(fields: [courseId], references: [id])
   submissions Submission[]
 }
