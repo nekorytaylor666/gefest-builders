@@ -14,4 +14,23 @@ export const submissionsRouter = t.router({
         },
       });
     }),
+  getSubmissionOfUserByHomeWorkId: publicProcedure
+    .input(
+      z.object({
+        homeworkId: z.number(),
+        userId: z.string(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await db.submission.findFirst({
+        where: {
+          homeworkId: input.homeworkId,
+          userId: input.userId,
+        },
+        include: {
+          user: true,
+          reviews: true,
+        },
+      });
+    }),
 });

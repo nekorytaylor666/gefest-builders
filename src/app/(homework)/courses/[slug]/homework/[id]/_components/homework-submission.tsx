@@ -9,6 +9,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "@/components/ui/separator";
 import { Cross1Icon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
+import { trpc } from "@/app/_trpc/client";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useParams } from "next/navigation";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import TypographyH2 from "@/components/ui/typography/h2";
+import TypographyH3 from "@/components/ui/typography/h3";
 
 const validationSchema = z.object({
   submission: z
@@ -24,7 +37,20 @@ const validationSchema = z.object({
 
 type FormValues = z.infer<typeof validationSchema>;
 
-const HomeworkSubmission = () => {
+const HomeworkSubmission = ({ params }: { params: { id: string } }) => {
+  const { id: homeworkId } = useParams();
+  const user = useUser();
+  const {
+    data: submission,
+    isLoading: isSubmissionLoading,
+    refetch,
+  } = trpc.submissions.getSubmissionOfUserByHomeWorkId.useQuery(
+    {
+      homeworkId: Number(homeworkId),
+      userId: "1",
+    },
+    { enabled: !!user?.user?.id }
+  );
   const form = useForm<FormValues>({
     resolver: zodResolver(validationSchema),
     mode: "onBlur",
@@ -48,8 +74,69 @@ const HomeworkSubmission = () => {
   });
 
   const onSubmit = (values: FormValues) => {
-    console.log(values);
+    const formData = new FormData();
+    values.submission.forEach((submission, index) => {
+      formData.append(`submission.${index}.file`, submission.file);
+      formData.append(`submission.${index}.name`, submission.name);
+      formData.append(
+        `submission.${index}.description`,
+        submission.description ?? ""
+      );
+    });
+
+    fetch(`/api/homework/${homeworkId}/submission`, {
+      method: "POST",
+      body: formData,
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        refetch();
+        return response.json();
+      })
+      .then((data) => console.log(data))
+      .catch((error) =>
+        console.error(
+          "There has been a problem with your fetch operation:",
+          error
+        )
+      );
   };
+
+  if (isSubmissionLoading) {
+    return (
+      <div className="flex flex-col">
+        <Skeleton className="h-16 w-1/2" />
+        <Skeleton className="h-[600px] mt-8 w-full" />
+      </div>
+    );
+  }
+
+  if (submission) {
+    return (
+      <div>
+        <TypographyH3>Загружено на проверку!</TypographyH3>
+        <div className="grid grid-cols-3 gap-4 mt-4">
+          {submission.fileUploads.map((el: any) => (
+            <Card key={el?.name}>
+              <CardHeader>
+                <CardTitle>{el?.name}</CardTitle>
+                <CardDescription>
+                  {el?.desription ?? "Без описания"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button variant={"link"} asChild>
+                  <a href={el?.location}> Скачать файл</a>
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Form {...form}>

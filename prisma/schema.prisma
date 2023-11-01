@@ -96,10 +96,12 @@ model Submission {
   id         Int      @id @default(autoincrement())
   homeworkId Int
   userId     String
-  fileUrl    String?
+  fileUploads   Json[]
   mark       Int?
   comment    String?
   aiComment  String?
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt  @default(now())
   homework   Homework @relation(fields: [homeworkId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
   reviews    Review[]
