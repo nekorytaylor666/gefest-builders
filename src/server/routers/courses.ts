@@ -42,6 +42,7 @@ export const coursesRouter = t.router({
         include: {
           lessons: true,
           author: true,
+          homeworks: true,
         },
       });
     }),

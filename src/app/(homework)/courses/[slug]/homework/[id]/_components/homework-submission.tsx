@@ -37,7 +37,7 @@ const validationSchema = z.object({
 
 type FormValues = z.infer<typeof validationSchema>;
 
-const HomeworkSubmission = ({ params }: { params: { id: string } }) => {
+const HomeworkSubmission = () => {
   const { id: homeworkId } = useParams();
   const user = useUser();
   const {
@@ -47,7 +47,7 @@ const HomeworkSubmission = ({ params }: { params: { id: string } }) => {
   } = trpc.submissions.getSubmissionOfUserByHomeWorkId.useQuery(
     {
       homeworkId: Number(homeworkId),
-      userId: "1",
+      userId: "auth02|5f7c8ec7c33c6c004bbafe82",
     },
     { enabled: !!user?.user?.id }
   );

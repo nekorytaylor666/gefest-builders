@@ -71,7 +71,7 @@ export async function POST(
   const submission = await prisma.submission.create({
     data: {
       homeworkId: Number(homeworkId),
-      userId: "1",
+      userId: "auth02|5f7c8ec7c33c6c004bbafe82",
       fileUploads: fileUploads,
     },
   });

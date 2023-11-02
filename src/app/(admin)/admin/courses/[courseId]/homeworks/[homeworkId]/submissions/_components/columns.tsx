@@ -43,20 +43,6 @@ export const columns: ColumnDef<Lesson>[] = [
                 <a href={el?.location}>{el?.name}</a>
               </DropdownMenuItem>
             ))}
-            {/* <DropdownMenuItem asChild>
-              <Link
-                href={`/admin/courses/${row.original.courseId}/homeworks/${homework.id}/editor`}
-              >
-                Редактировать задание
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link
-                href={`/admin/courses/${row.original.courseId}/homeworks/${homework.id}/submissions`}
-              >
-                Проверить ответы
-              </Link>
-            </DropdownMenuItem> */}
           </DropdownMenuContent>
         </DropdownMenu>
       );

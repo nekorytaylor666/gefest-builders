@@ -13,6 +13,8 @@ import { Progress } from "@/components/ui/progress";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { trpc } from "@/app/_trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import HomeworkList from "@/app/(dashboard)/courses/[slug]/_components/courseHomeworks";
 
 const CoursePageView = (props: { course: CourseData; other?: any }) => {
   const { course } = props;
@@ -31,50 +33,69 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
   );
   console.log(isProgressLoading, error);
   return (
-    <div className="grid grid-cols-1 items-start lg:grid-cols-5 container max-w-screen-xl p-0">
-      <div className="p-4 lg:col-span-2">
-        <Button asChild className="text-muted-foreground" variant={"ghost"}>
-          <Link href={"/"}>
-            <ArrowLeftIcon className="mr-2"></ArrowLeftIcon>
-            Назад
-          </Link>
-        </Button>
-        <Card className="mt-4">
-          <CardHeader>
-            <div className="flex items-center justify-center">
-              <Image
-                width={250}
-                height={250}
-                src={"https://gefest.b-cdn.net/" + course?.thumbnailPath}
-                alt={course?.title ?? "course-thumbnail"}
-              />
-            </div>
-            <p className="text-sm text-muted-foreground">
-              Уроков - {course?.lessons.length}
-            </p>
-            <TypographyH2>{course?.title}</TypographyH2>
-            <CardDescription className="text-md">
-              {course?.description}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <p className="pb-2 font-semibold">Прогресс:</p>
-            <CourseProgressBar
-              courseProgress={data?.courseProgress}
+    <Tabs defaultValue="map">
+      <div className="grid grid-cols-1 items-start lg:grid-cols-5 container max-w-screen-xl p-0 gap-8">
+        <div className="p-4 lg:col-span-2">
+          <Button asChild className="text-muted-foreground" variant={"ghost"}>
+            <Link href={"/"}>
+              <ArrowLeftIcon className="mr-2"></ArrowLeftIcon>
+              Назад
+            </Link>
+          </Button>
+          <TabsList className="w-full">
+            <TabsTrigger className="w-full" value="map">
+              Уроки
+            </TabsTrigger>
+            <TabsTrigger className="w-full" value="homework">
+              Домашние задания
+            </TabsTrigger>
+          </TabsList>
+          <Card className="mt-4">
+            <CardHeader>
+              <div className="flex items-center justify-center">
+                <Image
+                  width={250}
+                  height={250}
+                  src={"https://gefest.b-cdn.net/" + course?.thumbnailPath}
+                  alt={course?.title ?? "course-thumbnail"}
+                />
+              </div>
+              <p className="text-sm text-muted-foreground">
+                Уроков - {course?.lessons.length}
+              </p>
+              <TypographyH2>{course?.title}</TypographyH2>
+              <CardDescription className="text-md">
+                {course?.description}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <p className="pb-2 font-semibold">Прогресс:</p>
+              <CourseProgressBar
+                courseProgress={data?.courseProgress}
+                courseSlug={course?.slug ?? ""}
+              ></CourseProgressBar>
+            </CardContent>
+          </Card>
+        </div>
+        <div className="lg:col-start-3 lg:col-span-3">
+          <TabsContent value="map">
+            <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth ">
+              <CourseMilestoneMap
+                finishedLessons={data?.lessonProgress ?? []}
+                courseSlug={course?.slug ?? ""}
+                lessons={course?.lessons ?? []}
+              ></CourseMilestoneMap>
+            </ScrollArea>
+          </TabsContent>
+          <TabsContent value="homework">
+            <HomeworkList
               courseSlug={course?.slug ?? ""}
-            ></CourseProgressBar>
-          </CardContent>
-        </Card>
+              homeworks={course?.homeworks}
+            ></HomeworkList>
+          </TabsContent>
+        </div>
       </div>
-
-      <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth lg:col-start-3 lg:col-span-3">
-        <CourseMilestoneMap
-          finishedLessons={data?.lessonProgress ?? []}
-          courseSlug={course?.slug ?? ""}
-          lessons={course?.lessons ?? []}
-        ></CourseMilestoneMap>
-      </ScrollArea>
-    </div>
+    </Tabs>
   );
 };
 
