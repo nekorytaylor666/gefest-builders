@@ -7,7 +7,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Separator } from "@/components/ui/separator";
-import { Cross1Icon } from "@radix-ui/react-icons";
+import { Cross1Icon, TimerIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/app/_trpc/client";
 import { useUser } from "@auth0/nextjs-auth0/client";
@@ -22,6 +22,8 @@ import {
 } from "@/components/ui/card";
 import TypographyH2 from "@/components/ui/typography/h2";
 import TypographyH3 from "@/components/ui/typography/h3";
+import { useMutation } from "@tanstack/react-query";
+import { useToast } from "@/components/ui/use-toast";
 
 const validationSchema = z.object({
   submission: z
@@ -40,16 +42,19 @@ type FormValues = z.infer<typeof validationSchema>;
 const HomeworkSubmission = () => {
   const { id: homeworkId } = useParams();
   const user = useUser();
+  const userId = user?.user?.id as string;
+  const { toast } = useToast();
   const {
     data: submission,
     isLoading: isSubmissionLoading,
+
     refetch,
   } = trpc.submissions.getSubmissionOfUserByHomeWorkId.useQuery(
     {
       homeworkId: Number(homeworkId),
-      userId: "auth02|5f7c8ec7c33c6c004bbafe82",
+      userId,
     },
-    { enabled: !!user?.user?.id }
+    { enabled: !!userId }
   );
   const form = useForm<FormValues>({
     resolver: zodResolver(validationSchema),
@@ -58,7 +63,22 @@ const HomeworkSubmission = () => {
       submission: [],
     },
   });
-
+  const { mutate: submitHomework, isLoading: isSubmitting } = useMutation(
+    (formData: FormData) =>
+      fetch(`/api/homework/${homeworkId}/submission`, {
+        method: "POST",
+        body: formData,
+      }),
+    {
+      onSuccess: () => {
+        refetch();
+        toast({
+          title: "Домашнее задание загружено!",
+          description: "Продолжайте в том же духе :)",
+        });
+      },
+    }
+  );
   const [paths, setPaths] = useState([]);
   const [isFileHovered, setIsFileHovered] = useState(false);
   const onDrop: any = useCallback(
@@ -84,24 +104,7 @@ const HomeworkSubmission = () => {
       );
     });
 
-    fetch(`/api/homework/${homeworkId}/submission`, {
-      method: "POST",
-      body: formData,
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        refetch();
-        return response.json();
-      })
-      .then((data) => console.log(data))
-      .catch((error) =>
-        console.error(
-          "There has been a problem with your fetch operation:",
-          error
-        )
-      );
+    submitHomework(formData);
   };
 
   if (isSubmissionLoading) {
@@ -234,9 +237,20 @@ const HomeworkSubmission = () => {
           ))}
         </div>
         <div className=" mt-4">
-          <Button type="submit" size={"lg"} className="w-full">
-            Сдать на проверку
-          </Button>
+          {isSubmitting ? (
+            <Button
+              type="submit"
+              size={"lg"}
+              className="w-full"
+              variant="ghost"
+            >
+              <TimerIcon />
+            </Button>
+          ) : (
+            <Button type="submit" size={"lg"} className="w-full">
+              Сдать на проверку
+            </Button>
+          )}
         </div>
       </form>
     </Form>

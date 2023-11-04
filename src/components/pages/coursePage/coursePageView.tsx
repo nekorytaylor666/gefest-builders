@@ -14,7 +14,7 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 import { trpc } from "@/app/_trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import HomeworkList from "@/app/(dashboard)/courses/[slug]/_components/courseHomeworks";
+import HomeworkList from "@/app/(dashboard)/courses/[slug]/_components/courseHomeworksList";
 
 const CoursePageView = (props: { course: CourseData; other?: any }) => {
   const { course } = props;

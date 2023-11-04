@@ -11,6 +11,7 @@ export const submissionsRouter = t.router({
         include: {
           user: true,
           reviews: true,
+          homework: true,
         },
       });
     }),

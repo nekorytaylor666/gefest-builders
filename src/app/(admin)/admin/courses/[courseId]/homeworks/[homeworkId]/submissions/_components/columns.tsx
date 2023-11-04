@@ -57,7 +57,8 @@ export const columns: ColumnDef<Lesson>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const homework = row.original;
+      const homework = row.original.homework;
+      const submission = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -68,20 +69,14 @@ export const columns: ColumnDef<Lesson>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Действия</DropdownMenuLabel>
-            {/* <DropdownMenuItem asChild>
-              <Link
-                href={`/admin/courses/${row.original.courseId}/homeworks/${homework.id}/editor`}
-              >
-                Редактировать задание
-              </Link>
-            </DropdownMenuItem>
+
             <DropdownMenuItem asChild>
               <Link
-                href={`/admin/courses/${row.original.courseId}/homeworks/${homework.id}/submissions`}
+                href={`/admin/courses/${homework.courseId}/homeworks/${homework.id}/submissions/${submission.id}`}
               >
-                Проверить ответы
+                Детали ответа
               </Link>
-            </DropdownMenuItem> */}
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

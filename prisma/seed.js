@@ -39,45 +39,18 @@ var _a = require("@prisma/client"), PrismaClient = _a.PrismaClient, UserRole = _
 var prisma = new PrismaClient();
 function main() {
     return __awaiter(this, void 0, void 0, function () {
-        var adminUser, course;
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, prisma.user.create({
-                        data: {
-                            fullName: "admin",
-                            email: "admin@example.com",
-                            phoneNumber: "1234567890",
-                            updatedAt: new Date(),
-                            createdAt: new Date(),
-                            role: UserRole.ADMIN,
+                case 0: return [4 /*yield*/, prisma.submission.delete({
+                        where: {
+                            id: 3,
                         },
                     })];
                 case 1:
-                    adminUser = _a.sent();
-                    return [4 /*yield*/, prisma.course.create({
-                            data: {
-                                authorId: adminUser.id,
-                                lessons: {
-                                    create: [
-                                        {
-                                            authorId: adminUser.id,
-                                            title: "Структура программы",
-                                            mdxContentPath: "chatgpt-course/lessons/1/content.mdx",
-                                            thumbnailPath: "chatgpt-course/lessons/1/lesson_thumbnail.png",
-                                            order: 1,
-                                        },
-                                    ],
-                                },
-                                title: "Как работает ChatGPT на самом деле?",
-                                slug: "chatgpt-course",
-                                thumbnailPath: "chatgpt-course/course_thumbnail.png",
-                                description: "Этот курс расскажет вам о том, как работает ChatGPT на самом деле.",
-                                updatedAt: new Date(),
-                                createdAt: new Date(),
-                            },
-                        })];
+                    _a.sent();
+                    return [4 /*yield*/, prisma.homework.delete({ where: { id: 1 } })];
                 case 2:
-                    course = _a.sent();
+                    _a.sent();
                     return [2 /*return*/];
             }
         });

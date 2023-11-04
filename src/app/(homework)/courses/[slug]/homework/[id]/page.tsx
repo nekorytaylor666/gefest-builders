@@ -60,7 +60,7 @@ export default async function Page({
     <div className="container lg:h-[80vh] p-4">
       <div className="flex flex-col items-start gap-4">
         <Button asChild className="text-muted-foreground" variant={"ghost"}>
-          <Link href={"/"}>
+          <Link href={`/courses/${slug}`}>
             <ArrowLeftIcon className="mr-2"></ArrowLeftIcon>
             Назад
           </Link>

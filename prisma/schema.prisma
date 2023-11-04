@@ -88,6 +88,7 @@ model Homework {
   mdxContentPath String?
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
+  deadlineAt DateTime
   course      Course       @relation(fields: [courseId], references: [id])
   submissions Submission[]
 }

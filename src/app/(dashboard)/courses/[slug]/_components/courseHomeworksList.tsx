@@ -13,7 +13,9 @@ import { Homework } from "@prisma/client";
 import { inferAsyncReturnType } from "@trpc/server";
 import Link from "next/link";
 import React from "react";
-
+import { format, formatDistance } from "date-fns";
+import ru from "date-fns/locale/ru";
+import { ClockIcon } from "@radix-ui/react-icons";
 interface Props {
   homeworks: any;
   courseSlug: string;
@@ -23,7 +25,7 @@ const HomeworkList = (props: Props) => {
   const { homeworks, courseSlug } = props;
 
   return (
-    <div className="pt-8">
+    <div className="pt-8 p-4">
       <TypographyH2>Домашние задания</TypographyH2>
       <div className="mt-4">
         {homeworks.map((homework: Homework) => (
@@ -33,9 +35,27 @@ const HomeworkList = (props: Props) => {
           >
             <Card className="transition-all duration-75 cursor-pointer hover:bg-muted">
               <CardHeader>
-                <CardTitle>{homework.title}</CardTitle>
-                <CardDescription>
-                  {homework.updatedAt.toDateString()}
+                <CardTitle>
+                  <div className="flex justify-between items-center">
+                    <div>{homework.title}</div>
+                  </div>
+                </CardTitle>
+                <CardDescription className="flex justify-between items-center">
+                  <div className="flex items-center gap-1 text-sm font-medium ">
+                    <ClockIcon></ClockIcon>
+                    Сдать до{" "}
+                    {format(homework.deadlineAt, " dd MMM", { locale: ru })}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {`Обновлено ${formatDistance(
+                      homework.updatedAt,
+                      new Date(),
+                      {
+                        addSuffix: true,
+                        locale: ru,
+                      }
+                    )}`}
+                  </p>
                 </CardDescription>
               </CardHeader>
             </Card>
