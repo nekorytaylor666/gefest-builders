@@ -1,3 +1,5 @@
+import { Separator } from "@/components/ui/separator";
+
 interface DashboardHeaderProps {
   heading: string;
   text?: string;
@@ -11,7 +13,7 @@ export function DashboardHeader({
 }: DashboardHeaderProps) {
   return (
     <div className="flex items-center justify-between ">
-      <div className="grid gap-1">
+      <div className="grid gap-1 ">
         <h1 className="font-extrabold text-3xl md:text-4xl">{heading}</h1>
         {text && <p className="text-lg text-muted-foreground">{text}</p>}
       </div>

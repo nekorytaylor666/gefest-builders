@@ -13,17 +13,10 @@ import { trpc } from "@/app/_trpc/client";
 import { useUser } from "@auth0/nextjs-auth0/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import TypographyH2 from "@/components/ui/typography/h2";
 import TypographyH3 from "@/components/ui/typography/h3";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
+import SubmissionFileCard from "@/components/submission-file-card";
 
 const validationSchema = z.object({
   submission: z
@@ -122,19 +115,7 @@ const HomeworkSubmission = () => {
         <TypographyH3>Загружено на проверку!</TypographyH3>
         <div className="grid grid-cols-3 gap-4 mt-4">
           {submission.fileUploads.map((el: any) => (
-            <Card key={el?.name}>
-              <CardHeader>
-                <CardTitle>{el?.name}</CardTitle>
-                <CardDescription>
-                  {el?.desription ?? "Без описания"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant={"link"} asChild>
-                  <a href={el?.location}> Скачать файл</a>
-                </Button>
-              </CardContent>
-            </Card>
+            <SubmissionFileCard key={el.name} {...el}></SubmissionFileCard>
           ))}
         </div>
       </div>

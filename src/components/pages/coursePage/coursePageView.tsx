@@ -1,6 +1,10 @@
 import React from "react";
 import CourseMilestoneMap from "@/app/(dashboard)/courses/[slug]/_components/courseMilestoneMap";
-import { ArrowLeftIcon } from "@radix-ui/react-icons";
+import {
+  ArrowLeftIcon,
+  CardStackIcon,
+  Pencil1Icon,
+} from "@radix-ui/react-icons";
 import { ScrollArea } from "@radix-ui/react-scroll-area";
 import Link from "next/link";
 import { Button } from "../../ui/button";
@@ -43,11 +47,11 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
             </Link>
           </Button>
           <TabsList className="w-full">
-            <TabsTrigger className="w-full" value="map">
-              Уроки
+            <TabsTrigger className="w-full flex gap-1" value="map">
+              <CardStackIcon></CardStackIcon> Уроки
             </TabsTrigger>
-            <TabsTrigger className="w-full" value="homework">
-              Домашние задания
+            <TabsTrigger className="w-full flex gap-1" value="homework">
+              <Pencil1Icon></Pencil1Icon> Домашние задания
             </TabsTrigger>
           </TabsList>
           <Card className="mt-4">

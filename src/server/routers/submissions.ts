@@ -15,6 +15,18 @@ export const submissionsRouter = t.router({
         },
       });
     }),
+  getSubmissionById: publicProcedure
+    .input(z.number())
+    .query(async ({ input }) => {
+      return await db.submission.findUnique({
+        where: { id: input },
+        include: {
+          user: true,
+          reviews: true,
+          homework: true,
+        },
+      });
+    }),
   getSubmissionOfUserByHomeWorkId: publicProcedure
     .input(
       z.object({
