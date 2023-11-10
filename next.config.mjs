@@ -9,10 +9,6 @@ import fauxOembedTransformer from "@remark-embedder/transformer-oembed";
 const remarkEmbedder = fauxRemarkEmbedder.default;
 const oembedTransformer = fauxOembedTransformer.default;
 
-const CodeSandboxTransformer = {
-  name: "CodeSandbox",
-};
-
 const withMDX = createWithMDX({
   extension: /\.mdx?$/,
   options: {
