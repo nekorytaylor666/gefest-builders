@@ -11,7 +11,7 @@ export default async function Page({
   const { slug, id } = params;
   const course = await serverClient.courses.getCourseBySlug(slug);
   let content;
-  if (process.env.NODE_ENV === "development") {
+  if (process.env.NODE_ENV !== "development") {
     const path = `src/content/${slug}/lessons/${id}/content.mdx`;
     console.log("fetchin locally");
     try {

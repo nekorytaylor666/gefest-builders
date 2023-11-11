@@ -5,17 +5,17 @@ import { DashboardShell } from "../../../_components/dashboardShell";
 import { DataTable } from "@/components/data-table";
 import { columns } from "./_components/columns";
 import { serverClient } from "@/app/_trpc/serverClient";
+import { Button } from "@/components/ui/button";
+import LessonsPageAction from "./_components/lessonsPageActions";
 
 const LessonsPage = async ({ params }: { params: { courseId: string } }) => {
-  const lessons = await serverClient.lessons.getLessonsByCourseId(
-    Number(params.courseId)
-  );
+  const courseId = Number(params.courseId);
+  const lessons = await serverClient.lessons.getLessonsByCourseId(courseId);
   return (
     <DashboardShell>
-      <DashboardHeader
-        heading="Уроки"
-        text="Управляйте своими уроками курса"
-      ></DashboardHeader>
+      <DashboardHeader heading="Уроки" text="Управляйте своими уроками курса">
+        <LessonsPageAction courseId={courseId}></LessonsPageAction>
+      </DashboardHeader>
       <DataTable columns={columns} data={lessons}></DataTable>
     </DashboardShell>
   );

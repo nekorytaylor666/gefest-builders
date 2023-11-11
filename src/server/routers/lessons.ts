@@ -48,4 +48,24 @@ export const lessonsRouter = t.router({
         data: input.data,
       });
     }),
+  createLesson: publicProcedure
+    .input(
+      z.object({
+        title: z.string(),
+        courseId: z.number(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      const lessonCount = await db.lesson.count({
+        where: { courseId: input.courseId },
+      });
+      return await db.lesson.create({
+        data: {
+          title: input.title,
+          authorId: "1",
+          order: lessonCount + 1,
+          courseId: input.courseId,
+        },
+      });
+    }),
 });
