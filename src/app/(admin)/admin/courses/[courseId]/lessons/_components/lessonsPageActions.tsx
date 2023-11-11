@@ -20,23 +20,22 @@ const schema = z.object({
 type SchemaType = z.infer<typeof schema>;
 
 const LessonsPageAction = ({ courseId }: { courseId: number }) => {
+  const utils = trpc.useUtils();
   const { toast } = useToast();
   const { register, handleSubmit, formState, control } = useForm<SchemaType>({
     resolver: zodResolver(schema),
   });
-  const createLessonMutation = trpc.lessons.createLesson.useMutation();
+  const createLessonMutation = trpc.lessons.createLesson.useMutation({
+    onSettled(data) {
+      toast({
+        title: "Урок " + data?.title + " создан!",
+        description: "Переводим на страницу",
+      });
+      utils.lessons.listLessons.refetch();
+    },
+  });
   const onSubmit = (data: SchemaType) => {
-    createLessonMutation.mutate(
-      { title: data.title, courseId },
-      {
-        onSuccess() {
-          toast({
-            title: "Урок " + data.title + " создан!",
-            description: "Переводим на страницу",
-          });
-        },
-      }
-    );
+    createLessonMutation.mutate({ title: data.title, courseId });
   };
 
   return (

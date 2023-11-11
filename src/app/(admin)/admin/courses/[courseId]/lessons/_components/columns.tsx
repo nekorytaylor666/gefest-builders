@@ -1,5 +1,6 @@
 "use client";
 
+import { trpc } from "@/app/_trpc/client";
 import { serverClient } from "@/app/_trpc/serverClient";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,11 +17,12 @@ import { ColumnDef } from "@tanstack/react-table";
 import { inferAsyncReturnType } from "@trpc/server";
 import Link from "next/link";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
-export type Lesson = inferAsyncReturnType<
-  (typeof serverClient)["lessons"]["getLessonsByCourseId"]
->[0];
+import { Lesson as PrismaLesson } from "@prisma/client";
+
+export type Lesson = Omit<PrismaLesson, "createdAt" | "updatedAt"> & {
+  createdAt: string;
+  updatedAt: string;
+};
 
 export const columns: ColumnDef<Lesson>[] = [
   {
