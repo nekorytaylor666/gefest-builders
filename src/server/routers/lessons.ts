@@ -26,6 +26,26 @@ export const lessonsRouter = t.router({
     .query(async ({ input }) => {
       return await db.lesson.findUnique({
         where: { id: input.lessonId, courseId: input.courseId },
+        include: {
+          course: true,
+        },
+      });
+    }),
+  editLessonByLessonId: publicProcedure
+    .input(
+      z.object({
+        lessonId: z.number(),
+        data: z.object({
+          title: z.string().optional(),
+          mdxContentPath: z.string().optional(),
+          courseId: z.number().optional(),
+        }),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await db.lesson.update({
+        where: { id: input.lessonId },
+        data: input.data,
       });
     }),
 });

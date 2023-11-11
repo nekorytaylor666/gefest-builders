@@ -7,6 +7,10 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useQuery } from "@tanstack/react-query";
 import EditorPageContainer from "../../_components/EditorPageContainer";
 import fs from "fs";
+import TypographyH1 from "@/components/ui/typography/h1";
+import { Separator } from "@/components/ui/separator";
+import { DashboardHeader } from "@/app/(admin)/admin/_components/dashboardHeader";
+import { Button } from "@/components/ui/button";
 const EditorComp = dynamic(() => import("@/components/mdx-editor/MDXEditor"), {
   ssr: false,
 });
@@ -20,10 +24,11 @@ async function EditLessonPage({
 }: {
   params: { courseId: string; id: string };
 }) {
-  const { courseId, id: lessonId } = params;
+  const courseId = Number(params.courseId);
+  const lessonId = Number(params.id);
   const lesson = await serverClient.lessons.getLessonByCourseIdAndLessonId({
-    courseId: Number(courseId),
-    lessonId: Number(lessonId),
+    courseId,
+    lessonId,
   });
   let content;
   if (process.env.NODE_ENV === "development") {
@@ -62,13 +67,14 @@ async function EditLessonPage({
   //   },
   //   { enabled: !!data?.courseId }
   // );
-
   return (
-    <>
-      <Suspense fallback={null}>
-        <EditorPageContainer content={content} />
-      </Suspense>
-    </>
+    <Suspense fallback={null}>
+      <EditorPageContainer
+        lessonId={lessonId}
+        courseId={courseId}
+        content={content}
+      />
+    </Suspense>
   );
 }
 

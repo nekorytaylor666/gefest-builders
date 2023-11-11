@@ -5,14 +5,15 @@ class ErrorBoundary extends React.Component {
     super(props);
 
     // Define a state variable to track whether is an error or not
-    this.state = { hasError: false };
+    this.state = { hasError: false, error: "" };
   }
   static getDerivedStateFromError(error: any) {
     // Update state so the next render will show the fallback UI
 
-    return { hasError: true };
+    return { hasError: true, error };
   }
   componentDidCatch(error: any, errorInfo: any) {
+    console.log(error);
     // You can use your own error logging service here
     console.log({ error, errorInfo });
   }
@@ -24,6 +25,7 @@ class ErrorBoundary extends React.Component {
       return (
         <div>
           <h2>Oops, there is an error!</h2>
+          <p>{this.state.error}</p>
           <button
             type="button"
             onClick={() => this.setState({ hasError: false })}

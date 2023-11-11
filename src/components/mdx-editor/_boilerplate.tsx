@@ -22,54 +22,59 @@ import {
   sandpackPlugin,
   KitchenSinkToolbar,
   jsxPlugin,
+  directivesPluginHooks,
+  DialogButton,
+  BlockTypeSelect,
+  ChangeAdmonitionType,
+  CodeToggle,
+  ConditionalContents,
+  CreateLink,
+  InsertAdmonition,
+  InsertCodeBlock,
+  InsertImage,
+  InsertSandpack,
+  InsertTable,
+  InsertThematicBreak,
+  ListsToggle,
+  Separator,
+  EditorInFocus,
+  AdmonitionKind,
+  ChangeCodeMirrorLanguage,
+  ShowSandpackInfo,
 } from "@mdxeditor/editor";
+import { Cross1Icon } from "@radix-ui/react-icons";
+import { MDXEditor } from "@mdxeditor/editor/MDXEditor";
+import { UndoRedo } from "@mdxeditor/editor/plugins/toolbar/components/UndoRedo";
+import { BoldItalicUnderlineToggles } from "@mdxeditor/editor/plugins/toolbar/components/BoldItalicUnderlineToggles";
 
 const defaultSnippetContent = `
-export default function App() {
-  return (
-    <div className="App">
-      <h1>Hello CodeSandbox</h1>
-      <h2>Start editing to see some magic happen!</h2>
-    </div>
-  );
-}
+<html>
+    <head>
+        <title>Tiêu đề website</title>
+    </head>
+    <body>
+        <p>Chào mừng bạn đến với blog 
+          <strong>TraiNguyen.net</strong>.
+        </p>
+        <p>Đoạn văn bản
+          <strong>in đậm đầu tiên</strong>.
+        </p>
+    </body>
+</html>
 `.trim();
 
 export const virtuosoSampleSandpackConfig: SandpackConfig = {
-  defaultPreset: "react",
+  defaultPreset: "html",
   presets: [
     {
-      label: "React",
-      name: "react",
-      meta: "live react",
-      sandpackTemplate: "react",
-      sandpackTheme: "light",
-      snippetFileName: "/App.js",
-      snippetLanguage: "jsx",
-      initialSnippetContent: defaultSnippetContent,
-    },
-    {
-      label: "React",
-      name: "react",
+      label: "HTML",
+      name: "html",
       meta: "live",
-      sandpackTemplate: "react",
+      sandpackTemplate: "static",
       sandpackTheme: "light",
-      snippetFileName: "/App.js",
-      snippetLanguage: "jsx",
+      snippetFileName: "/index.html",
+      snippetLanguage: "html",
       initialSnippetContent: defaultSnippetContent,
-    },
-    {
-      label: "Virtuoso",
-      name: "virtuoso",
-      meta: "live virtuoso",
-      sandpackTemplate: "react-ts",
-      sandpackTheme: "light",
-      snippetFileName: "/App.tsx",
-      initialSnippetContent: defaultSnippetContent,
-      dependencies: {
-        "react-virtuoso": "latest",
-        "@ngneat/falso": "latest",
-      },
     },
   ],
 };
@@ -145,8 +150,9 @@ export const LoomDirectiveDescriptor: DirectiveDescriptor<LoomDirectiveNode> = {
   hasChildren: false,
   Editor: ({ mdastNode, lexicalNode, parentEditor }) => {
     return (
-      <div style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}>
+      <>
         <button
+          className="flex items-center gap-1"
           onClick={() => {
             parentEditor.update(() => {
               lexicalNode.selectNext();
@@ -154,30 +160,138 @@ export const LoomDirectiveDescriptor: DirectiveDescriptor<LoomDirectiveNode> = {
             });
           }}
         >
-          delete
+          <Cross1Icon></Cross1Icon>
+          Убрать видео
         </button>
-        <iframe
-          src="https://www.loom.com/embed/6a4849c151414a6cba5405c723b4bd66"
-          frameBorder="0"
-          allowFullScreen
-          style={{
-            position: "absolute",
-            top: 0,
-            left: 0,
-            width: "100%",
-            height: "100%",
-          }}
-        ></iframe>
-      </div>
+        <div
+          style={{ position: "relative", paddingBottom: "56.25%", height: 0 }}
+        >
+          <iframe
+            src={`https://www.loom.com/embed/${mdastNode.attributes?.id}`}
+            frameBorder="0"
+            allowFullScreen
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              width: "100%",
+              height: "100%",
+            }}
+          ></iframe>
+        </div>
+      </>
     );
   },
 };
+
+const LoomButton = () => {
+  // grab the insertDirective action (a.k.a. publisher) from the
+  // state management system of the directivesPlugin
+  const insertDirective = directivesPluginHooks.usePublisher("insertDirective");
+
+  return (
+    <DialogButton
+      tooltipTitle="Insert Loom video"
+      submitButtonTitle="Insert video"
+      dialogInputPlaceholder="Paste the loom video URL"
+      buttonContent="Loom"
+      onSubmit={(url: string) => {
+        const urlObject = new URL(url);
+        const videoId = urlObject.pathname.split("/").pop();
+        if (videoId) {
+          insertDirective({
+            name: "loom",
+            type: "leafDirective",
+            attributes: { id: videoId },
+            children: [],
+          } as LeafDirective);
+        } else {
+          alert("Invalid Loom URL");
+        }
+      }}
+    />
+  );
+};
+function whenInAdmonition(editorInFocus: EditorInFocus | null) {
+  const node = editorInFocus?.rootNode;
+  if (!node || node.getType() !== "directive") {
+    return false;
+  }
+
+  return ["note", "tip", "danger", "info", "caution"].includes(
+    (node as any).getMdastNode().name as AdmonitionKind
+  );
+}
+
 export const ALL_PLUGINS = [
   toolbarPlugin({
     toolbarContents: () => (
-      <div>
-        <KitchenSinkToolbar />
-      </div>
+      <ConditionalContents
+        options={[
+          {
+            when: (editor) => editor?.editorType === "codeblock",
+            contents: () => <ChangeCodeMirrorLanguage />,
+          },
+          {
+            when: (editor) => editor?.editorType === "sandpack",
+            contents: () => <ShowSandpackInfo />,
+          },
+          {
+            fallback: () => (
+              <>
+                <LoomButton></LoomButton>
+                <UndoRedo />
+                <Separator />
+                <BoldItalicUnderlineToggles />
+                <CodeToggle />
+                <Separator />
+                <ListsToggle />
+                <Separator />
+
+                <ConditionalContents
+                  options={[
+                    {
+                      when: whenInAdmonition,
+                      contents: () => <ChangeAdmonitionType />,
+                    },
+                    { fallback: () => <BlockTypeSelect /> },
+                  ]}
+                />
+
+                <Separator />
+
+                <CreateLink />
+                <InsertImage />
+
+                <Separator />
+
+                <InsertTable />
+                <InsertThematicBreak />
+
+                <Separator />
+                <InsertCodeBlock />
+                {/* <InsertSandpack /> */}
+
+                <ConditionalContents
+                  options={[
+                    {
+                      when: (editorInFocus) => !whenInAdmonition(editorInFocus),
+                      contents: () => (
+                        <>
+                          <Separator />
+                          <InsertAdmonition />
+                        </>
+                      ),
+                    },
+                  ]}
+                />
+
+                <Separator />
+              </>
+            ),
+          },
+        ]}
+      />
     ),
   }),
   listsPlugin(),
@@ -191,12 +305,10 @@ export const ALL_PLUGINS = [
       "https://via.placeholder.com/150",
     ],
   }),
-
   tablePlugin(),
   thematicBreakPlugin(),
-  frontmatterPlugin(),
   codeBlockPlugin({ defaultCodeBlockLanguage: "txt" }),
-  sandpackPlugin({ sandpackConfig: virtuosoSampleSandpackConfig }),
+  // sandpackPlugin({ sandpackConfig: virtuosoSampleSandpackConfig }),
   codeMirrorPlugin({
     codeBlockLanguages: {
       js: "JavaScript",
@@ -212,6 +324,4 @@ export const ALL_PLUGINS = [
       LoomDirectiveDescriptor,
     ],
   }),
-  diffSourcePlugin({ viewMode: "rich-text", diffMarkdown: "boo" }),
-  markdownShortcutPlugin(),
 ];

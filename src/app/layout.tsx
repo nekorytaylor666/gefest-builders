@@ -6,8 +6,6 @@ import "swiper/css";
 import Navbar from "@/components/navbar";
 import { Analytics } from "@vercel/analytics/react";
 
-//@ts-ignore
-import riveWASMResource from "node_modules/@rive-app/canvas/rive.wasm";
 import Provider from "./_trpc/Provider";
 import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
@@ -26,12 +24,6 @@ export default function RootLayout({
     <html lang="ru">
       <head>
         <title>Gefest Builders</title>
-        <link
-          rel="preload"
-          href={riveWASMResource}
-          as="fetch"
-          crossOrigin="anonymous"
-        />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
