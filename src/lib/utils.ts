@@ -9,3 +9,14 @@ export type ProcedureReturnType<T> = T extends (
 ) => PromiseLike<infer U>
   ? U
   : never;
+
+export const debounce = (func: Function, delay: number) => {
+  let debounceTimer: NodeJS.Timeout;
+  return function (this: any, ...args: any[]) {
+    const context = this;
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(function () {
+      func.apply(context, args);
+    }, delay);
+  };
+};

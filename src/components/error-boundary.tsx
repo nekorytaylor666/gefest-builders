@@ -25,7 +25,7 @@ class ErrorBoundary extends React.Component {
       return (
         <div>
           <h2>Oops, there is an error!</h2>
-          <p>{this.state.error}</p>
+          {/* <p>{this.state.error}</p> */}
           <button
             type="button"
             onClick={() => this.setState({ hasError: false })}

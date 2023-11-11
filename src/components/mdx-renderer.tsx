@@ -73,6 +73,7 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
           )}
         >
           <MDXProvider components={components}>
+            {/* @ts-ignore */}
             <MDXRemote {...content} />
           </MDXProvider>
         </div>

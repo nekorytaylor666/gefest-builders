@@ -1,6 +1,7 @@
 import { UnwrapArray, UnwrapPromise } from "@/types";
 import { serialize } from "next-mdx-remote/serialize";
 import remarkEmbedder from "@remark-embedder/core";
+import { MDXRemoteSerializeResult } from "next-mdx-remote";
 
 const LoomTransformer = {
   name: "Loom",
@@ -41,6 +42,4 @@ export function divideMarkdown(
   return markdownContent.split(delimiter).map((block) => block.trim());
 }
 
-export type MDXContent = UnwrapArray<
-  UnwrapPromise<ReturnType<typeof serializeAllMdxSections>>
->;
+export type MDXContent = MDXRemoteSerializeResult<Record<string, unknown>>;

@@ -25,6 +25,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Link from "next/link";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import HomeworkSubmission from "./_components/homework-submission";
+import { APP_CONFIG } from "@/lib/config";
 
 export default async function Page({
   params,
@@ -34,7 +35,7 @@ export default async function Page({
   const { slug, id } = params;
   const course = await serverClient.courses.getCourseBySlug(slug);
   let content;
-  if (process.env.NODE_ENV !== "development") {
+  if (APP_CONFIG.FETCH_LOCALLY) {
     const path = `src/content/${slug}/homeworks/${id}/content.mdx`;
     try {
       content = fs.readFileSync(path, "utf8");
