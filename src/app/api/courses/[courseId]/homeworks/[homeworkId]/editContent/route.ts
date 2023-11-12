@@ -49,15 +49,15 @@ export async function POST(
   const response = await fetch(url, config);
   const body = await response.json();
 
-  // const updatedHomework = await serverClient.homework.editHomeworkSubmission({
-  //   homeworkId,
-  //   data: {
-  //     mdxContentPath: path,
-  //   },
-  // });
+  const updatedHomework = await serverClient.homework.editHomeworkSubmission({
+    homeworkId,
+    data: {
+      mdxContentPath: path,
+    },
+  });
   if (!response.ok) {
     return NextResponse.json({ success: false, error: response.statusText });
   }
 
-  return NextResponse.json({ success: true });
+  return NextResponse.json({ success: true, updatedHomework });
 }

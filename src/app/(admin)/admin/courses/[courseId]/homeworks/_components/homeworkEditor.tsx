@@ -14,13 +14,13 @@ import { useToast } from "@/components/ui/use-toast";
 import Breadcrumb from "@/components/breadcrumbs";
 import { debounce } from "@/lib/utils";
 import { MDXEditor, MDXEditorValues } from "@/components/mdxEditor";
-const EditorPageContainer = ({
+const HomeworkEditor = ({
   initialContent,
   courseId,
-  lessonId,
+  homeworkId,
 }: {
   initialContent: any;
-  lessonId: number;
+  homeworkId: number;
   courseId: number;
 }) => {
   const { toast } = useToast();
@@ -31,10 +31,13 @@ const EditorPageContainer = ({
       console.log(content);
       const formData = new FormData();
       formData.append("file", file);
-      return fetch(`/api/courses/${courseId}/lessons/${lessonId}/editContent`, {
-        method: "POST",
-        body: formData,
-      }).then((res) => res.json());
+      return fetch(
+        `/api/courses/${courseId}/homeworks/${homeworkId}/editContent`,
+        {
+          method: "POST",
+          body: formData,
+        }
+      ).then((res) => res.json());
     },
     {
       onSuccess: (res) => {
@@ -47,13 +50,14 @@ const EditorPageContainer = ({
   );
 
   const onContentSumbit = (values: MDXEditorValues) => {
+    console.log(values.content);
     saveContentMutation.mutate(values.content);
   };
   return (
     <Suspense fallback={<div>loading...</div>}>
       <DashboardHeader
-        heading="Редактирование контента"
-        text="Обновление контента урока"
+        heading="Редактирование домашнего задания"
+        text="Обновление контента домашнего задания"
       ></DashboardHeader>
       <Separator className="my-4"></Separator>
       <MDXEditor
@@ -64,4 +68,4 @@ const EditorPageContainer = ({
   );
 };
 
-export default EditorPageContainer;
+export default HomeworkEditor;
