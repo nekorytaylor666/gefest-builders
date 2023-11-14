@@ -24,7 +24,7 @@ const SubmissionDetailsPage = async ({
   const submission = await serverClient.submissions.getSubmissionById(
     Number(params.submissionId)
   );
-  const reviews = await serverClient.review.listReviewForSubmission(
+  const review = await serverClient.review.getReviewForSubmission(
     Number(params.submissionId)
   );
 
@@ -39,13 +39,16 @@ const SubmissionDetailsPage = async ({
         heading={`Ответ от: ${submission?.user.fullName}`}
         text={`Задание: ${submission?.homework.title}.`}
       ></DashboardHeader>
-      <div className="grid grid-cols-3 gap-12">
-        <div className="col-span-1 flex flex-col gap-4">
-          <TypographyH3>Оценить работу</TypographyH3>
-          <SubmissionMarkingForm
-            userId={userId}
-            submissionId={submissionId}
-          ></SubmissionMarkingForm>
+      <div className="grid grid-cols-3 gap-12 min-h-[500px]">
+        <div className="col-span-1 flex flex-col gap-4 h-full">
+          {review ? (
+            <ReviewCard review={review}></ReviewCard>
+          ) : (
+            <SubmissionMarkingForm
+              userId={userId}
+              submissionId={submissionId}
+            ></SubmissionMarkingForm>
+          )}
         </div>
 
         <div className="col-span-2">
@@ -63,11 +66,6 @@ const SubmissionDetailsPage = async ({
             ))}
           </div>
         </div>
-      </div>
-      <div>
-        {reviews.map((el) => (
-          <ReviewCard key={el.id} review={el}></ReviewCard>
-        ))}
       </div>
     </DashboardShell>
   );

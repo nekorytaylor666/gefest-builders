@@ -33,7 +33,6 @@ export default async function Page({
   params: { slug: string; id: string };
 }) {
   const { slug, id } = params;
-  const course = await serverClient.courses.getCourseBySlug(slug);
   let content;
   if (APP_CONFIG.FETCH_LOCALLY) {
     const path = `src/content/${slug}/homeworks/${id}/content.mdx`;
@@ -44,7 +43,7 @@ export default async function Page({
     }
   } else {
     const response = await fetch(
-      `https://gefest.b-cdn.net/${slug}/lessons/${id}/content.mdx`
+      `https://gefest.b-cdn.net/${slug}/homeworks/${id}/content.mdx`
     );
     content = await response.text();
   }

@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { Textarea } from "@/components/ui/textarea";
+import TypographyH3 from "@/components/ui/typography/h3";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { inferAsyncReturnType } from "@trpc/server";
@@ -50,6 +51,7 @@ const SubmissionMarkingForm = ({
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col gap-8 max-w-lg"
     >
+      <TypographyH3>Оценить работу</TypographyH3>
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <Label>Оценка</Label>

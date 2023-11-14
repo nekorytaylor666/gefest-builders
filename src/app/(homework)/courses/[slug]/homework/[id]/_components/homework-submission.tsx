@@ -17,6 +17,7 @@ import TypographyH3 from "@/components/ui/typography/h3";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import SubmissionFileCard from "@/components/submission-file-card";
+import HomeworkSubmissionsList from "./homework-submission-list";
 
 const validationSchema = z.object({
   submission: z
@@ -109,16 +110,23 @@ const HomeworkSubmission = () => {
     );
   }
 
+  if (submission?.review) {
+    return (
+      <div className="">
+        <h1>{submission.review.mark}</h1>
+      </div>
+    );
+  }
+
   if (submission) {
     return (
-      <div>
-        <TypographyH3>Загружено на проверку!</TypographyH3>
-        <div className="grid grid-cols-3 gap-4 mt-4">
-          {submission.fileUploads.map((el: any) => (
-            <SubmissionFileCard key={el.name} {...el}></SubmissionFileCard>
-          ))}
-        </div>
-      </div>
+      <HomeworkSubmissionsList
+        submission={{
+          ...submission,
+          createdAt: new Date(submission.createdAt),
+          updatedAt: new Date(submission.updatedAt),
+        }}
+      ></HomeworkSubmissionsList>
     );
   }
 

@@ -10,7 +10,7 @@ export const submissionsRouter = t.router({
         where: { homeworkId: input },
         include: {
           user: true,
-          reviews: true,
+          review: true,
           homework: true,
         },
       });
@@ -22,7 +22,7 @@ export const submissionsRouter = t.router({
         where: { id: input },
         include: {
           user: true,
-          reviews: true,
+          review: true,
           homework: true,
         },
       });
@@ -42,8 +42,24 @@ export const submissionsRouter = t.router({
         },
         include: {
           user: true,
-          reviews: true,
+          review: true,
         },
+      });
+    }),
+  deleteSubmission: publicProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      const submission = await db.submission.findUnique({
+        where: { id: input },
+        include: {
+          review: true,
+        },
+      });
+      if (submission?.review) {
+        throw new Error("Submission is already graded");
+      }
+      return await db.submission.delete({
+        where: { id: input },
       });
     }),
 });

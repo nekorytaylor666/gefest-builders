@@ -31,7 +31,9 @@ const SubmissionFileCard: React.FC<DownloadCardProps> = ({
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
-            <CardTitle className="break-all truncate w-2/3">{name}</CardTitle>
+            <CardTitle className="text-left break-all truncate w-2/3">
+              {name}
+            </CardTitle>
           </TooltipTrigger>
 
           <TooltipContent>

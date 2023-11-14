@@ -105,7 +105,7 @@ model Submission {
   updatedAt      DateTime         @updatedAt  @default(now())
   homework   Homework @relation(fields: [homeworkId], references: [id])
   user       User     @relation(fields: [userId], references: [id])
-  reviews    Review[]
+  review     Review?
 }
 
 enum ReviewType {
@@ -115,7 +115,7 @@ enum ReviewType {
 
 model Review {
   id           Int        @id @default(autoincrement())
-  submissionId Int
+  submissionId Int        @unique
   userId       String
   type         ReviewType
   comment      String?
