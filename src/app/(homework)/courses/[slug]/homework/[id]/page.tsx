@@ -54,6 +54,7 @@ export default async function Page({
       </div>
     );
   }
+
   const serializedMdxContent = await serializeMdxContent(content);
 
   return (
@@ -101,23 +102,7 @@ export default async function Page({
           </Card>
         </TabsContent>
         <TabsContent value="submission">
-          <Card className="w-full col-span-2 flex flex-col justify-between h-full">
-            <CardHeader>
-              <CardTitle>
-                <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-                  Загрузить на проверку
-                </h2>
-              </CardTitle>
-              <CardDescription className="h-full flex flex-col justify-center">
-                <div>
-                  Загрузите файлы вашего ответа на домашнее задание сюда.
-                </div>
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <HomeworkSubmission></HomeworkSubmission>
-            </CardContent>
-          </Card>
+          <HomeworkSubmission></HomeworkSubmission>
         </TabsContent>
       </Tabs>
     </div>

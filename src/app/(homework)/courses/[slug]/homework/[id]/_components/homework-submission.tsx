@@ -18,6 +18,15 @@ import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
 import SubmissionFileCard from "@/components/submission-file-card";
 import HomeworkSubmissionsList from "./homework-submission-list";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import HomeworkMark from "./homemork-mark";
+import HomeworkLoadingSkeleton from "./homework-loading-skeleton";
 
 const validationSchema = z.object({
   submission: z
@@ -102,20 +111,11 @@ const HomeworkSubmission = () => {
   };
 
   if (isSubmissionLoading) {
-    return (
-      <div className="flex flex-col">
-        <Skeleton className="h-16 w-1/2" />
-        <Skeleton className="h-[600px] mt-8 w-full" />
-      </div>
-    );
+    return <HomeworkLoadingSkeleton></HomeworkLoadingSkeleton>;
   }
 
   if (submission?.review) {
-    return (
-      <div className="">
-        <h1>{submission.review.mark}</h1>
-      </div>
-    );
+    return <HomeworkMark submission={submission}></HomeworkMark>;
   }
 
   if (submission) {
@@ -131,118 +131,135 @@ const HomeworkSubmission = () => {
   }
 
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="submission"
-          render={() => (
-            <Dropzone
-              onDragEnter={() => setIsFileHovered(true)}
-              onDragLeave={() => setIsFileHovered(false)}
-              onDropAccepted={(acceptedFiles) => {
-                console.log(acceptedFiles);
-                onDrop(acceptedFiles);
-                acceptedFiles.map((acceptedFile) => {
-                  return append({
-                    file: acceptedFile,
-                    name: acceptedFile.name,
-                    description: "",
-                  });
-                });
-              }}
-              onDrop={() => setIsFileHovered(false)}
-              multiple={true}
-              maxSize={5000000}
-            >
-              {({ getRootProps, getInputProps }) => (
-                <div
-                  {...getRootProps({
-                    className: cn(
-                      "p-3 mb-4 flex flex-col items-center justify-center w-full rounded-md cursor-pointer min-h-[300px] border-dashed border-2 border-[#e2e8f0] hover:bg-muted hover:border-muted-foreground transition-all duration-200",
-                      isFileHovered && " bg-muted border-muted-foreground "
-                    ),
-                  })}
+    <Card className="w-full col-span-2 flex flex-col justify-between h-full">
+      <CardHeader>
+        <CardTitle>
+          <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
+            Загрузить на проверку
+          </h2>
+        </CardTitle>
+        <CardDescription className="h-full flex flex-col justify-center">
+          <div>Загрузите файлы вашего ответа на домашнее задание сюда.</div>
+        </CardDescription>
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FormField
+              control={form.control}
+              name="submission"
+              render={() => (
+                <Dropzone
+                  onDragEnter={() => setIsFileHovered(true)}
+                  onDragLeave={() => setIsFileHovered(false)}
+                  onDropAccepted={(acceptedFiles) => {
+                    console.log(acceptedFiles);
+                    onDrop(acceptedFiles);
+                    acceptedFiles.map((acceptedFile) => {
+                      return append({
+                        file: acceptedFile,
+                        name: acceptedFile.name,
+                        description: "",
+                      });
+                    });
+                  }}
+                  onDrop={() => setIsFileHovered(false)}
+                  multiple={true}
+                  maxSize={5000000}
                 >
-                  <div className="flex items-center gap-x-3 mt-2 mb-2">
-                    <label
-                      htmlFor="Products"
-                      className={`text-lg font-medium text-[7E8DA0]  cursor-pointer focus:outline-none focus:underline   ${
-                        form.formState.errors.submission && "text-red-500"
-                      }`}
-                      tabIndex={0}
+                  {({ getRootProps, getInputProps }) => (
+                    <div
+                      {...getRootProps({
+                        className: cn(
+                          "p-3 mb-4 flex flex-col items-center justify-center w-full rounded-md cursor-pointer min-h-[300px] border-dashed border-2 border-[#e2e8f0] hover:bg-muted hover:border-muted-foreground transition-all duration-200",
+                          isFileHovered && " bg-muted border-muted-foreground "
+                        ),
+                      })}
                     >
-                      <span className="underline "> Тыкни на поле</span> или
-                      перетащи сюды, чтобы загрузить файл 📁
-                      <input {...getInputProps()} />
-                    </label>
-                  </div>
-                </div>
+                      <div className="flex items-center gap-x-3 mt-2 mb-2">
+                        <label
+                          htmlFor="Products"
+                          className={`text-lg font-medium text-[7E8DA0]  cursor-pointer focus:outline-none focus:underline   ${
+                            form.formState.errors.submission && "text-red-500"
+                          }`}
+                          tabIndex={0}
+                        >
+                          <span className="underline "> Тыкни на поле</span> или
+                          перетащи сюды, чтобы загрузить файл 📁
+                          <input {...getInputProps()} />
+                        </label>
+                      </div>
+                    </div>
+                  )}
+                </Dropzone>
               )}
-            </Dropzone>
-          )}
-        />
-        <Separator className="my-2" />
-        <div className="flex flex-col gap-4">
-          {fields.map((item, index) => (
-            <div className=" border p-3 rounded-md flex gap-1" key={item.name}>
-              <div className="w-full" key={item.id}>
-                <FormField
-                  control={form.control}
-                  name={`submission.${index}.name`}
-                  render={({ field }) => (
-                    <input
-                      className="text-lg font-bold w-full focus:outline-none focus:bg-muted rounded-md py-1 px-3"
-                      {...field}
-                      defaultValue={item.name}
-                      tabIndex={-1}
+            />
+            <Separator className="my-2" />
+            <div className="flex flex-col gap-4">
+              {fields.map((item, index) => (
+                <div
+                  className=" border p-3 rounded-md flex gap-1"
+                  key={item.name}
+                >
+                  <div className="w-full" key={item.id}>
+                    <FormField
+                      control={form.control}
+                      name={`submission.${index}.name`}
+                      render={({ field }) => (
+                        <input
+                          className="text-lg font-bold w-full focus:outline-none focus:bg-muted rounded-md py-1 px-3"
+                          {...field}
+                          defaultValue={item.name}
+                          tabIndex={-1}
+                        />
+                      )}
                     />
-                  )}
-                />
 
-                <FormField
-                  control={form.control}
-                  name={`submission.${index}.description`}
-                  render={({ field }) => (
-                    <input
-                      className="text-md  text-muted-foreground w-full focus:outline-none focus:bg-muted rounded-md py-1 px-3"
-                      {...field}
-                      placeholder="Без описания"
-                      defaultValue={item.description}
-                      tabIndex={-1}
+                    <FormField
+                      control={form.control}
+                      name={`submission.${index}.description`}
+                      render={({ field }) => (
+                        <input
+                          className="text-md  text-muted-foreground w-full focus:outline-none focus:bg-muted rounded-md py-1 px-3"
+                          {...field}
+                          placeholder="Без описания"
+                          defaultValue={item.description}
+                          tabIndex={-1}
+                        />
+                      )}
                     />
-                  )}
-                />
-              </div>
-              <Button
-                variant={"outline"}
-                type="button"
-                onClick={() => remove(index)}
-                className=""
-              >
-                <Cross1Icon></Cross1Icon>
-              </Button>
+                  </div>
+                  <Button
+                    variant={"outline"}
+                    type="button"
+                    onClick={() => remove(index)}
+                    className=""
+                  >
+                    <Cross1Icon></Cross1Icon>
+                  </Button>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-        <div className=" mt-4">
-          {isSubmitting ? (
-            <Button
-              type="submit"
-              size={"lg"}
-              className="w-full"
-              variant="ghost"
-            >
-              <TimerIcon />
-            </Button>
-          ) : (
-            <Button type="submit" size={"lg"} className="w-full">
-              Сдать на проверку
-            </Button>
-          )}
-        </div>
-      </form>
-    </Form>
+            <div className=" mt-4">
+              {isSubmitting ? (
+                <Button
+                  type="submit"
+                  size={"lg"}
+                  className="w-full"
+                  variant="ghost"
+                >
+                  <TimerIcon />
+                </Button>
+              ) : (
+                <Button type="submit" size={"lg"} className="w-full">
+                  Сдать на проверку
+                </Button>
+              )}
+            </div>
+          </form>
+        </Form>
+      </CardContent>
+    </Card>
   );
 };
 
