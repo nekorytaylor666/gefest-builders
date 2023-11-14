@@ -21,9 +21,11 @@ const HomeworkSubmissionsList: FC<HomeworkSubmissionsListProps> = ({
   submission,
 }) => {
   const { toast } = useToast();
+  const { submissions } = trpc.useUtils();
   const deleteSubmissionMutation =
     trpc.submissions.deleteSubmission.useMutation({
-      onMutate() {
+      onSuccess() {
+        submissions.invalidate();
         toast({
           title: "Ваш ответ удален! Учитель его не увидит ;)",
         });
