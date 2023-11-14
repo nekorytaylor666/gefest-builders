@@ -115,7 +115,8 @@ const HomeworkSubmission = () => {
   }
 
   if (submission?.review) {
-    return <HomeworkMark submission={submission}></HomeworkMark>;
+    //!TODO fix this
+    return <HomeworkMark submission={submission as any}></HomeworkMark>;
   }
 
   if (submission) {

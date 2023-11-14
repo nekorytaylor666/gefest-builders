@@ -16,7 +16,7 @@ import { CaretSortIcon } from "@radix-ui/react-icons";
 import { inferAsyncReturnType } from "@trpc/server";
 import React from "react";
 
-const MARK_EMOJIS = {
+const MARK_EMOJIS: { [key: number]: { label: string; emoji: string } } = {
   1: {
     label:
       "Нулевой успех, но помни: каждая ошибка - это шанс научиться чему-то новому!",

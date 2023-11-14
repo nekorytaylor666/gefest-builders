@@ -57,7 +57,7 @@ const HomeworkSubmissionsList: FC<HomeworkSubmissionsListProps> = ({
               Удалить ответ
             </Button>
           </div>
-          <div className="grid grid-cols-3 gap-4 mt-4">
+          <div className="grid grid-cols-2 gap-4 mt-4">
             {submission.fileUploads.map((el: any) => (
               <SubmissionFileCard key={el.name} {...el}></SubmissionFileCard>
             ))}
