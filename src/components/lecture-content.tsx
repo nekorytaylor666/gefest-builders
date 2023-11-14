@@ -12,6 +12,7 @@ import { trpc } from "@/app/_trpc/client";
 import { serverClient } from "@/app/_trpc/serverClient";
 import { ProcedureReturnType } from "@/lib/utils";
 import { useToast } from "./ui/use-toast";
+import { setHours } from "date-fns";
 
 interface LectureContentProps {
   course: ProcedureReturnType<

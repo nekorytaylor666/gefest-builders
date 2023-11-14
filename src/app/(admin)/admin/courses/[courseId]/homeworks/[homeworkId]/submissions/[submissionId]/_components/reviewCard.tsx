@@ -1,18 +1,33 @@
+"use client";
+import { trpc } from "@/app/_trpc/client";
 import { serverClient } from "@/app/_trpc/serverClient";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+} from "@/components/ui/card";
+import { useToast } from "@/components/ui/use-toast";
+import { Review } from "@prisma/client";
 import { inferAsyncReturnType } from "@trpc/server";
 import React from "react";
 
 interface ReviewCardProp {
-  review: inferAsyncReturnType<
-    typeof serverClient.review.listReviewForSubmission
-  >[0];
+  review: Review;
 }
 
 const ReviewCard = (props: ReviewCardProp) => {
+  const { toast } = useToast();
+  const removeReviewSubmissionMutation =
+    trpc.review.removeReviewFromSubmission.useMutation({
+      onSuccess() {
+        toast({ title: "Оценка удалена" });
+      },
+    });
   return (
-    <div>
-      <Card>
+    <Card className="h-full flex flex-col justify-between">
+      <div>
         <CardHeader className="font-bold text-lg">
           Оценка: {props.review.mark}
         </CardHeader>
@@ -23,8 +38,18 @@ const ReviewCard = (props: ReviewCardProp) => {
             </footer>
           </blockquote>
         </CardContent>
-      </Card>
-    </div>
+      </div>
+      <CardFooter>
+        <Button
+          onClick={() => {
+            removeReviewSubmissionMutation.mutate(props.review.submissionId);
+          }}
+          variant={"destructive"}
+        >
+          Убрать оценку
+        </Button>
+      </CardFooter>
+    </Card>
   );
 };
 

@@ -2,25 +2,26 @@ import React from "react";
 import { Suspense } from "react";
 import { serverClient } from "@/app/_trpc/serverClient";
 
-import EditorPageContainer from "../../_components/lessonEditor";
 import fs from "fs";
 
 import { APP_CONFIG } from "@/lib/config";
+import HomeworkEditor from "../../_components/homeworkEditor";
 
-async function EditLessonPage({
+async function EditHomeworkPage({
   params,
 }: {
-  params: { courseId: string; id: string };
+  params: { courseId: string; homeworkId: string };
 }) {
   const courseId = Number(params.courseId);
-  const lessonId = Number(params.id);
-  const lesson = await serverClient.lessons.getLessonByCourseIdAndLessonId({
-    courseId,
-    lessonId,
-  });
+  const homeworkId = Number(params.homeworkId);
+  const homework =
+    await serverClient.homework.getHomeworkByCourseIdAndHomeworkId({
+      courseId,
+      homeworkId,
+    });
   let content;
   if (APP_CONFIG.FETCH_LOCALLY) {
-    const path = `src/content/${lesson?.mdxContentPath}`;
+    const path = `src/content/${homework?.mdxContentPath}`;
     console.log("fetchin locally");
     try {
       content = fs.readFileSync(path, "utf8");
@@ -28,7 +29,7 @@ async function EditLessonPage({
       console.error(`Error: ${err}`);
     }
   } else {
-    const path = `https://gefest.b-cdn.net/${lesson?.mdxContentPath}`;
+    const path = `https://gefest.b-cdn.net/${homework?.mdxContentPath}`;
 
     console.log("fetching remotely", path);
 
@@ -38,8 +39,8 @@ async function EditLessonPage({
 
   return (
     <Suspense fallback={null}>
-      <EditorPageContainer
-        lessonId={lessonId}
+      <HomeworkEditor
+        homeworkId={homeworkId}
         courseId={courseId}
         initialContent={content}
       />
@@ -47,4 +48,4 @@ async function EditLessonPage({
   );
 }
 
-export default EditLessonPage;
+export default EditHomeworkPage;

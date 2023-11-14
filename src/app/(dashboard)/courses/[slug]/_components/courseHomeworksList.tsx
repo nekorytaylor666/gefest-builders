@@ -27,7 +27,7 @@ const HomeworkList = (props: Props) => {
   return (
     <div className="pt-8 p-4">
       <TypographyH2>Домашние задания</TypographyH2>
-      <div className="mt-4">
+      <div className="mt-4 flex flex-col gap-4  ">
         {homeworks.map((homework: Homework) => (
           <Link
             key={homework.id}
@@ -41,11 +41,6 @@ const HomeworkList = (props: Props) => {
                   </div>
                 </CardTitle>
                 <CardDescription className="flex justify-between items-center">
-                  <div className="flex items-center gap-1 text-sm font-medium ">
-                    <ClockIcon></ClockIcon>
-                    Сдать до{" "}
-                    {format(homework.deadlineAt, " dd MMM", { locale: ru })}
-                  </div>
                   <p className="text-xs text-muted-foreground">
                     {`Обновлено ${formatDistance(
                       homework.updatedAt,

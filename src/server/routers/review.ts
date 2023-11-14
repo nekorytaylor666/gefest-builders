@@ -28,13 +28,29 @@ export const reviewRouter = t.router({
       }
     ),
 
-  listReviewForSubmission: publicProcedure
+  getReviewForSubmission: publicProcedure
     .input(z.number())
     .query(async ({ input }) => {
-      return db.review.findMany({
+      return db.review.findUnique({
         where: {
           submissionId: input,
         },
+      });
+    }),
+  removeReviewFromSubmission: publicProcedure
+    .input(z.number())
+    .mutation(async ({ input }) => {
+      const submission = await db.submission.findUnique({
+        where: { id: input },
+        include: {
+          review: true,
+        },
+      });
+      if (!submission?.review) {
+        throw new Error("Submission is not reviewed");
+      }
+      return await db.review.delete({
+        where: { id: submission.review.id },
       });
     }),
 });

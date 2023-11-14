@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import Provider from "../_trpc/Provider";
 import "swiper/css";
 import Navbar from "@/components/navbar";
-//@ts-ignore
-import riveWASMResource from "node_modules/@rive-app/canvas/rive.wasm";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {

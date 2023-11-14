@@ -2,6 +2,7 @@ import LectureContent from "@/components/lecture-content";
 import { divideMarkdown, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { serverClient } from "@/app/_trpc/serverClient";
 import fs from "fs";
+import { APP_CONFIG } from "@/lib/config";
 
 export default async function Page({
   params,
@@ -11,7 +12,7 @@ export default async function Page({
   const { slug, id } = params;
   const course = await serverClient.courses.getCourseBySlug(slug);
   let content;
-  if (process.env.NODE_ENV === "development") {
+  if (APP_CONFIG.FETCH_LOCALLY) {
     const path = `src/content/${slug}/lessons/${id}/content.mdx`;
     console.log("fetchin locally");
     try {
