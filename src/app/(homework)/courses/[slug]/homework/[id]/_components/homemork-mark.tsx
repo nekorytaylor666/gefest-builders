@@ -81,17 +81,15 @@ const HomeworkMark = ({ submission }: HomeworkMarkProp) => {
       <CardHeader>
         <CardTitle>
           <h2 className="mt-10 scroll-m-20 border-b pb-2 text-3xl font-semibold tracking-tight transition-colors first:mt-0">
-            Задание проверено
+            Задание проверено!
           </h2>
         </CardTitle>
         <CardDescription className="h-full flex flex-col justify-center">
-          <div>
-            Если вы не согласны с оценкой можете обратиться к вашему трекеру.
-          </div>
+          <div>Оценка:</div>
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="flex flex-col items-start gap-4 w-full ">
+        <div className="flex flex-col items-center gap-4 w-full ">
           <h3 className="text-3xl font-bold">
             {submission?.review?.mark}{" "}
             {submission?.review?.mark &&

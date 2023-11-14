@@ -35,7 +35,7 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
     },
     { enabled: !!userId }
   );
-  console.log(isProgressLoading, error);
+
   return (
     <Tabs defaultValue="map">
       <div className="grid grid-cols-1 items-start lg:grid-cols-5 container max-w-screen-xl p-0 gap-8">
