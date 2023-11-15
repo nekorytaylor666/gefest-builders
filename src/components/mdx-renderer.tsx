@@ -24,7 +24,7 @@ interface MDXRendererProps {
 const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
   ({ onNext, isActive, content }, ref) => {
     const isActiveClasses = isActive ? "pb-20" : "";
-    const containerClasses = "py-4 height-auto";
+    const containerClasses = " height-auto";
 
     const components = {
       h1: (props: any) => <TypographyH1 {...props}></TypographyH1>,

@@ -3,6 +3,18 @@ import { divideMarkdown, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { serverClient } from "@/app/_trpc/serverClient";
 import fs from "fs";
 import { APP_CONFIG } from "@/lib/config";
+import AssistantChat from "./_components/assistantInput";
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { Suspense } from "react";
+import { Skeleton } from "@/components/ui/skeleton";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 export default async function Page({
   params,
@@ -39,6 +51,23 @@ export default async function Page({
         lessonId={parseInt(id)}
         serializedMdxSections={serializedSections}
       ></LectureContent>
+
+      <Sheet>
+        <SheetTrigger>Open</SheetTrigger>
+        <SheetContent className="w-[400px] lg:w-1/2 max-w-screen-2xl">
+          <SheetHeader>
+            <SheetTitle>Ваш Гефест ассистент</SheetTitle>
+          </SheetHeader>
+
+          <Suspense
+            fallback={
+              <Skeleton className="w-full h-[800px] rounded-md"></Skeleton>
+            }
+          >
+            <AssistantChat></AssistantChat>
+          </Suspense>
+        </SheetContent>
+      </Sheet>
     </main>
   );
 }
