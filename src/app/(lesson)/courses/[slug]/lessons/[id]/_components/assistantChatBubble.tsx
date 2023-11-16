@@ -9,6 +9,7 @@ const AssistantChatContainer = ({
   messages: AssistantMessage[];
 }) => {
   console.log("messages", messages);
+
   return (
     <div className="grid grid-cols-8 gap-8">
       {messages?.map((el) => (
@@ -17,7 +18,11 @@ const AssistantChatContainer = ({
     </div>
   );
 };
-
+const MemoizedAssistantChatContainer = React.memo(
+  ({ messages }: { messages: AssistantMessage[] }) => (
+    <AssistantChatContainer messages={messages} />
+  )
+);
 const ChatBubble = ({ message }: { message: AssistantMessage }) => {
   if (message.role === "user") return <UserChatBubble message={message} />;
   if (message.role === "assistant")
@@ -41,4 +46,4 @@ const UserChatBubble = ({ message }: { message: AssistantMessage }) => {
     </div>
   );
 };
-export default AssistantChatContainer;
+export default MemoizedAssistantChatContainer;

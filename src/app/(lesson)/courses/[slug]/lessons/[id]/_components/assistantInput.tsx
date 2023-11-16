@@ -15,6 +15,7 @@ import { serialize } from "next-mdx-remote/serialize";
 import { compile } from "@mdx-js/mdx";
 import { serializeMdxContent } from "@/lib/mdx-utils";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Run } from "openai/resources/beta/threads/runs/runs.mjs";
 
 const AssistantInputSchema = z.object({
   query: z.string().nonempty({ message: "Нужен вопрос" }),
@@ -24,7 +25,7 @@ type AssistantInputType = z.infer<typeof AssistantInputSchema>;
 
 const AssistantChat = () => {
   const { register, handleSubmit } = useForm<AssistantInputType>();
-  const [lastRun, setLastRun] = useState(null);
+  const [lastRun, setLastRun] = useState<Run | null>(null);
   const [initialMessagesFetched, setInitialMessagesFetched] = useState(false);
   const session = useUser();
   const user = session.user;
