@@ -14,6 +14,7 @@ import VideoEmbed from "./video-embed";
 import ErrorBoundary from "./error-boundary";
 import CodeMirrorView from "./codemirror";
 import TypographyH3 from "./ui/typography/h3";
+import { Sandpack } from "@codesandbox/sandpack-react";
 
 interface MDXRendererProps {
   onNext?: () => void;
@@ -24,7 +25,7 @@ interface MDXRendererProps {
 const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
   ({ onNext, isActive, content }, ref) => {
     const isActiveClasses = isActive ? "pb-20" : "";
-    const containerClasses = "py-4 height-auto";
+    const containerClasses = " height-auto";
 
     const components = {
       h1: (props: any) => <TypographyH1 {...props}></TypographyH1>,
@@ -41,6 +42,7 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
       p: (props: any) => <TypographyP {...props}></TypographyP>,
       code: (props: any) => {
         // Проверяем, содержит ли дети символы новой строки
+        console.log("code:", props);
         const isBlockCode =
           typeof props.children === "string" && props.children.includes("\n");
         // Если это блок кода, используем TypographyBlockCode, иначе - TypographyInlineCode
@@ -53,6 +55,7 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
       CodeEditor: (props: any) => (
         <CodeEditor {...props} onSuccess={onNext} onSkip={onNext} />
       ),
+      Sandpack: (props: any) => <Sandpack {...props} />,
       Quiz: (props: any) => <Quiz {...props} onSuccess={onNext} />,
       VideoEmbed: (props: any) => <VideoEmbed {...props}></VideoEmbed>,
 

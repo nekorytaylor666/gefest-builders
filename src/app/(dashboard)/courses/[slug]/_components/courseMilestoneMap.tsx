@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import { CourseData } from "@/components/pages/coursePage/type";
 
 interface Props {
-  lessons: any;
+  lessons: Lesson[];
   courseSlug: string;
   finishedLessons: any;
 }
@@ -17,9 +17,10 @@ const CourseMilestoneMap = (props: Props) => {
   const courseSlug = props.courseSlug;
 
   const chunkedLessons = React.useMemo(() => {
+    const sortedLessons = [...lessons].sort((a, b) => a.order - b.order);
     const result = [];
-    for (let i = 0; i < lessons.length; i += AMOUNT_LESSONS_ON_PATTERN) {
-      result.push(lessons.slice(i, i + AMOUNT_LESSONS_ON_PATTERN));
+    for (let i = 0; i < sortedLessons.length; i += AMOUNT_LESSONS_ON_PATTERN) {
+      result.push(sortedLessons.slice(i, i + AMOUNT_LESSONS_ON_PATTERN));
     }
     return result;
   }, [lessons]);
