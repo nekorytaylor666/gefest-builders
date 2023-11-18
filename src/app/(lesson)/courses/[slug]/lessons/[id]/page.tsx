@@ -55,7 +55,7 @@ export default async function Page({
           serializedMdxSections={serializedSections}
         ></LectureContent>
 
-        <SheetTrigger className="sticky bottom-4 left-4">
+        {/* <SheetTrigger className="sticky bottom-4 left-4">
           <Button className="w-16 h-16" variant={"outline"} size={"icon"}>
             <ChatBubbleIcon className="w-8 h-8"></ChatBubbleIcon>
           </Button>
@@ -72,7 +72,7 @@ export default async function Page({
           >
             <AssistantChat></AssistantChat>
           </Suspense>
-        </SheetContent>
+        </SheetContent> */}
       </main>
     </Sheet>
   );
