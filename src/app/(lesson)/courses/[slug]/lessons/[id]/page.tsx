@@ -77,21 +77,3 @@ export default async function Page({
     </Sheet>
   );
 }
-
-export async function generateStaticParams() {
-  const courses = await serverClient.courses.listCourses();
-
-  const contentPaths = new Map<string, { lessonId: number[] }>();
-  for (const course of courses) {
-    const lessonIds = course.lessons.map((lesson) => lesson.order);
-    contentPaths.set(course.slug, { lessonId: lessonIds });
-  }
-  const contentPathsArray = Array.from(contentPaths.entries());
-  const contentPathsCombinations = contentPathsArray.flatMap(
-    ([slug, { lessonId }]) => {
-      return lessonId.map((id) => ({ slug, id: String(id) }));
-    }
-  );
-
-  return contentPathsCombinations;
-}

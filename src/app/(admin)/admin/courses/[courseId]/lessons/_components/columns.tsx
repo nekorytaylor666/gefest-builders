@@ -17,12 +17,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { inferAsyncReturnType } from "@trpc/server";
 import Link from "next/link";
 
-import { Lesson as PrismaLesson } from "@prisma/client";
-
-export type Lesson = Omit<PrismaLesson, "createdAt" | "updatedAt"> & {
-  createdAt: string;
-  updatedAt: string;
-};
+import { Lesson } from "@prisma/client";
 
 export const columns: ColumnDef<Lesson>[] = [
   {
