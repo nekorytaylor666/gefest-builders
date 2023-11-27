@@ -33,6 +33,7 @@ async function EditLessonPage({
     console.log("fetching remotely", path);
 
     const response = await fetch(path);
+
     content = await response.text();
   }
 
@@ -46,5 +47,8 @@ async function EditLessonPage({
     </Suspense>
   );
 }
+
+export const dynamic = "force-dynamic";
+export const fetchCache = "auto";
 
 export default EditLessonPage;

@@ -3,10 +3,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@auth0/nextjs-auth0";
 import { db } from "@/lib/db";
 import { serverClient } from "@/app/_trpc/serverClient";
+import { APP_CONFIG } from "@/lib/config";
 
 const HOSTNAME = "se.storage.bunnycdn.com";
 const STORAGE_ZONE_NAME = "gefest-storage";
 const ACCESS_KEY = "6c24261a-31e4-4b9b-b0aeeeae4525-3ed8-4307";
+
+const BUNNY_NET_API =
+  "81799771-f31f-4b31-8439-7279f87439c1546ea125-0f7e-4ed1-97d2-6fa53a17c764";
 
 export async function POST(
   request: NextRequest,
@@ -52,9 +56,37 @@ export async function POST(
       mdxContentPath: path,
     },
   });
+  const purgeRes = await purge(path);
+  console.log(purgeRes);
+
   if (!response.ok) {
     return NextResponse.json({ success: false, error: response.statusText });
   }
 
   return NextResponse.json({ success: true, updatedLesson });
+}
+
+async function purge(filepath: string) {
+  const PULL_ZONE = APP_CONFIG.CDN_PULL_ZONE;
+  const url = PULL_ZONE + filepath;
+
+  const purgeUrl = `https://api.bunny.net/purge?url=${encodeURIComponent(
+    url
+  )}&async=false`;
+
+  const options = {
+    method: "POST",
+    headers: {
+      AccessKey: BUNNY_NET_API,
+    },
+  };
+
+  try {
+    const response = await fetch(purgeUrl, options);
+    const data = response.body;
+    console.log("purged:", filepath, data);
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
 }

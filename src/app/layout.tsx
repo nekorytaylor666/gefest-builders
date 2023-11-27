@@ -2,9 +2,6 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { UserProvider } from "@auth0/nextjs-auth0/client";
-import "swiper/css";
-import Navbar from "@/components/navbar";
-import { Analytics } from "@vercel/analytics/react";
 
 import Provider from "./_trpc/Provider";
 import { Toaster } from "@/components/ui/toaster";
@@ -48,7 +45,6 @@ export default function RootLayout({
           <body className={inter.className}>
             {children}
             <Toaster />
-            <Analytics />
           </body>
         </Provider>
       </UserProvider>

@@ -1,0 +1,131 @@
+<br />
+<br />
+<br />
+<br />
+
+# Создаем свой веб-сайт за час!
+
+<br />
+## Что такое сайт?
+
+Ежедневно мы используем поисковик Google, будь то для поиска милых фотографий капибар
+или статей о маркетинге. Вся информация в интернете хранится на сайтах, которые являются
+ключевым источником данных о мире, компаниях и знаниях. Чтобы донести эту информацию
+до конечных пользователей, важно уметь создавать сайты. Существуют множество популярных
+сервисов, таких как Tilda, Framer и Wix, которые позволяют создавать простые сайты
+путём перетаскивания блоков. Однако их функциональность ограничена. Если вы стремитесь
+создавать что-то более сложное, чем просто посадочную страницу, то в Гефест Академии
+мы используем HTML, CSS и JS – основы современного веб-разработки. Давайте изучим
+эти инструменты и вместе построим свой сайт. И поверьте, это не так сложно, как кажется!
+
+<br />
+<br />
+<br />
+<br />
+<CH.Scrollycoding >
+
+## Создаём наш первый сайт
+
+Поздравляю, это ваш первый сайт! Но это лишь самая базовая его версия. Давайте разберёмся, что здесь происходит.
+
+```html index.html
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Наш первый сайт</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <h1>Hello world!</h1>
+  </body>
+</html>
+```
+
+---
+
+### Теги как основа всего
+
+HTML – это язык разметки, состоящий из тегов. Тег – это элемент в угловых скобках, который выполняет определённую функцию и может содержать текст, код или другие теги.
+У каждого тега есть открывающая и закрывающая часть, последняя начинается со знака "/"
+
+```html index.html
+<h1></h1>
+```
+
+---
+
+### Структура HTML-документа
+
+Всё начинается с тега `<html>`, который является корневым и сообщает браузеру, что содержимое - это HTML-документ. Он содержит два основных элемента: `<head>` и `<body>`.
+
+`<head>` - это первый блок информации, который браузер получает от вашего документа. Здесь указываются название сайта, метаданные, стили и внешние скрипты.
+
+```html index.html<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <title>Наш первый сайт</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+```
+
+---
+
+## `<body>`
+
+`<body>` отвечает за содержимое сайта: текст, кнопки, формы, изображения. Это основа, которую мы будем оформлять с помощью CSS.
+
+В нашем примере тело содержит только заголовок h1, но существует множество других тегов, которые мы рассмотрим в следующих уроках.
+
+```html
+<body>
+  <h1>Hello world!</h1>
+</body>
+```
+
+</CH.Scrollycoding>
+
+## Упражнение
+
+Замени содержимое заголовка на свое предложение!
+
+ <Sandpack 
+      template="static"
+      options={{externalResources:["https://rsms.me/", "https://rsms.me/inter/inter.css"], 
+              editorHeight: 600, // default - 300
+        editorWidthPercentage: 60, // default - 50
+        }
+      }
+      
+      files={{
+        "/index.html": `<!DOCTYPE html>
+<html>
+  <head>
+
+    <title>Мой HTML-документ</title>
+    <link rel="stylesheet" href="base.css" />
+
+  </head>
+  <body>
+
+    <h1>Hello world!</h1>
+
+  </body>
+</html>`,
+"/base.css": {code:`:root {
+  font-family: Inter, sans-serif;
+  font-feature-settings: 'liga' 1, 'calt' 1; /* fix for Chrome */
+}
+@supports (font-variation-settings: normal) {
+  :root { font-family: InterVariable, sans-serif; }
+}`, editable: false, hidden:true},
+"/script.js": `
+     
+    `,
+    "/style.css": `
+`
+}}
+/>
