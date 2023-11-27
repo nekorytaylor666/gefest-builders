@@ -120,7 +120,7 @@ const LectureContentPlot = (props: {
   }, [currentSection, serializedMdxSections.length]);
 
   return (
-    <div className="lg:container lg:max-w-screen-lg">
+    <div className="lg:container ">
       {serializedMdxSections
         .slice(0, currentSection + 1)
         .map((section, index) => (

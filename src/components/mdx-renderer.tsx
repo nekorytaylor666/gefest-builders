@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import React from "react";
-import CodeEditor from "./code-editor";
 import { Quiz } from "./quiz";
 import TypographyInlineCode from "./ui/typography/code";
 import TypographyH2 from "./ui/typography/h2";
@@ -12,9 +11,9 @@ import TypographyH1 from "./ui/typography/h1";
 import { Button } from "./ui/button";
 import VideoEmbed from "./video-embed";
 import ErrorBoundary from "./error-boundary";
-import CodeMirrorView from "./codemirror";
 import TypographyH3 from "./ui/typography/h3";
 import { Sandpack } from "@codesandbox/sandpack-react";
+import { CH } from "@code-hike/mdx/components";
 
 interface MDXRendererProps {
   onNext?: () => void;
@@ -40,21 +39,7 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
         </a>
       ),
       p: (props: any) => <TypographyP {...props}></TypographyP>,
-      code: (props: any) => {
-        // Проверяем, содержит ли дети символы новой строки
-        console.log("code:", props);
-        const isBlockCode =
-          typeof props.children === "string" && props.children.includes("\n");
-        // Если это блок кода, используем TypographyBlockCode, иначе - TypographyInlineCode
-        return isBlockCode ? (
-          <CodeMirrorView {...props}></CodeMirrorView>
-        ) : (
-          <TypographyInlineCode {...props}></TypographyInlineCode>
-        );
-      },
-      CodeEditor: (props: any) => (
-        <CodeEditor {...props} onSuccess={onNext} onSkip={onNext} />
-      ),
+      CH,
       Sandpack: (props: any) => <Sandpack {...props} />,
       Quiz: (props: any) => <Quiz {...props} onSuccess={onNext} />,
       VideoEmbed: (props: any) => <VideoEmbed {...props}></VideoEmbed>,
