@@ -40,6 +40,9 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
       ),
       p: (props: any) => <TypographyP {...props}></TypographyP>,
       CH,
+      code: (props: any) => {
+        return <TypographyInlineCode {...props}></TypographyInlineCode>;
+      },
       Sandpack: (props: any) => <Sandpack {...props} />,
       Quiz: (props: any) => <Quiz {...props} onSuccess={onNext} />,
       VideoEmbed: (props: any) => <VideoEmbed {...props}></VideoEmbed>,
