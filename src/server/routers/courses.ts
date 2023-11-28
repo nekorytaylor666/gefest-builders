@@ -59,7 +59,6 @@ export const coursesRouter = t.router({
         where: { slug: input },
         include: {
           lessons: true,
-          author: true,
           homeworks: true,
         },
       });

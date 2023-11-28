@@ -12,7 +12,7 @@ async function Page(context: any) {
 export async function generateStaticParams() {
   const courses = await serverClient.courses.listCourses();
 
-  return courses.map((el) => el.id);
+  return courses.map((el) => el.slug);
 }
 
 export default Page;
