@@ -10,6 +10,24 @@ export const coursesRouter = t.router({
       },
     });
   }),
+  editCourse: publicProcedure
+    .input(
+      z.object({
+        id: z.number(),
+        title: z.string().optional(),
+        description: z.string().optional(),
+        thumbnailPath: z.string().optional(),
+        authorId: z.string().optional(),
+        disabled: z.boolean().optional(),
+        slug: z.string().optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await db.course.update({
+        where: { id: input.id },
+        data: input,
+      });
+    }),
   createCourse: publicProcedure
     .input(
       z.object({

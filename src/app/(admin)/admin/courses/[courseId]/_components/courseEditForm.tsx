@@ -20,13 +20,15 @@ import { inferAsyncReturnType } from "@trpc/server";
 import { serverClient } from "@/app/_trpc/serverClient";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { trpc } from "@/app/_trpc/client";
+import { useToast } from "@/components/ui/use-toast";
+import { useRouter } from "next/navigation";
 
 type Course = inferAsyncReturnType<
   (typeof serverClient)["courses"]["listCourses"]
->[0];
+>[number];
 
 const formSchema = z.object({
-  id: z.number(),
   title: z.string(),
   slug: z.string(),
   description: z.string(),
@@ -34,6 +36,8 @@ const formSchema = z.object({
 });
 
 export function CouseEditForm({ course }: { course: Course }) {
+  const { toast } = useToast();
+  const editCourseMutation = trpc.courses.editCourse.useMutation();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -43,9 +47,20 @@ export function CouseEditForm({ course }: { course: Course }) {
       disabled: course.disabled,
     },
   });
+  const router = useRouter();
 
+  console.log(form.formState.errors);
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    alert("hello");
+    editCourseMutation.mutate(
+      { ...values, id: course.id },
+      {
+        onSuccess() {
+          toast({ title: "Курс изменен" });
+          router.refresh();
+        },
+      }
+    );
   }
 
   return (
