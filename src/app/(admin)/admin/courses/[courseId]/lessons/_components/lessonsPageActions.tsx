@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { trpc } from "@/app/_trpc/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Label } from "@/components/ui/label";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
   title: z.string().nonempty({ message: "Заголовок не может быть пустым" }),
@@ -25,13 +26,14 @@ const LessonsPageAction = ({ courseId }: { courseId: number }) => {
   const { register, handleSubmit, formState, control } = useForm<SchemaType>({
     resolver: zodResolver(schema),
   });
+  const router = useRouter();
   const createLessonMutation = trpc.lessons.createLesson.useMutation({
     onSettled(data) {
       toast({
         title: "Урок " + data?.title + " создан!",
         description: "Переводим на страницу",
       });
-      utils.lessons.listLessons.refetch();
+      router.refresh();
     },
   });
   const onSubmit = (data: SchemaType) => {
