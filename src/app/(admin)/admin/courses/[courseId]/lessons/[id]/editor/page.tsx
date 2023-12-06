@@ -6,6 +6,7 @@ import EditorPageContainer from "../../_components/lessonEditor";
 import fs from "fs";
 
 import { APP_CONFIG } from "@/lib/config";
+import DraftEditorPageContainer from "../../_components/tiptapEditor";
 
 async function EditLessonPage({
   params,
@@ -39,7 +40,7 @@ async function EditLessonPage({
 
   return (
     <Suspense fallback={null}>
-      <EditorPageContainer
+      <DraftEditorPageContainer
         lessonId={lessonId}
         courseId={courseId}
         initialContent={content}
