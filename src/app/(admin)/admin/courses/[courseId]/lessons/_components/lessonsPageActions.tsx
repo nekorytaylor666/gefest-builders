@@ -28,7 +28,7 @@ const LessonsPageAction = ({ courseId }: { courseId: number }) => {
   });
   const router = useRouter();
   const createLessonMutation = trpc.lessons.createLesson.useMutation({
-    onSettled(data) {
+    onSuccess(data) {
       toast({
         title: "Урок " + data?.title + " создан!",
         description: "Переводим на страницу",

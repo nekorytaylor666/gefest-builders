@@ -27,6 +27,7 @@ const CoursePageActions = () => {
   const { register, handleSubmit, formState, control } = useForm<SchemaType>({
     resolver: zodResolver(schema),
   });
+  const { user, isLoaded, isSignedIn } = useUser();
   const router = useRouter();
   const createCourseMutation = trpc.courses.createCourse.useMutation({
     onSuccess(data) {
@@ -38,9 +39,13 @@ const CoursePageActions = () => {
     },
   });
   const onSubmit = (data: SchemaType) => {
+    if (!isSignedIn || !user) {
+      return;
+    }
     createCourseMutation.mutate({
       title: data.title,
       description: data.description,
+      authorId: user?.id,
     });
   };
 

@@ -3,8 +3,7 @@ import { t, publicProcedure } from "../trpc";
 import { db } from "@/lib/db";
 
 export const coursesRouter = t.router({
-  listCourses: publicProcedure.query(async ({ ctx }) => {
-    console.log(ctx.auth);
+  listCourses: publicProcedure.query(async () => {
     return await db.course.findMany({
       include: {
         lessons: true,
@@ -34,6 +33,7 @@ export const coursesRouter = t.router({
       z.object({
         title: z.string(),
         description: z.string(),
+        authorId: z.string(),
       })
     )
     .mutation(async ({ input }) => {
@@ -41,7 +41,7 @@ export const coursesRouter = t.router({
         data: {
           title: input.title,
           description: input.description,
-          // authorId: ctx.auth.userId,
+          authorId: input.authorId,
         },
       });
     }),
