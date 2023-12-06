@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/breadcrumbs";
 import "@code-hike/mdx/styles";
+import { UserButton } from "@clerk/nextjs";
 export default function RootLayout({
   children,
 }: {
@@ -23,8 +24,7 @@ export default function RootLayout({
               alt="logo"
             ></Image>
           </Link>
-
-          <UserNav></UserNav>
+          <UserButton afterSignOutUrl="/" />{" "}
         </div>
       </header>
       <div className="container max-w-full grid flex-1 gap-12 md:grid-cols-[200px_1fr]">

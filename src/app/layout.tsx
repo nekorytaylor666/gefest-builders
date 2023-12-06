@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
-
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 import Provider from "./_trpc/Provider";
 import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
+import { ruRU } from "@clerk/localizations";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -40,14 +41,28 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <UserProvider>
+      <ClerkProvider
+        localization={ruRU}
+        appearance={{
+          baseTheme: dark,
+          variables: { colorPrimary: "#BEFF6C" },
+          signUp: {
+            baseTheme: dark,
+            variables: { colorPrimary: "#BEFF6C" },
+          },
+          signIn: {
+            baseTheme: dark,
+            variables: { colorPrimary: "#BEFF6C" },
+          },
+        }}
+      >
         <Provider>
           <body className={inter.className}>
             {children}
             <Toaster />
           </body>
         </Provider>
-      </UserProvider>
+      </ClerkProvider>
     </html>
   );
 }
