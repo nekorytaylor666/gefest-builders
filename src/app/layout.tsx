@@ -41,28 +41,12 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <ClerkProvider
-        localization={ruRU}
-        appearance={{
-          baseTheme: dark,
-          variables: { colorPrimary: "#BEFF6C" },
-          signUp: {
-            baseTheme: dark,
-            variables: { colorPrimary: "#BEFF6C" },
-          },
-          signIn: {
-            baseTheme: dark,
-            variables: { colorPrimary: "#BEFF6C" },
-          },
-        }}
-      >
-        <Provider>
-          <body className={inter.className}>
-            {children}
-            <Toaster />
-          </body>
-        </Provider>
-      </ClerkProvider>
+      <Provider>
+        <body className={inter.className}>
+          {children}
+          <Toaster />
+        </body>
+      </Provider>
     </html>
   );
 }

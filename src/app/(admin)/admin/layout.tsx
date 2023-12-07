@@ -24,7 +24,6 @@ export default function RootLayout({
               alt="logo"
             ></Image>
           </Link>
-          <UserButton afterSignOutUrl="/" />{" "}
         </div>
       </header>
       <div className="container max-w-full grid flex-1 gap-12 md:grid-cols-[200px_1fr]">

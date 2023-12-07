@@ -1,3 +1,4 @@
+"use client";
 import LectureContent from "@/components/lecture-content";
 import { divideMarkdown, serializeAllMdxSections } from "@/lib/mdx-utils";
 import { serverClient } from "@/app/_trpc/serverClient";
@@ -17,41 +18,65 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
 import { ChatBubbleIcon } from "@radix-ui/react-icons";
+import { trpc } from "@/app/_trpc/client";
+import { generateHTML } from "@tiptap/core";
+import { defaultExtensions } from "@/components/editor/extensions";
+import Editor from "@/components/editor";
+import LectureNavbar from "@/components/lecture-navbar";
 
-export default async function Page({
+export default function Page({
   params,
 }: {
   params: { slug: string; id: string };
 }) {
   const { slug, id } = params;
-  const course = await serverClient.courses.getCourseBySlug(slug);
-  let content;
-  if (APP_CONFIG.FETCH_LOCALLY) {
-    const path = `src/content/${slug}/lessons/${id}/content.mdx`;
-    try {
-      content = fs.readFileSync(path, "utf8");
-    } catch (err) {
-      console.error(`Error: ${err}`);
-    }
-  } else {
-    const response = await fetch(
-      `https://gefest.b-cdn.net/${slug}/lessons/${id}/content.mdx`
-    );
-    content = await response.text();
-  }
+  const [lesson] = trpc.lessons.getLessonById.useSuspenseQuery(1);
+  console.log(JSON.parse(lesson?.jsonContent));
+  const html = generateHTML(JSON.parse(lesson?.jsonContent), defaultExtensions);
+  // trpc.lessons
+  // const course = await serverClient.courses.getCourseBySlug(slug);
+  // let content;
+  // if (APP_CONFIG.FETCH_LOCALLY) {
+  //   const path = `src/content/${slug}/lessons/${id}/content.mdx`;
+  //   try {
+  //     content = fs.readFileSync(path, "utf8");
+  //   } catch (err) {
+  //     console.error(`Error: ${err}`);
+  //   }
+  // } else {
+  //   const response = await fetch(
+  //     `https://gefest.b-cdn.net/${slug}/lessons/${id}/content.mdx`
+  //   );
+  //   content = await response.text();
+  // }
 
-  const mdxSections = divideMarkdown(content);
+  // const mdxSections = divideMarkdown(content);
 
-  const serializedSections = await serializeAllMdxSections(mdxSections);
+  // const serializedSections = await serializeAllMdxSections(mdxSections);
 
   return (
     <Sheet>
-      <main className="relative">
-        <LectureContent
+      <main className="">
+        <LectureNavbar progress={50}></LectureNavbar>
+        <div className="container mt-20">
+          <div
+            className="prose mx-auto"
+            dangerouslySetInnerHTML={{ __html: html }}
+          />
+        </div>
+        {/* <Editor
+          defaultValue={lesson?.jsonContent}
+          onDebouncedUpdate={(editor) => {
+            const json = editor?.getJSON();
+            const content = JSON.stringify(json);
+            saveContentMutation.mutate({ lessonId: lessonId, content });
+          }}
+        ></Editor> */}
+        {/* <LectureContent
           course={course}
           lessonId={parseInt(id)}
           serializedMdxSections={serializedSections}
-        ></LectureContent>
+        ></LectureContent> */}
 
         {/* <SheetTrigger className="sticky bottom-4 left-4">
           <Button className="w-16 h-16" variant={"outline"} size={"icon"}>

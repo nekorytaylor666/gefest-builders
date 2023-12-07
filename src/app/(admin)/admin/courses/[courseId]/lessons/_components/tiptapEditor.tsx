@@ -15,6 +15,8 @@ import Breadcrumb from "@/components/breadcrumbs";
 import { debounce } from "@/lib/utils";
 import { MDXEditor, MDXEditorValues } from "@/components/mdxEditor";
 import Editor from "@/components/editor";
+import { trpc } from "@/app/_trpc/client";
+import SuperJSON from "superjson";
 const DraftEditorPageContainer = ({
   initialContent,
   courseId,
@@ -26,30 +28,36 @@ const DraftEditorPageContainer = ({
 }) => {
   const { toast } = useToast();
 
-  const saveContentMutation = useMutation(
-    (content: string) => {
-      const file = new Blob([content], { type: "text/markdown" });
-      console.log(content);
-      const formData = new FormData();
-      formData.append("file", file);
-      return fetch(`/api/courses/${courseId}/lessons/${lessonId}/editContent`, {
-        method: "POST",
-        body: formData,
-      }).then((res) => res.json());
-    },
-    {
-      onSuccess: (res) => {
-        toast({
-          title: "Контент урока изменена",
-          description: "Хорошая работа :)",
-        });
-      },
-    }
-  );
+  const lesson = trpc.lessons.getLessonByCourseIdAndLessonId.useSuspenseQuery({
+    courseId,
+    lessonId,
+  });
+  const saveContentMutation = trpc.lessons.editLessonContent.useMutation();
+  // const saveContentMutation = useMutation(
+  //   (content: string) => {
+  //     const file = new Blob([content], { type: "text/markdown" });
+  //     console.log(content);
+  //     const formData = new FormData();
+  //     formData.append("file", file);
+  //     return fetch(`/api/courses/${courseId}/lessons/${lessonId}/editContent`, {
+  //       method: "POST",
+  //       body: formData,
+  //     }).then((res) => res.json());
+  //   },
+  //   {
+  //     onSuccess: (res) => {
+  //       toast({
+  //         title: "Контент урока изменена",
+  //         description: "Хорошая работа :)",
+  //       });
+  //     },
+  //   }
+  // );
 
-  const onContentSumbit = (values: MDXEditorValues) => {
-    saveContentMutation.mutate(values.content);
-  };
+  const lessonContent = lesson[0]?.jsonContent ?? "";
+  console.log("lesson content", lessonContent);
+  const jsonContent = lessonContent && JSON.parse(lessonContent as any);
+  const onContentSumbit = (values: MDXEditorValues) => {};
   return (
     <Suspense fallback={<div>loading...</div>}>
       <DashboardHeader
@@ -57,7 +65,14 @@ const DraftEditorPageContainer = ({
         text="Обновление контента урока"
       ></DashboardHeader>
       <Separator className="my-4"></Separator>
-      <Editor></Editor>
+      <Editor
+        defaultValue={jsonContent}
+        onDebouncedUpdate={(editor) => {
+          const json = editor?.getJSON();
+          const content = JSON.stringify(json);
+          saveContentMutation.mutate({ lessonId: lessonId, content });
+        }}
+      ></Editor>
     </Suspense>
   );
 };

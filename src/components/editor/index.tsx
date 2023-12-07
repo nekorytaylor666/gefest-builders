@@ -10,7 +10,7 @@ import { defaultEditorContent } from "./default-content";
 import { EditorBubbleMenu } from "./bubble-menu";
 import { ImageResizer } from "./extensions/image-resizer";
 import { EditorProps } from "@tiptap/pm/view";
-import { Editor as EditorClass, Extensions } from "@tiptap/core";
+import { Editor as EditorClass, Extensions, generateHTML } from "@tiptap/core";
 
 export default function Editor({
   completionApi = "/api/generate",

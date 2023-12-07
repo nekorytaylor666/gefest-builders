@@ -10,8 +10,6 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 const LectureNavbar = ({ progress }: { progress: number }) => {
   const session = useUser();
   const router = useRouter();
-  const user = session?.user;
-  console.log(user);
   return (
     <nav className="fixed w-full top-0 z-50 p-4 shadow-sm lg:shadow-none bg-white">
       <div className="flex items-center justify-between w-full gap-2  lg:px-8">
@@ -39,7 +37,6 @@ const LectureNavbar = ({ progress }: { progress: number }) => {
               className="absolute inset-0 object-cover"
               width={80}
               height={80}
-              src={user?.picture ?? ""}
               alt=""
             />
           </div>

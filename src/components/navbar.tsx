@@ -17,7 +17,6 @@ const Navbar = () => {
             alt="logo"
           ></Image>
         </Link>
-        <UserButton afterSignOutUrl="/" />
       </div>
     </div>
   );

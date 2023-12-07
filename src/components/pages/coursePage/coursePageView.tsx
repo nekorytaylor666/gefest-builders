@@ -22,19 +22,19 @@ import HomeworkList from "@/app/(dashboard)/courses/[slug]/_components/courseHom
 
 const CoursePageView = (props: { course: CourseData; other?: any }) => {
   const { course } = props;
-  const { user, isLoading: isUserLoading } = useUser();
-  const userId = (user?.id as string) ?? (user?.sid as string);
-  const {
-    data,
-    isLoading: isProgressLoading,
-    error,
-  } = trpc.courses.getCourseDataWithUserProgress.useQuery(
-    {
-      userId,
-      courseSlug: course?.slug as string,
-    },
-    { enabled: !!userId }
-  );
+  // const { user, isLoading: isUserLoading } = useUser();
+  // const userId = (user?.id as string) ?? (user?.sid as string);
+  // const {
+  //   data,
+  //   isLoading: isProgressLoading,
+  //   error,
+  // } = trpc.courses.getCourseDataWithUserProgress.useQuery(
+  //   {
+  //     userId,
+  //     courseSlug: course?.slug as string,
+  //   },
+  //   { enabled: !!userId }
+  // );
 
   return (
     <Tabs defaultValue="map">
@@ -74,10 +74,10 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
             </CardHeader>
             <CardContent>
               <p className="pb-2 font-semibold">Прогресс:</p>
-              <CourseProgressBar
+              {/* <CourseProgressBar
                 courseProgress={data?.courseProgress}
                 courseSlug={course?.slug ?? ""}
-              ></CourseProgressBar>
+              ></CourseProgressBar> */}
             </CardContent>
           </Card>
         </div>
@@ -85,7 +85,7 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
           <TabsContent value="map">
             <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth ">
               <CourseMilestoneMap
-                finishedLessons={data?.lessonProgress ?? []}
+                finishedLessons={[]}
                 courseSlug={course?.slug ?? ""}
                 lessons={course?.lessons ?? []}
               ></CourseMilestoneMap>
