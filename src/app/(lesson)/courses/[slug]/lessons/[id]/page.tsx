@@ -23,6 +23,7 @@ import { generateHTML } from "@tiptap/core";
 import { defaultExtensions } from "@/components/editor/extensions";
 import Editor from "@/components/editor";
 import LectureNavbar from "@/components/lecture-navbar";
+import { readonlyExtensions } from "@/components/editor/extensions/read-only-extensions";
 
 export default function Page({
   params,
@@ -58,12 +59,17 @@ export default function Page({
     <Sheet>
       <main className="">
         <LectureNavbar progress={50}></LectureNavbar>
-        <div className="container mt-20">
+        <Editor
+          className="container mt-20 mx-auto"
+          defaultValue={JSON.parse(lesson?.jsonContent)}
+          readonly={true}
+        ></Editor>
+        {/* <div className="container mt-20">
           <div
             className="prose mx-auto"
             dangerouslySetInnerHTML={{ __html: html }}
           />
-        </div>
+        </div> */}
         {/* <Editor
           defaultValue={lesson?.jsonContent}
           onDebouncedUpdate={(editor) => {

@@ -190,6 +190,27 @@ const getSuggestionItems = ({ query }: { query: string }) => {
         editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
     },
     {
+      title: "Sandpack",
+      description: "Create a sandpack.",
+      searchTerms: ["sandpack", "codesandbox"],
+      command: ({ editor, range }: CommandProps) => {
+        editor.chain().focus().deleteRange(range).run();
+        // add sandpack
+        editor
+          .chain()
+          .focus()
+          .addSandpack({
+            files: {
+              "/index.html": {
+                code: "<h1>Всем привет</h1>",
+              },
+            },
+            template: "static",
+          })
+          .run();
+      },
+    },
+    {
       title: "Image",
       description: "Upload an image from your computer.",
       searchTerms: ["photo", "picture", "media"],

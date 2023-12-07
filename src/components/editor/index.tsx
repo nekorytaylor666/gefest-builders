@@ -11,6 +11,7 @@ import { EditorBubbleMenu } from "./bubble-menu";
 import { ImageResizer } from "./extensions/image-resizer";
 import { EditorProps } from "@tiptap/pm/view";
 import { Editor as EditorClass, Extensions, generateHTML } from "@tiptap/core";
+import { readonlyExtensions } from "./extensions/read-only-extensions";
 
 export default function Editor({
   completionApi = "/api/generate",
@@ -19,6 +20,7 @@ export default function Editor({
   extensions = [],
   editorProps = {},
   onUpdate = () => {},
+  readonly = false,
   onDebouncedUpdate = () => {},
   debounceDuration = 750,
   storageKey = "novel__content",
@@ -29,6 +31,7 @@ export default function Editor({
    * Defaults to "/api/generate".
    */
   completionApi?: string;
+  readonly?: boolean;
   /**
    * Additional classes to add to the editor container.
    * Defaults to "relative min-h-[500px] w-full max-w-screen-lg border-stone-200 bg-white sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg".
@@ -93,6 +96,7 @@ export default function Editor({
   const editor = useEditor({
     extensions: [...defaultExtensions, ...extensions],
     editorProps: {
+      editable: () => !readonly,
       ...defaultEditorProps,
       ...editorProps,
     },
@@ -203,8 +207,10 @@ export default function Editor({
       }}
       className={className}
     >
-      {editor && <EditorBubbleMenu editor={editor} />}
-      {editor?.isActive("image") && <ImageResizer editor={editor} />}
+      {editor && !readonly && <EditorBubbleMenu editor={editor} />}
+      {editor?.isActive("image") && !readonly && (
+        <ImageResizer editor={editor} />
+      )}
       <EditorContent editor={editor} />
     </div>
   );

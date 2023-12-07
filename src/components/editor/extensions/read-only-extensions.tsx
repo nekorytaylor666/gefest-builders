@@ -20,7 +20,9 @@ import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
 import html from "highlight.js/lib/languages/xml";
 import { createLowlight } from "lowlight";
+import CodeBlockComponent from "./code-block";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import { ReactNodeViewRenderer } from "@tiptap/react";
 import SandpackExtension from "./sandpack";
 
 const lowlight = createLowlight();
@@ -30,7 +32,7 @@ lowlight.register("css", css);
 lowlight.register("js", js);
 lowlight.register("ts", ts);
 
-export const defaultExtensions = [
+export const readonlyExtensions = [
   StarterKit.configure({
     bulletList: {
       HTMLAttributes: {
@@ -67,11 +69,11 @@ export const defaultExtensions = [
     },
     gapcursor: false,
   }),
-  CodeBlockLowlight.configure({
-    lowlight,
-  }),
-
-  SandpackExtension,
+  CodeBlockLowlight.extend({
+    addNodeView() {
+      return ReactNodeViewRenderer(CodeBlockComponent);
+    },
+  }).configure({ lowlight }),
   // patch to fix horizontal rule bug: https://github.com/ueberdosis/tiptap/pull/3859#issuecomment-1536799740
   HorizontalRule.extend({
     addInputRules() {
@@ -119,6 +121,7 @@ export const defaultExtensions = [
       class: "rounded-lg border border-stone-200",
     },
   }),
+  SandpackExtension,
   Placeholder.configure({
     placeholder: ({ node }) => {
       if (node.type.name === "heading") {
@@ -128,7 +131,7 @@ export const defaultExtensions = [
     },
     includeChildren: true,
   }),
-  SlashCommand,
+
   TiptapUnderline,
   TextStyle,
   Color,
@@ -146,7 +149,4 @@ export const defaultExtensions = [
     },
     nested: true,
   }),
-
-  CustomKeymap,
-  DragAndDrop,
 ];
