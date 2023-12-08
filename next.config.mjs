@@ -1,16 +1,5 @@
 /** @type {import('next').NextConfig} */
-import createWithMDX from "@next/mdx";
-import remarkFrontmatter from "remark-frontmatter";
-import remarkGfm from "remark-gfm";
-import rehypeExternalLinks from "rehype-external-links";
-import { remarkCodeHike } from "@code-hike/mdx";
-
-const withMDX = createWithMDX({
-  extension: /\.mdx?$/,
-  options: {},
-});
-
-export default withMDX({
+const config = {
   reactStrictMode: true,
   images: {
     domains: ["gefest.b-cdn.net"],
@@ -32,4 +21,6 @@ export default withMDX({
     return config;
   },
   pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
-});
+};
+
+export default config;

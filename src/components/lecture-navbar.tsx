@@ -3,12 +3,9 @@ import React from "react";
 import { HiMiniXMark, HiFire } from "react-icons/hi2";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
-import { getSession } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
 
 const LectureNavbar = ({ progress }: { progress: number }) => {
-  const session = useUser();
   const router = useRouter();
   return (
     <nav className="fixed w-full top-0 z-50 p-4 shadow-sm lg:shadow-none bg-white">

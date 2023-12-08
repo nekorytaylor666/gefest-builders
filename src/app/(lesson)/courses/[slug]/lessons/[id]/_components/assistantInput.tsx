@@ -9,7 +9,6 @@ import { z } from "zod";
 import { AssistantMessage } from "./types/messages";
 import ChatBubble from "./assistantChatBubble";
 import AssistantChatContainer from "./assistantChatBubble";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { trpc } from "@/app/_trpc/client";
 import { serialize } from "next-mdx-remote/serialize";
 import { compile } from "@mdx-js/mdx";
@@ -27,9 +26,7 @@ const AssistantChat = () => {
   const { register, handleSubmit } = useForm<AssistantInputType>();
   const [lastRun, setLastRun] = useState<Run | null>(null);
   const [initialMessagesFetched, setInitialMessagesFetched] = useState(false);
-  const session = useUser();
-  const user = session.user;
-  const [userData] = trpc.user.getUserData.useSuspenseQuery(user?.id as string);
+  const [userData] = trpc.user.getUserData.useSuspenseQuery("1" as string);
 
   const fetchLastBotRun = async () => {
     const res = await fetch(

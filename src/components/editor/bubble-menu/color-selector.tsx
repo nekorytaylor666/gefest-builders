@@ -1,7 +1,7 @@
 import { Editor } from "@tiptap/core";
-import { Check, ChevronDown } from "lucide-react";
 import { Dispatch, FC, SetStateAction } from "react";
 import * as Popover from "@radix-ui/react-popover";
+import { CheckIcon, ChevronDownIcon } from "@radix-ui/react-icons";
 
 export interface BubbleColorMenuItem {
   name: string;
@@ -122,7 +122,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
             A
           </span>
 
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDownIcon className="h-4 w-4" />
         </Popover.Trigger>
 
         <Popover.Content
@@ -156,7 +156,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
                 <span>{name}</span>
               </div>
               {editor.isActive("textStyle", { color }) && (
-                <Check className="h-4 w-4" />
+                <CheckIcon className="h-4 w-4" />
               )}
             </button>
           ))}

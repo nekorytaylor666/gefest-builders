@@ -71,6 +71,7 @@ model Lesson {
   authorId       String
   createdAt      DateTime         @default(now())
   thumbnailPath  String?
+  jsonContent    Json?
   updatedAt      DateTime         @updatedAt
   author         User             @relation(fields: [authorId], references: [id])
   course         Course           @relation(fields: [courseId], references: [id])

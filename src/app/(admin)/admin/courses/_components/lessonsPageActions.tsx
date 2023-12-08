@@ -13,7 +13,6 @@ import { trpc } from "@/app/_trpc/client";
 import { useToast } from "@/components/ui/use-toast";
 import { Label } from "@/components/ui/label";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
 
 const schema = z.object({
   title: z.string().nonempty({ message: "Заголовок не может быть пустым" }),

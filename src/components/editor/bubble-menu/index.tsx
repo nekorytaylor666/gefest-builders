@@ -1,16 +1,17 @@
 import { BubbleMenu, BubbleMenuProps, isNodeSelection } from "@tiptap/react";
 import { FC, useState } from "react";
-import {
-  BoldIcon,
-  ItalicIcon,
-  UnderlineIcon,
-  StrikethroughIcon,
-  CodeIcon,
-} from "lucide-react";
+
 import { NodeSelector } from "./node-selector";
 import { ColorSelector } from "./color-selector";
 import { LinkSelector } from "./link-selector";
 import { cn } from "@/lib/utils";
+import {
+  CodeIcon,
+  FontBoldIcon,
+  FontItalicIcon,
+  StrikethroughIcon,
+  UnderlineIcon,
+} from "@radix-ui/react-icons";
 
 export interface BubbleMenuItem {
   name: string;
@@ -27,13 +28,13 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
       name: "bold",
       isActive: () => props.editor.isActive("bold"),
       command: () => props.editor.chain().focus().toggleBold().run(),
-      icon: BoldIcon,
+      icon: FontBoldIcon,
     },
     {
       name: "italic",
       isActive: () => props.editor.isActive("italic"),
       command: () => props.editor.chain().focus().toggleItalic().run(),
-      icon: ItalicIcon,
+      icon: FontItalicIcon,
     },
     {
       name: "underline",

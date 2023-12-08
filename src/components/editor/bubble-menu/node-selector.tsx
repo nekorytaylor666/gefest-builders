@@ -1,19 +1,18 @@
 import { Editor } from "@tiptap/core";
-import {
-  Check,
-  ChevronDown,
-  Heading1,
-  Heading2,
-  Heading3,
-  TextQuote,
-  ListOrdered,
-  TextIcon,
-  Code,
-  CheckSquare,
-} from "lucide-react";
+
 import * as Popover from "@radix-ui/react-popover";
 import { Dispatch, FC, SetStateAction } from "react";
 import { BubbleMenuItem } from ".";
+import {
+  CheckIcon,
+  CheckboxIcon,
+  ChevronDownIcon,
+  CodeIcon,
+  HeadingIcon,
+  ListBulletIcon,
+  QuoteIcon,
+  TextIcon,
+} from "@radix-ui/react-icons";
 
 interface NodeSelectorProps {
   editor: Editor;
@@ -40,43 +39,43 @@ export const NodeSelector: FC<NodeSelectorProps> = ({
     },
     {
       name: "Heading 1",
-      icon: Heading1,
+      icon: HeadingIcon,
       command: () => editor.chain().focus().toggleHeading({ level: 1 }).run(),
       isActive: () => editor.isActive("heading", { level: 1 }),
     },
     {
       name: "Heading 2",
-      icon: Heading2,
+      icon: HeadingIcon,
       command: () => editor.chain().focus().toggleHeading({ level: 2 }).run(),
       isActive: () => editor.isActive("heading", { level: 2 }),
     },
     {
       name: "Heading 3",
-      icon: Heading3,
+      icon: HeadingIcon,
       command: () => editor.chain().focus().toggleHeading({ level: 3 }).run(),
       isActive: () => editor.isActive("heading", { level: 3 }),
     },
     {
       name: "To-do List",
-      icon: CheckSquare,
+      icon: CheckboxIcon,
       command: () => editor.chain().focus().toggleTaskList().run(),
       isActive: () => editor.isActive("taskItem"),
     },
     {
       name: "Bullet List",
-      icon: ListOrdered,
+      icon: ListBulletIcon,
       command: () => editor.chain().focus().toggleBulletList().run(),
       isActive: () => editor.isActive("bulletList"),
     },
     {
       name: "Numbered List",
-      icon: ListOrdered,
+      icon: ListBulletIcon,
       command: () => editor.chain().focus().toggleOrderedList().run(),
       isActive: () => editor.isActive("orderedList"),
     },
     {
       name: "Quote",
-      icon: TextQuote,
+      icon: QuoteIcon,
       command: () =>
         editor
           .chain()
@@ -88,7 +87,7 @@ export const NodeSelector: FC<NodeSelectorProps> = ({
     },
     {
       name: "Code",
-      icon: Code,
+      icon: CodeIcon,
       command: () => editor.chain().focus().toggleCodeBlock().run(),
       isActive: () => editor.isActive("codeBlock"),
     },
@@ -106,7 +105,7 @@ export const NodeSelector: FC<NodeSelectorProps> = ({
           onClick={() => setIsOpen(!isOpen)}
         >
           <span>{activeItem?.name}</span>
-          <ChevronDown className="h-4 w-4" />
+          <ChevronDownIcon className="h-4 w-4" />
         </Popover.Trigger>
 
         <Popover.Content
@@ -130,7 +129,9 @@ export const NodeSelector: FC<NodeSelectorProps> = ({
                 </div>
                 <span>{item.name}</span>
               </div>
-              {activeItem.name === item.name && <Check className="h-4 w-4" />}
+              {activeItem.name === item.name && (
+                <CheckIcon className="h-4 w-4" />
+              )}
             </button>
           ))}
         </Popover.Content>

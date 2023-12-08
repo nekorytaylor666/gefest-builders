@@ -4,8 +4,6 @@ import { UserNav } from "@/components/user-nav";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/breadcrumbs";
-import "@code-hike/mdx/styles";
-import { UserButton } from "@clerk/nextjs";
 export default function RootLayout({
   children,
 }: {
