@@ -4,6 +4,7 @@ import { HiMiniXMark, HiFire } from "react-icons/hi2";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { useRouter } from "next/navigation";
+import { UserNav } from "./user-nav";
 
 const LectureNavbar = ({ progress }: { progress: number }) => {
   const router = useRouter();
@@ -28,15 +29,7 @@ const LectureNavbar = ({ progress }: { progress: number }) => {
             </h3>
             <HiFire className="text-orange-600 h-6 w-6"></HiFire>
           </div>
-
-          <div className="hidden lg:block relative aspect-square rounded-full w-10 h-10 overflow-hidden flex items-center justify-center bg-gradient-to-t from-green-400 to-green-100">
-            <img
-              className="absolute inset-0 object-cover"
-              width={80}
-              height={80}
-              alt=""
-            />
-          </div>
+          <UserNav></UserNav>
         </div>
       </div>
     </nav>

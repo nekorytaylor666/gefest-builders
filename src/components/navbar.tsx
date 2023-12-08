@@ -3,7 +3,6 @@ import { NavMenu } from "./navmenu";
 import Image from "next/image";
 import Link from "next/link";
 import { UserNav } from "./user-nav";
-import { UserButton } from "@clerk/nextjs";
 const Navbar = () => {
   return (
     <div className=" bg-white  py-4 px-4 lg:px-16 container">
@@ -17,6 +16,7 @@ const Navbar = () => {
             alt="logo"
           ></Image>
         </Link>
+        <UserNav />
       </div>
     </div>
   );

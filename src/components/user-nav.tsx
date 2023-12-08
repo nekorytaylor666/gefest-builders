@@ -1,5 +1,4 @@
 "use client";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 import {
@@ -18,18 +17,19 @@ import {
   NavigationMenuLink,
   navigationMenuTriggerStyle,
 } from "./ui/navigation-menu";
+import { useUser } from "@/lib/hooks/useUserSession";
 
 export function UserNav() {
-  const user = useUser();
-  console.log(user);
-  if (user.isLoading) {
+  const { isLoading, data, supabase } = useUser();
+
+  if (isLoading) {
     return <Skeleton className="w-10 h-10 rounded-full" />;
   }
-  if (!user.user?.sub) {
+  if (!data?.user) {
     return (
       <a
         className="group inline-flex h-9 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50"
-        href="/api/auth/login"
+        href="/test"
       >
         Войти
       </a>
@@ -51,10 +51,7 @@ export function UserNav() {
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
             <p className="text-sm font-medium leading-none">
-              {user.user?.name}
-            </p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {user.user?.email}
+              {data.user?.email}
             </p>
           </div>
         </DropdownMenuLabel>
@@ -66,9 +63,11 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem
           className="hover:bg-destructive hover:text-destructive-foreground"
-          asChild
+          onClick={() => {
+            supabase.auth.signOut();
+          }}
         >
-          <a href="/api/auth/logout">Выйти</a>
+          Выйти
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
