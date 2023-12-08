@@ -7,6 +7,7 @@ import {
   SandpackPreview,
   Sandpack,
 } from "@codesandbox/sandpack-react";
+import SandpackAddForm from "./sandpackAddForm";
 
 const SandpackExtension = Node.create({
   name: "sandpack",
@@ -30,14 +31,13 @@ const SandpackExtension = Node.create({
   addAttributes() {
     return {
       files: {
-        default: {
-          "/index.html": {
-            code: "<h1>Всем привет</h1>",
-          },
-        },
+        default: {},
       },
       template: {
         default: "static",
+      },
+      isFilesUploaded: {
+        default: false,
       },
     };
   },
@@ -52,6 +52,14 @@ const SandpackExtension = Node.create({
             attrs: options,
           });
         },
+      updateSandpack:
+        (options) =>
+        ({ commands }) => {
+          return commands.updateAttributes({
+            type: "sandpack",
+            attrs: options,
+          });
+        },
     };
   },
   addKeyboardShortcuts() {
@@ -62,10 +70,21 @@ const SandpackExtension = Node.create({
 
   addNodeView() {
     return ReactNodeViewRenderer((props) => {
-      console.log(props);
+      const { node, updateAttributes } = props;
+      const handleFilesUpload = (files) => {
+        console.log({ files });
+        updateAttributes({ files, isFilesUploaded: true });
+      };
+
       return (
         <NodeViewWrapper>
-          <Sandpack options={{ editorHeight: 800 }} {...props.node.attrs} />
+          {node.attrs.isFilesUploaded ? (
+            <Sandpack options={{ editorHeight: 800 }} {...node.attrs} />
+          ) : (
+            <div className="border-2 h-52 w-full bg-zinc-200">
+              <SandpackAddForm onSubmit={handleFilesUpload}></SandpackAddForm>
+            </div>
+          )}
         </NodeViewWrapper>
       );
     });
