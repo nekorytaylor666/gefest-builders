@@ -186,7 +186,7 @@ export const ColorSelector: FC<ColorSelectorProps> = ({
                 <span>{name}</span>
               </div>
               {editor.isActive("highlight", { color }) && (
-                <Check className="h-4 w-4" />
+                <CheckIcon className="h-4 w-4" />
               )}
             </button>
           ))}

@@ -9,11 +9,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
 
-const SandpackAddForm = ({ onSubmit }: { onSubmit: (files: any) => void }) => {
+const SandpackAddForm = ({ onSubmit }) => {
   const { handleSubmit, register } = useForm();
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone();
 
-  const onPrepareSubmit = async (data: any) => {
+  const onPrepareSubmit = async (data) => {
     const files = await Promise.all(
       acceptedFiles.map(
         (file) =>
@@ -23,7 +23,7 @@ const SandpackAddForm = ({ onSubmit }: { onSubmit: (files: any) => void }) => {
               resolve({
                 name: `/${file.name}`,
                 content: {
-                  code: reader.result as string,
+                  code: reader.result,
                 },
               });
             };
@@ -34,7 +34,7 @@ const SandpackAddForm = ({ onSubmit }: { onSubmit: (files: any) => void }) => {
       fileContents.reduce((acc, { name, content }) => {
         acc[name] = content;
         return acc;
-      }, {} as any)
+      }, {})
     );
     onSubmit(files);
     console.log(files);

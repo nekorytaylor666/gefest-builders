@@ -15,7 +15,6 @@ import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
 import TypographyH2 from "@/components/ui/typography/h2";
 import { CoursesPageViewProps } from "./type";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { ProcedureReturnType } from "@/lib/utils";
 import { serverClient } from "@/app/_trpc/serverClient";
 

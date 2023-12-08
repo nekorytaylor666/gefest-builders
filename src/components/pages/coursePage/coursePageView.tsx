@@ -14,7 +14,6 @@ import Image from "next/image";
 import { AppRouter, ReactQueryOptions } from "@/server";
 import { CourseData, CoursePageProps } from "./type";
 import { Progress } from "@/components/ui/progress";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { trpc } from "@/app/_trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";

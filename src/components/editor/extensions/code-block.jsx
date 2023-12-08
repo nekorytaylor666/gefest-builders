@@ -1,7 +1,7 @@
 import { NodeViewContent, NodeViewWrapper } from "@tiptap/react";
 import React from "react";
 
-export default ({
+const CodeBlock = ({
   node: {
     attrs: { language: defaultLanguage },
   },
@@ -27,3 +27,4 @@ export default ({
     </pre>
   </NodeViewWrapper>
 );
+export default CodeBlock;

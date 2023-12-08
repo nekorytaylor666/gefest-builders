@@ -13,7 +13,6 @@ import VideoEmbed from "./video-embed";
 import ErrorBoundary from "./error-boundary";
 import TypographyH3 from "./ui/typography/h3";
 import { Sandpack } from "@codesandbox/sandpack-react";
-import { CH } from "@code-hike/mdx/components";
 
 interface MDXRendererProps {
   onNext?: () => void;
@@ -39,7 +38,6 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
         </a>
       ),
       p: (props: any) => <TypographyP {...props}></TypographyP>,
-      CH,
       code: (props: any) => {
         return <TypographyInlineCode {...props}></TypographyInlineCode>;
       },

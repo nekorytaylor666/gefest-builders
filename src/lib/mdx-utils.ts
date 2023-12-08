@@ -1,8 +1,6 @@
 import { UnwrapArray, UnwrapPromise } from "@/types";
 import { serialize } from "next-mdx-remote/serialize";
-import remarkEmbedder from "@remark-embedder/core";
 import { MDXRemoteSerializeResult } from "next-mdx-remote";
-import { remarkCodeHike } from "@code-hike/mdx";
 
 const LoomTransformer = {
   name: "Loom",
@@ -31,10 +29,7 @@ export async function serializeMdxContent(mdxContent: string) {
     mdxOptions: {
       development: process.env.NODE_ENV === "development",
 
-      remarkPlugins: [
-        [remarkEmbedder, { transformers: [LoomTransformer] }],
-        [remarkCodeHike, codeHikeOptions],
-      ],
+      remarkPlugins: [],
       useDynamicImport: true,
     },
   });

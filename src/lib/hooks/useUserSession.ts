@@ -11,7 +11,7 @@ export const useUser = () => {
       return data.data;
     },
     onSuccess: (session) => {
-      setUser(session?.user ?? null);
+      if (session.user) setUser(session?.user ?? null);
     },
   });
 

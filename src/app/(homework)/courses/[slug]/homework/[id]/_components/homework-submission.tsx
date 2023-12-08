@@ -10,7 +10,6 @@ import { Separator } from "@/components/ui/separator";
 import { Cross1Icon, TimerIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/app/_trpc/client";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useParams } from "next/navigation";
 import TypographyH3 from "@/components/ui/typography/h3";
@@ -44,8 +43,6 @@ type FormValues = z.infer<typeof validationSchema>;
 
 const HomeworkSubmission = () => {
   const { id: homeworkId } = useParams();
-  const user = useUser();
-  const userId = user?.user?.id as string;
   const { toast } = useToast();
   const {
     data: submission,
@@ -55,9 +52,9 @@ const HomeworkSubmission = () => {
   } = trpc.submissions.getSubmissionOfUserByHomeWorkId.useQuery(
     {
       homeworkId: Number(homeworkId),
-      userId,
+      userId: "1",
     },
-    { enabled: !!userId }
+    { enabled: true }
   );
   const form = useForm<FormValues>({
     resolver: zodResolver(validationSchema),

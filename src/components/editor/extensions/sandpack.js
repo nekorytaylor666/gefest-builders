@@ -1,3 +1,4 @@
+// @ts-ignore
 import { Node, mergeAttributes } from "@tiptap/core";
 import { NodeViewWrapper, ReactNodeViewRenderer } from "@tiptap/react";
 import {

@@ -17,12 +17,20 @@ export interface BubbleMenuItem {
   name: string;
   isActive: () => boolean;
   command: () => void;
-  icon: typeof BoldIcon;
+  icon: typeof FontBoldIcon;
 }
 
-type EditorBubbleMenuProps = Omit<BubbleMenuProps, "children">;
-
+type EditorBubbleMenuProps = Omit<BubbleMenuProps, "children"> & {
+  editor: NonNullable<BubbleMenuProps["editor"]>;
+};
 export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
+  const [isNodeSelectorOpen, setIsNodeSelectorOpen] = useState(false);
+  const [isColorSelectorOpen, setIsColorSelectorOpen] = useState(false);
+  const [isLinkSelectorOpen, setIsLinkSelectorOpen] = useState(false);
+
+  if (!props.editor) {
+    return null; // или вернуть запасной компонент
+  }
   const items: BubbleMenuItem[] = [
     {
       name: "bold",
@@ -80,10 +88,6 @@ export const EditorBubbleMenu: FC<EditorBubbleMenuProps> = (props) => {
       },
     },
   };
-
-  const [isNodeSelectorOpen, setIsNodeSelectorOpen] = useState(false);
-  const [isColorSelectorOpen, setIsColorSelectorOpen] = useState(false);
-  const [isLinkSelectorOpen, setIsLinkSelectorOpen] = useState(false);
 
   return (
     <BubbleMenu

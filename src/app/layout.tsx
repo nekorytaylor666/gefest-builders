@@ -1,12 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { ClerkProvider } from "@clerk/nextjs";
-import { dark } from "@clerk/themes";
 import Provider from "./_trpc/Provider";
 import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
-import { ruRU } from "@clerk/localizations";
 
 export const metadata: Metadata = {
   title: "Create Next App",
