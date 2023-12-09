@@ -75,7 +75,7 @@ const CourseCard: React.FC<CourseCardProps> = ({ course }) => (
         </Button>
       ) : (
         <Button variant="default" className="w-full" asChild>
-          <Link href={"/courses/" + course.slug}>Детали программы</Link>
+          <Link href={"/courses/" + course.id}>Детали программы</Link>
         </Button>
       )}
     </CardFooter>

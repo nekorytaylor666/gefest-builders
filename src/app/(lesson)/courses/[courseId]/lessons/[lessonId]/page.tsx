@@ -10,10 +10,12 @@ import LectureNavbar from "@/components/lecture-navbar";
 export default function Page({
   params,
 }: {
-  params: { slug: string; id: string };
+  params: { courseId: string; lessonId: string };
 }) {
-  const { slug, id } = params;
-  const [lesson] = trpc.lessons.getLessonById.useSuspenseQuery(Number(id));
+  const { courseId, lessonId } = params;
+  const [lesson] = trpc.lessons.getLessonById.useSuspenseQuery(
+    Number(lessonId)
+  );
   return (
     <Sheet>
       <main className="">

@@ -18,11 +18,11 @@ import ru from "date-fns/locale/ru";
 import { ClockIcon } from "@radix-ui/react-icons";
 interface Props {
   homeworks: any;
-  courseSlug: string;
+  courseId: string;
 }
 
 const HomeworkList = (props: Props) => {
-  const { homeworks, courseSlug } = props;
+  const { homeworks, courseId } = props;
 
   return (
     <div className="pt-8 p-4">
@@ -31,7 +31,7 @@ const HomeworkList = (props: Props) => {
         {homeworks.map((homework: Homework) => (
           <Link
             key={homework.id}
-            href={`/courses/${courseSlug}/homework/${homework.id}`}
+            href={`/courses/${courseId}/homework/${homework.id}`}
           >
             <Card className="transition-all duration-75 cursor-pointer hover:bg-muted">
               <CardHeader>

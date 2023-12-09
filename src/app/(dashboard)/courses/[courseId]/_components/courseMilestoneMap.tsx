@@ -7,14 +7,14 @@ import { CourseData } from "@/components/pages/coursePage/type";
 
 interface Props {
   lessons: Lesson[];
-  courseSlug: string;
+  courseId: number;
   finishedLessons: any;
 }
 const AMOUNT_LESSONS_ON_PATTERN = 5;
 
 const CourseMilestoneMap = (props: Props) => {
   const lessons = props.lessons;
-  const courseSlug = props.courseSlug;
+  const courseId = props.courseId;
 
   const chunkedLessons = React.useMemo(() => {
     const sortedLessons = [...lessons].sort((a, b) => a.order - b.order);
@@ -31,7 +31,7 @@ const CourseMilestoneMap = (props: Props) => {
         <CourseMilestonePattern
           key={0}
           cursor={0}
-          courseSlug={courseSlug}
+          courseId={courseId}
           lessons={el}
           finishedLessons={props.finishedLessons}
         ></CourseMilestonePattern>
@@ -42,7 +42,7 @@ const CourseMilestoneMap = (props: Props) => {
 
 const CourseMilestonePattern = (props: {
   cursor: number;
-  courseSlug: string;
+  courseId: string;
   lessons: Lesson[];
   finishedLessons: any;
 }) => {
@@ -68,15 +68,15 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }: any) => lessonId === lessonsToRender[0]?.order
+                  ({ lessonId }: any) => lessonId === lessonsToRender[0]?.id
                 )
               }
               onClick={function (): void {
                 router.push(
                   "/courses/" +
-                    props.courseSlug +
+                    props.courseId +
                     "/lessons/" +
-                    lessonsToRender[0].order
+                    lessonsToRender[0].id
                 );
               }}
               label={lessonsToRender[0]?.title}
@@ -103,15 +103,15 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }: any) => lessonId === lessonsToRender[1]?.order
+                  ({ lessonId }: any) => lessonId === lessonsToRender[1]?.id
                 )
               }
               onClick={function (): void {
                 router.push(
                   "/courses/" +
-                    props.courseSlug +
+                    props.courseId +
                     "/lessons/" +
-                    lessonsToRender[1]?.order
+                    lessonsToRender[1].id
                 );
               }}
               label={lessonsToRender[1]?.title}
@@ -124,15 +124,15 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }: any) => lessonId === lessonsToRender[2]?.order
+                  ({ lessonId }: any) => lessonId === lessonsToRender[2]?.id
                 )
               }
               onClick={function (): void {
                 router.push(
                   "/courses/" +
-                    props.courseSlug +
+                    props.courseId +
                     "/lessons/" +
-                    lessonsToRender[2].order
+                    lessonsToRender[2].id
                 );
               }}
               label={lessonsToRender[2]?.title}
@@ -173,15 +173,15 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }: any) => lessonId === lessonsToRender[3]?.order
+                  ({ lessonId }: any) => lessonId === lessonsToRender[3]?.id
                 )
               }
               onClick={function (): void {
                 router.push(
                   "/courses/" +
-                    props.courseSlug +
+                    props.courseId +
                     "/lessons/" +
-                    lessonsToRender[3].order
+                    lessonsToRender[3].id
                 );
               }}
               label={lessonsToRender[3]?.title}
@@ -193,15 +193,15 @@ const CourseMilestonePattern = (props: {
             <CourseMilestoneNodeButton
               completed={
                 !!props.finishedLessons.find(
-                  ({ lessonId }: any) => lessonId === lessonsToRender[4]?.order
+                  ({ lessonId }: any) => lessonId === lessonsToRender[4]?.id
                 )
               }
               onClick={function (): void {
                 router.push(
                   "/courses/" +
-                    props.courseSlug +
+                    props.courseId +
                     "/lessons/" +
-                    lessonsToRender[4].order
+                    lessonsToRender[4].id
                 );
               }}
               label={lessonsToRender[4]?.title}
