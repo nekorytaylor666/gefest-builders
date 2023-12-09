@@ -5,6 +5,8 @@ import { trpc } from "@/app/_trpc/client";
 import Editor from "@/components/editor";
 import LectureNavbar from "@/components/lecture-navbar";
 import { serverClient } from "@/app/_trpc/serverClient";
+import CommentsSection from "./_components/commentsSection";
+import { Separator } from "@/components/ui/separator";
 
 export default async function Page({
   params,
@@ -18,7 +20,7 @@ export default async function Page({
       <main className="">
         <LectureNavbar progress={50}></LectureNavbar>
         <Editor
-          className="container mt-20 mx-auto"
+          className="container px-0 mt-20 mx-auto"
           defaultValue={
             lesson?.jsonContent
               ? JSON.parse(lesson?.jsonContent as string)
@@ -26,6 +28,11 @@ export default async function Page({
           }
           readonly={true}
         ></Editor>
+        <div className="container px-0">
+          <Separator className="mt-8 mb-4"></Separator>
+          <CommentsSection></CommentsSection>
+        </div>
+
         {/* <div className="container mt-20">
           <div
             className="prose mx-auto"

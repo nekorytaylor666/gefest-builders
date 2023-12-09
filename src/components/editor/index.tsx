@@ -12,6 +12,7 @@ import { ImageResizer } from "./extensions/image-resizer";
 import { EditorProps } from "@tiptap/pm/view";
 import { Editor as EditorClass, Extensions, generateHTML } from "@tiptap/core";
 import { readonlyExtensions } from "./extensions/read-only-extensions";
+import { ReadonlyBubbleMenu } from "./comment-menu";
 
 export default function Editor({
   completionApi = "/api/generate",
@@ -92,6 +93,11 @@ export default function Editor({
       setContent(json);
     }
   }, debounceDuration);
+
+  const debouncedOnSelection = useDebouncedCallback((e) => {
+    const selection = e.editor.state.selection;
+    console.log(selection.ranges, selection.content());
+  }, 750);
 
   const editor = useEditor({
     extensions: [...defaultExtensions, ...extensions],
@@ -208,6 +214,7 @@ export default function Editor({
       className={className}
     >
       {editor && !readonly && <EditorBubbleMenu editor={editor} />}
+      {editor && readonly && <ReadonlyBubbleMenu editor={editor} />}
       {editor?.isActive("image") && !readonly && (
         <ImageResizer editor={editor} />
       )}
