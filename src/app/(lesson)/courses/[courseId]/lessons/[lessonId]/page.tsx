@@ -1,21 +1,18 @@
-"use client";
-
 import { Sheet } from "@/components/ui/sheet";
 
 import { trpc } from "@/app/_trpc/client";
 
 import Editor from "@/components/editor";
 import LectureNavbar from "@/components/lecture-navbar";
+import { serverClient } from "@/app/_trpc/serverClient";
 
-export default function Page({
+export default async function Page({
   params,
 }: {
   params: { courseId: string; lessonId: string };
 }) {
   const { courseId, lessonId } = params;
-  const [lesson] = trpc.lessons.getLessonById.useSuspenseQuery(
-    Number(lessonId)
-  );
+  const lesson = await serverClient.lessons.getLessonById(Number(lessonId));
   return (
     <Sheet>
       <main className="">
@@ -70,4 +67,10 @@ export default function Page({
       </main>
     </Sheet>
   );
+}
+
+export async function generateStaticParams() {
+  const lessons = await serverClient.lessons.listLessons();
+
+  return lessons.map((el) => el.id);
 }

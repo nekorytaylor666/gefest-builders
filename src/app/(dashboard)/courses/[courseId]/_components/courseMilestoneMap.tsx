@@ -42,7 +42,7 @@ const CourseMilestoneMap = (props: Props) => {
 
 const CourseMilestonePattern = (props: {
   cursor: number;
-  courseId: string;
+  courseId: number;
   lessons: Lesson[];
   finishedLessons: any;
 }) => {
