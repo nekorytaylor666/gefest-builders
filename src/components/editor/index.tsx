@@ -101,6 +101,7 @@ export default function Editor({
 
   const editor = useEditor({
     extensions: [...defaultExtensions, ...extensions],
+
     editorProps: {
       editable: () => !readonly,
       ...defaultEditorProps,

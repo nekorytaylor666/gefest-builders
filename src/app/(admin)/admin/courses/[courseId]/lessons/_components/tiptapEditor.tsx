@@ -55,7 +55,6 @@ const DraftEditorPageContainer = ({
   // );
 
   const lessonContent = lesson[0]?.jsonContent ?? "";
-  console.log("lesson content", lessonContent);
   const jsonContent = lessonContent && JSON.parse(lessonContent as any);
   const onContentSumbit = (values: MDXEditorValues) => {};
   return (

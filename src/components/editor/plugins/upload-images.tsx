@@ -1,8 +1,35 @@
 import { PutBlobResult } from "@vercel/blob";
 import { EditorState, Plugin, PluginKey } from "@tiptap/pm/state";
 import { Decoration, DecorationSet, EditorView } from "@tiptap/pm/view";
+import { supabase } from "@/lib/supabase";
 
 const uploadKey = new PluginKey("upload-image");
+
+const MAX_FILE_SIZE_MB = 20;
+
+const createPlaceholder = (type: string, src: string) => {
+  const placeholder = document.createElement("div");
+  placeholder.setAttribute("class", "img-placeholder");
+
+  if (type === "image") {
+    const image = document.createElement("img");
+    image.setAttribute(
+      "class",
+      "opacity-40 rounded-lg border border-stone-200"
+    );
+    image.src = src;
+    placeholder.appendChild(image);
+  }
+
+  if (type === "file") {
+    const download = document.createElement("a");
+    download.setAttribute("href", "#");
+    download.textContent = "Привет";
+    placeholder.appendChild(download);
+  }
+
+  return placeholder;
+};
 
 const UploadImagesPlugin = () =>
   new Plugin({
@@ -13,23 +40,12 @@ const UploadImagesPlugin = () =>
       },
       apply(tr, set) {
         set = set.map(tr.mapping, tr.doc);
-        // See if the transaction adds or removes any placeholders
         const action = tr.getMeta(this as any);
-        if (action && action.add) {
-          const { id, pos, src } = action.add;
 
-          const placeholder = document.createElement("div");
-          placeholder.setAttribute("class", "img-placeholder");
-          const image = document.createElement("img");
-          image.setAttribute(
-            "class",
-            "opacity-40 rounded-lg border border-stone-200"
-          );
-          image.src = src;
-          placeholder.appendChild(image);
-          const deco = Decoration.widget(pos + 1, placeholder, {
-            id,
-          });
+        if (action && action.add) {
+          const { id, pos, src, type } = action.add;
+          const placeholder = createPlaceholder(type, src);
+          const deco = Decoration.widget(pos + 1, placeholder, { id });
           set = set.add(tr.doc, [deco]);
         } else if (action && action.remove) {
           set = set.remove(
@@ -40,6 +56,7 @@ const UploadImagesPlugin = () =>
             )
           );
         }
+
         return set;
       },
     },
@@ -59,53 +76,41 @@ function findPlaceholder(state: EditorState, id: object) {
 }
 
 export function startImageUpload(file: File, view: EditorView, pos: number) {
-  // check if the file is an image
-  if (!file.type.includes("image/")) {
-    // toast.error("File type not supported.");
-    return;
-
-    // check if the file size is less than 20MB
-  } else if (file.size / 1024 / 1024 > 20) {
+  const isImage = file.type.includes("image/");
+  if (file.size / 1024 / 1024 > MAX_FILE_SIZE_MB) {
     // toast.error("File size too big (max 20MB).");
     return;
   }
 
-  // A fresh object to act as the ID for this upload
   const id = {} as any;
-
-  // Replace the selection with a placeholder
   const tr = view.state.tr;
   if (!tr.selection.empty) tr.deleteSelection();
 
   const reader = new FileReader();
   reader.readAsDataURL(file);
-  reader.onload = () => {
+  reader.onload = (el) => {
     tr.setMeta(uploadKey, {
       add: {
         id,
+        type: isImage ? "image" : "file",
         pos,
         src: reader.result,
       },
     });
+
     view.dispatch(tr);
   };
 
-  handleImageUpload(file).then((src) => {
+  const handleUpload = isImage ? handleImageUpload : handleFileUpload;
+  handleUpload(file).then((src) => {
     const { schema } = view.state;
-
     let pos = findPlaceholder(view.state, id);
-    // If the content around the placeholder has been deleted, drop
-    // the image
     if (pos == null) return;
 
-    // Otherwise, insert it at the placeholder's position, and remove
-    // the placeholder
-
-    // When BLOB_READ_WRITE_TOKEN is not valid or unavailable, read
-    // the image locally
-    const imageSrc = typeof src === "object" ? reader.result : src;
-
-    const node = schema.nodes.image.create({ src: imageSrc });
+    const url = typeof src === "object" ? reader.result : src;
+    const node = schema.nodes[isImage ? "image" : "downloadFile"].create(
+      isImage ? { src: url } : { fileUrl: url, fileName: file.name }
+    );
     const transaction = view.state.tr
       .replaceWith(pos, pos, node)
       .setMeta(uploadKey, { remove: { id } });
@@ -113,43 +118,46 @@ export function startImageUpload(file: File, view: EditorView, pos: number) {
   });
 }
 
-export const handleImageUpload = (file: File) => {
-  // upload to Vercel Blob
-  return new Promise((resolve) => {
-    return (
-      fetch("/api/upload", {
-        method: "POST",
-        headers: {
-          "content-type": file?.type || "application/octet-stream",
-          "x-vercel-filename": file?.name || "image.png",
-        },
-        body: file,
-      }).then(async (res) => {
-        // Successfully uploaded image
-        if (res.status === 200) {
-          const { url } = (await res.json()) as PutBlobResult;
-          // preload the image
-          let image = new Image();
-          image.src = url;
-          image.onload = () => {
-            resolve(url);
-          };
-          // No blob store configured
-        } else if (res.status === 401) {
-          resolve(URL.createObjectURL(file));
-          throw new Error(
-            "`BLOB_READ_WRITE_TOKEN` environment variable not found, reading image locally instead."
-          );
-          // Unknown error
-        } else {
-          throw new Error(`Error uploading image. Please try again.`);
-        }
-      }),
-      {
-        loading: "Uploading image...",
-        success: "Image uploaded successfully.",
-        error: (e: any) => e.message,
-      }
-    );
+const handleFileUpload = async (
+  file: File,
+  bucketName: string = "lessons-content"
+) => {
+  return new Promise(async (resolve) => {
+    const [filename, fileExt] = file.name.split(".");
+    const filepath = `${filename}-${Math.random()}.${fileExt}`;
+
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .upload(filepath, file);
+    if (error) throw new Error(error.message);
+    const url = data?.path;
+    const res = supabase.storage.from(bucketName).getPublicUrl(url);
+
+    const publicUrl = res.data.publicUrl;
+    resolve(publicUrl);
+  });
+};
+
+const handleImageUpload = async (
+  file: File,
+  bucketName: string = "lessons-content"
+) => {
+  return new Promise(async (resolve) => {
+    const [filename, fileExt] = file.name.split(".");
+    const filepath = `${filename}-${Math.random()}.${fileExt}`;
+
+    const { data, error } = await supabase.storage
+      .from(bucketName)
+      .upload(filepath, file);
+    if (error) throw new Error(error.message);
+    const url = data?.path;
+    const res = supabase.storage.from(bucketName).getPublicUrl(url);
+
+    const publicUrl = res.data.publicUrl;
+    const img = new Image();
+    img.src = publicUrl;
+    img.onload = function () {
+      resolve(publicUrl);
+    };
   });
 };

@@ -15,6 +15,7 @@ import UpdatedImage from "./updated-image";
 import CustomKeymap from "./custom-keymap";
 import DragAndDrop from "./drag-and-drop";
 import UploadImagesPlugin from "../plugins/upload-images";
+import UploadFilePlugin from "../plugins/upload-file";
 import css from "highlight.js/lib/languages/css";
 import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";
@@ -22,6 +23,7 @@ import html from "highlight.js/lib/languages/xml";
 import { createLowlight } from "lowlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import SandpackExtension from "./sandpack";
+import DownloadFileExtension from "./uploaded-file";
 
 const lowlight = createLowlight();
 
@@ -70,7 +72,7 @@ export const defaultExtensions = [
   CodeBlockLowlight.configure({
     lowlight,
   }),
-
+  DownloadFileExtension,
   SandpackExtension,
   // patch to fix horizontal rule bug: https://github.com/ueberdosis/tiptap/pull/3859#issuecomment-1536799740
   HorizontalRule.extend({
@@ -121,6 +123,9 @@ export const defaultExtensions = [
   }),
   Placeholder.configure({
     placeholder: ({ node }) => {
+      if (node.type.name === "downloadFile") {
+        return "";
+      }
       if (node.type.name === "heading") {
         return `Heading ${node.attrs.level}`;
       }

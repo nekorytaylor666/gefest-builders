@@ -28,7 +28,6 @@ const EditorPageContainer = ({
   const saveContentMutation = useMutation(
     (content: string) => {
       const file = new Blob([content], { type: "text/markdown" });
-      console.log(content);
       const formData = new FormData();
       formData.append("file", file);
       return fetch(`/api/courses/${courseId}/lessons/${lessonId}/editContent`, {
