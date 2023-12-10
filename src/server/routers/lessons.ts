@@ -86,4 +86,27 @@ export const lessonsRouter = t.router({
         },
       });
     }),
+  getLessonCommentsWithReviewsAndUsersAndReactions: publicProcedure
+    .input(
+      z.object({
+        lessonId: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await db.comment.findMany({
+        where: { lessonId: input.lessonId },
+        include: {
+          replies: {
+            include: {
+              user: true,
+            },
+          },
+          reactions: {
+            include: {
+              user: true,
+            },
+          },
+        },
+      });
+    }),
 });

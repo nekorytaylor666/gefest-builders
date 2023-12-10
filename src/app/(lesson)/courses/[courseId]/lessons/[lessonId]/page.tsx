@@ -15,6 +15,7 @@ export default async function Page({
 }) {
   const { courseId, lessonId } = params;
   const lesson = await serverClient.lessons.getLessonById(Number(lessonId));
+
   return (
     <Sheet>
       <main className="">
@@ -30,7 +31,7 @@ export default async function Page({
         ></Editor>
         <div className="container px-0">
           <Separator className="mt-8 mb-4"></Separator>
-          <CommentsSection></CommentsSection>
+          {/* <CommentsSection comments={comments}></CommentsSection> */}
         </div>
 
         {/* <div className="container mt-20">
