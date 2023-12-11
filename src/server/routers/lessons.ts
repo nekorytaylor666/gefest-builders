@@ -86,7 +86,7 @@ export const lessonsRouter = t.router({
         },
       });
     }),
-  getLessonCommentsWithReviewsAndUsersAndReactions: publicProcedure
+  getLessonsComments: publicProcedure
     .input(
       z.object({
         lessonId: z.number(),

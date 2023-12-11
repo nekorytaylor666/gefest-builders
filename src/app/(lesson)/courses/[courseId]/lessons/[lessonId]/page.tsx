@@ -16,6 +16,9 @@ export default async function Page({
   const { courseId, lessonId } = params;
   const lesson = await serverClient.lessons.getLessonById(Number(lessonId));
 
+  const comments = await serverClient.lessons.getLessonsComments({
+    lessonId: Number(lessonId),
+  });
   return (
     <Sheet>
       <main className="">
@@ -29,9 +32,9 @@ export default async function Page({
           }
           readonly={true}
         ></Editor>
-        <div className="container px-0">
+        <div className="container  p-4">
           <Separator className="mt-8 mb-4"></Separator>
-          {/* <CommentsSection comments={comments}></CommentsSection> */}
+          <CommentsSection comments={comments}></CommentsSection>
         </div>
 
         {/* <div className="container mt-20">
