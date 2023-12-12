@@ -32,7 +32,7 @@ export const CommentForm: FC<CommentFormProps> = ({
     setFocus,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<CommentFormValues>({
     resolver: zodResolver(CommentSchema),
   });
   const inputRef = useRef<HTMLInputElement>(null);

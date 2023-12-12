@@ -80,8 +80,8 @@ export default async function Page({
   );
 }
 
-export async function generateStaticParams() {
-  const lessons = await serverClient.lessons.listLessons();
+// export async function generateStaticParams() {
+//   const lessons = await serverClient.lessons.listLessons();
 
-  return lessons.map((el) => el.id);
-}
+//   return lessons.map((el) => el.id);
+// }

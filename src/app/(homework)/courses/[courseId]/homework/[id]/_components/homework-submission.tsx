@@ -11,7 +11,7 @@ import { Cross1Icon, TimerIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/app/_trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import TypographyH3 from "@/components/ui/typography/h3";
 import { useMutation } from "@tanstack/react-query";
 import { useToast } from "@/components/ui/use-toast";
@@ -44,10 +44,10 @@ type FormValues = z.infer<typeof validationSchema>;
 const HomeworkSubmission = () => {
   const { id: homeworkId } = useParams();
   const { toast } = useToast();
+  const router = useRouter();
   const {
     data: submission,
     isLoading: isSubmissionLoading,
-
     refetch,
   } = trpc.submissions.getSubmissionOfUserByHomeWorkId.useQuery(
     {
@@ -71,11 +71,11 @@ const HomeworkSubmission = () => {
       }),
     {
       onSuccess: () => {
-        refetch();
         toast({
           title: "Домашнее задание загружено!",
           description: "Продолжайте в том же духе :)",
         });
+        refetch();
       },
     }
   );

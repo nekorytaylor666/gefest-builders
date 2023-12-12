@@ -3,7 +3,7 @@ import { FC, useState } from "react";
 
 import { NodeSelector } from "./node-selector";
 import { ColorSelector } from "./color-selector";
-import { CommentForm, LinkSelector } from "./comment-form";
+import { CommentForm } from "./comment-form";
 import { cn } from "@/lib/utils";
 import {
   CodeIcon,

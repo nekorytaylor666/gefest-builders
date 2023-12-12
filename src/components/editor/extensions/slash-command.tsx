@@ -112,6 +112,7 @@ const getSuggestionItems = ({ query }: { query: string }) => {
       searchTerms: ["quiz", "test", "question"],
       icon: <CheckIcon className="w-4 h-4" />,
       command: ({ editor, range }: CommandProps) => {
+        //@ts-ignore
         editor.chain().focus().deleteRange(range).addQuiz().run();
       },
     },
@@ -228,6 +229,7 @@ const getSuggestionItems = ({ query }: { query: string }) => {
         editor.chain().focus().deleteRange(range).run();
         // add youtube video
         const url = prompt("Введите URL YouTube видео:");
+        if (!url) return;
         editor.chain().focus().setYoutubeVideo({ src: url }).run();
       },
     },

@@ -9,10 +9,10 @@ async function Page(context: { params: { courseId: string } }) {
   return <CoursePageContainer course={course}></CoursePageContainer>;
 }
 
-export async function generateStaticParams() {
-  const courses = await serverClient.courses.listCourses();
+// export async function generateStaticParams() {
+//   const courses = await serverClient.courses.listCourses();
 
-  return courses.map((el) => el.id);
-}
+//   return courses.map((el) => el.id);
+// }
 
 export default Page;

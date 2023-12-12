@@ -21,7 +21,7 @@ const schema = z.object({
 
 type SchemaType = z.infer<typeof schema>;
 
-const CoursePageActions = () => {
+const CourseCreateActionForm = () => {
   const { toast } = useToast();
   const { register, handleSubmit, formState, control } = useForm<SchemaType>({
     resolver: zodResolver(schema),
@@ -45,47 +45,38 @@ const CoursePageActions = () => {
   };
 
   return (
-    <div>
-      <Popover>
-        <PopoverTrigger asChild>
-          <Button>Добавить урок</Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
-            <Controller
-              name="title"
-              control={control}
-              render={({ field }) => (
-                <div>
-                  <Label>Заголовок</Label>
-                  <Input {...field} />
-                </div>
-              )}
-            />
-            {formState.errors.title?.message && (
-              <span>{formState.errors.title.message.toString()}</span>
-            )}
-            <Controller
-              name="description"
-              control={control}
-              render={({ field }) => (
-                <div>
-                  <Label>Описание</Label>
-                  <Input {...field} />
-                </div>
-              )}
-            />
-            {formState.errors.title?.message && (
-              <span>{formState.errors.title.message.toString()}</span>
-            )}
-            <Button variant={"outline"} type="submit">
-              Создать
-            </Button>
-          </form>
-        </PopoverContent>
-      </Popover>
-    </div>
+    <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        name="title"
+        control={control}
+        render={({ field }) => (
+          <div>
+            <Label>Заголовок</Label>
+            <Input {...field} />
+          </div>
+        )}
+      />
+      {formState.errors.title?.message && (
+        <span>{formState.errors.title.message.toString()}</span>
+      )}
+      <Controller
+        name="description"
+        control={control}
+        render={({ field }) => (
+          <div>
+            <Label>Описание</Label>
+            <Input {...field} />
+          </div>
+        )}
+      />
+      {formState.errors.title?.message && (
+        <span>{formState.errors.title.message.toString()}</span>
+      )}
+      <Button variant={"outline"} type="submit">
+        Создать
+      </Button>
+    </form>
   );
 };
 
-export default CoursePageActions;
+export default CourseCreateActionForm;

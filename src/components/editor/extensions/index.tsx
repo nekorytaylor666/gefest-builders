@@ -15,7 +15,6 @@ import UpdatedImage from "./updated-image";
 import CustomKeymap from "./custom-keymap";
 import DragAndDrop from "./drag-and-drop";
 import UploadImagesPlugin from "../plugins/upload-images";
-import UploadFilePlugin from "../plugins/upload-file";
 import css from "highlight.js/lib/languages/css";
 import js from "highlight.js/lib/languages/javascript";
 import ts from "highlight.js/lib/languages/typescript";

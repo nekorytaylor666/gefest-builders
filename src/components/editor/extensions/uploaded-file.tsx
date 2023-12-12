@@ -33,7 +33,7 @@ const DownloadFileExtension = Node.create({
   },
 
   addNodeView() {
-    return ReactNodeViewRenderer((props) => {
+    return ReactNodeViewRenderer((props: any) => {
       const { node } = props;
 
       return (
