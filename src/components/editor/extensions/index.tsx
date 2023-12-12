@@ -24,6 +24,8 @@ import { createLowlight } from "lowlight";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import SandpackExtension from "./sandpack";
 import DownloadFileExtension from "./uploaded-file";
+import QuizExtension from "./quiz";
+import { Youtube } from "./loom";
 
 const lowlight = createLowlight();
 
@@ -121,9 +123,13 @@ export const defaultExtensions = [
       class: "rounded-lg border border-stone-200",
     },
   }),
+  Youtube,
   Placeholder.configure({
     placeholder: ({ node }) => {
       if (node.type.name === "downloadFile") {
+        return "";
+      }
+      if (node.type.name === "quiz") {
         return "";
       }
       if (node.type.name === "heading") {
@@ -135,6 +141,7 @@ export const defaultExtensions = [
   }),
   SlashCommand,
   TiptapUnderline,
+  QuizExtension,
   TextStyle,
   Color,
   Highlight.configure({

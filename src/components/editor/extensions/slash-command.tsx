@@ -14,6 +14,7 @@ import tippy from "tippy.js";
 
 import { startImageUpload } from "../plugins/upload-images";
 import {
+  CheckIcon,
   CheckboxIcon,
   CodeIcon,
   HeadingIcon,
@@ -22,6 +23,7 @@ import {
   QuoteIcon,
   TextIcon,
 } from "@radix-ui/react-icons";
+import { FaYoutube } from "react-icons/fa";
 
 interface CommandItemProps {
   title: string;
@@ -102,6 +104,15 @@ const getSuggestionItems = ({ query }: { query: string }) => {
       icon: <CheckboxIcon className="w-4 h-4" />,
       command: ({ editor, range }: CommandProps) => {
         editor.chain().focus().deleteRange(range).toggleTaskList().run();
+      },
+    },
+    {
+      title: "Quiz",
+      description: "Create a quiz.",
+      searchTerms: ["quiz", "test", "question"],
+      icon: <CheckIcon className="w-4 h-4" />,
+      command: ({ editor, range }: CommandProps) => {
+        editor.chain().focus().deleteRange(range).addQuiz().run();
       },
     },
     {
@@ -209,6 +220,19 @@ const getSuggestionItems = ({ query }: { query: string }) => {
       },
     },
     {
+      title: "YouTube",
+      description: "Вставить YouTube видео.",
+      searchTerms: ["youtube", "video"],
+      icon: <FaYoutube className="w-4 h-4" />,
+      command: ({ editor, range }: CommandProps) => {
+        editor.chain().focus().deleteRange(range).run();
+        // add youtube video
+        const url = prompt("Введите URL YouTube видео:");
+        editor.chain().focus().setYoutubeVideo({ src: url }).run();
+      },
+    },
+
+    {
       title: "Image",
       description: "Upload an image from your computer.",
       searchTerms: ["photo", "picture", "media"],
@@ -218,6 +242,7 @@ const getSuggestionItems = ({ query }: { query: string }) => {
         // upload image
         const input = document.createElement("input");
         input.type = "file";
+
         input.accept = "image/*";
         input.onchange = async () => {
           if (input.files?.length) {
