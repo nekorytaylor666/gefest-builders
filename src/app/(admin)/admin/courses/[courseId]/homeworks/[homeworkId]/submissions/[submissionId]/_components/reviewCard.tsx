@@ -11,6 +11,7 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { Review } from "@prisma/client";
 import { inferAsyncReturnType } from "@trpc/server";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface ReviewCardProp {
@@ -19,10 +20,12 @@ interface ReviewCardProp {
 
 const ReviewCard = (props: ReviewCardProp) => {
   const { toast } = useToast();
+  const router = useRouter();
   const removeReviewSubmissionMutation =
     trpc.review.removeReviewFromSubmission.useMutation({
       onSuccess() {
         toast({ title: "Оценка удалена" });
+        router.refresh();
       },
     });
   return (
