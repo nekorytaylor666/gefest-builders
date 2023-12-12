@@ -11,6 +11,13 @@ export const homeworkRouter = t.router({
       });
     }),
 
+  getHomeworkById: publicProcedure
+    .input(z.number())
+    .query(async ({ input }) => {
+      return await db.homework.findUnique({
+        where: { id: input },
+      });
+    }),
   getHomeworkByCourseIdAndHomeworkId: publicProcedure
     .input(
       z.object({
@@ -61,6 +68,19 @@ export const homeworkRouter = t.router({
           courseId: input.courseId,
           title: input.title,
         },
+      });
+    }),
+  editHomeworkContent: publicProcedure
+    .input(
+      z.object({
+        homeworkId: z.number(),
+        content: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await db.homework.update({
+        where: { id: input.homeworkId },
+        data: { jsonContent: input.content },
       });
     }),
 });

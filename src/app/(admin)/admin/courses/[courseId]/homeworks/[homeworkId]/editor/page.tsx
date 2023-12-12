@@ -19,30 +19,14 @@ async function EditHomeworkPage({
       courseId,
       homeworkId,
     });
-  let content;
-  if (APP_CONFIG.FETCH_LOCALLY) {
-    const path = `src/content/${homework?.mdxContentPath}`;
-    console.log("fetchin locally");
-    try {
-      content = fs.readFileSync(path, "utf8");
-    } catch (err) {
-      console.error(`Error: ${err}`);
-    }
-  } else {
-    const path = `https://gefest.b-cdn.net/${homework?.mdxContentPath}`;
-
-    console.log("fetching remotely", path);
-
-    const response = await fetch(path);
-    content = await response.text();
-  }
-
+  const homeworkContent = homework?.jsonContent ?? "";
+  const jsonContent = homeworkContent && JSON.parse(homeworkContent as any);
   return (
     <Suspense fallback={null}>
       <HomeworkEditor
         homeworkId={homeworkId}
         courseId={courseId}
-        initialContent={content}
+        initialContent={jsonContent}
       />
     </Suspense>
   );

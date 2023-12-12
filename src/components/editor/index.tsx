@@ -16,7 +16,7 @@ import { ReadonlyBubbleMenu } from "./comment-menu";
 
 export default function Editor({
   completionApi = "/api/generate",
-  className = "relative min-h-[500px] w-full max-w-screen-lg border-stone-200 bg-white sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg focus:ring-0",
+  className = "relative min-h-[500px] w-full  border-stone-200 bg-white sm:mb-[calc(20vh)] sm:rounded-lg sm:border sm:shadow-lg focus:ring-0",
   defaultValue = defaultEditorContent,
   extensions = [],
   editorProps = {},

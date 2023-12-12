@@ -18,11 +18,9 @@ import Editor from "@/components/editor";
 import { trpc } from "@/app/_trpc/client";
 import SuperJSON from "superjson";
 const DraftEditorPageContainer = ({
-  initialContent,
   courseId,
   lessonId,
 }: {
-  initialContent: any;
   lessonId: number;
   courseId: number;
 }) => {
@@ -33,30 +31,9 @@ const DraftEditorPageContainer = ({
     lessonId,
   });
   const saveContentMutation = trpc.lessons.editLessonContent.useMutation();
-  // const saveContentMutation = useMutation(
-  //   (content: string) => {
-  //     const file = new Blob([content], { type: "text/markdown" });
-  //     console.log(content);
-  //     const formData = new FormData();
-  //     formData.append("file", file);
-  //     return fetch(`/api/courses/${courseId}/lessons/${lessonId}/editContent`, {
-  //       method: "POST",
-  //       body: formData,
-  //     }).then((res) => res.json());
-  //   },
-  //   {
-  //     onSuccess: (res) => {
-  //       toast({
-  //         title: "Контент урока изменена",
-  //         description: "Хорошая работа :)",
-  //       });
-  //     },
-  //   }
-  // );
 
   const lessonContent = lesson[0]?.jsonContent ?? "";
   const jsonContent = lessonContent && JSON.parse(lessonContent as any);
-  const onContentSumbit = (values: MDXEditorValues) => {};
   return (
     <Suspense fallback={<div>loading...</div>}>
       <DashboardHeader

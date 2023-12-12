@@ -14,6 +14,8 @@ import { useToast } from "@/components/ui/use-toast";
 import Breadcrumb from "@/components/breadcrumbs";
 import { debounce } from "@/lib/utils";
 import { MDXEditor, MDXEditorValues } from "@/components/mdxEditor";
+import Editor from "@/components/editor";
+import { trpc } from "@/app/_trpc/client";
 
 const HomeworkEditor = ({
   initialContent,
@@ -25,35 +27,8 @@ const HomeworkEditor = ({
   courseId: number;
 }) => {
   const { toast } = useToast();
+  const saveContentMutation = trpc.homework.editHomeworkContent.useMutation();
 
-  const saveContentMutation = useMutation(
-    (content: string) => {
-      const file = new Blob([content], { type: "text/markdown" });
-      console.log(content);
-      const formData = new FormData();
-      formData.append("file", file);
-      return fetch(
-        `/api/courses/${courseId}/homeworks/${homeworkId}/editContent`,
-        {
-          method: "POST",
-          body: formData,
-        }
-      ).then((res) => res.json());
-    },
-    {
-      onSuccess: (res) => {
-        toast({
-          title: "Контент урока изменена",
-          description: "Хорошая работа :)",
-        });
-      },
-    }
-  );
-
-  const onContentSumbit = (values: MDXEditorValues) => {
-    console.log(values.content);
-    saveContentMutation.mutate(values.content);
-  };
   return (
     <Suspense fallback={<div>loading...</div>}>
       <DashboardHeader
@@ -61,10 +36,16 @@ const HomeworkEditor = ({
         text="Обновление контента домашнего задания"
       ></DashboardHeader>
       <Separator className="my-4"></Separator>
-      <MDXEditor
-        initialContent={initialContent}
-        onContentSubmit={onContentSumbit}
-      ></MDXEditor>
+      <Editor
+        defaultValue={initialContent}
+        onDebouncedUpdate={(editor) => {
+          const json = editor?.getJSON();
+          const html = editor?.getHTML();
+          console.log({ html });
+          const content = JSON.stringify(json);
+          saveContentMutation.mutate({ homeworkId, content });
+        }}
+      ></Editor>
     </Suspense>
   );
 };

@@ -33,30 +33,9 @@ export default async function Page({
   params: { slug: string; id: string };
 }) {
   const { slug, id } = params;
-  let content;
-  if (APP_CONFIG.FETCH_LOCALLY) {
-    const path = `src/content/${slug}/homeworks/${id}/content.mdx`;
-    try {
-      content = fs.readFileSync(path, "utf8");
-    } catch (err) {
-      console.error(`Error: ${err}`);
-    }
-  } else {
-    const response = await fetch(
-      `https://gefest.b-cdn.net/${slug}/homeworks/${id}/content.mdx`
-    );
-    content = await response.text();
-  }
-  if (!content) {
-    return (
-      <div>
-        <h1>Ошибка: нет содержимого для задания</h1>
-      </div>
-    );
-  }
-
-  const serializedMdxContent = await serializeMdxContent(content);
-
+  const homework = await serverClient.homework.getHomeworkById(Number(id));
+  const jsonContent =
+    homework && homework.jsonContent && JSON.parse(homework.jsonContent as any);
   return (
     <div className="container lg:h-[80vh] p-4">
       <div className="flex flex-col items-start gap-4">
@@ -96,7 +75,7 @@ export default async function Page({
               </CardDescription>
             </CardHeader>
             <CardContent className="">
-              <HomeworkContent content={serializedMdxContent}></HomeworkContent>
+              <HomeworkContent content={jsonContent}></HomeworkContent>
             </CardContent>
             <CardFooter className="flex justify-between"></CardFooter>
           </Card>
