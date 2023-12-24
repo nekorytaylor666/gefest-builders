@@ -33,4 +33,5 @@ const LessonsPage = ({ params }: { params: { courseId: string } }) => {
   );
 };
 
+export const dynamic = "force-dynamic";
 export default LessonsPage;

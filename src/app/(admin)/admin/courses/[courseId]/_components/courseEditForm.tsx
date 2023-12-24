@@ -23,6 +23,7 @@ import { Switch } from "@/components/ui/switch";
 import { trpc } from "@/app/_trpc/client";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { supabase } from "@/lib/supabase";
 
 type Course = inferAsyncReturnType<
   (typeof serverClient)["courses"]["listCourses"]
@@ -80,6 +81,45 @@ export function CouseEditForm({ course }: { course: Course }) {
             </FormItem>
           )}
         />
+        {/* <FormField
+          control={form.control}
+          name="thumbnailPath"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Миниатюра курса</FormLabel>
+              <FormControl>
+                <input
+                  type="file"
+                  onChange={async (e) => {
+                    if (e.target.files.length > 0) {
+                      const file = e.target.files[0];
+
+                      const bucketName = "lessons-content";
+                      const [filename, fileExt] = file.name.split(".");
+                      const filepath = `${filename}-${Math.random()}.${fileExt}`;
+
+                      const { data, error } = await supabase.storage
+                        .from(bucketName)
+                        .upload(filepath, file);
+                      if (error) throw new Error(error.message);
+                      const url = data?.path;
+                      const res = supabase.storage
+                        .from(bucketName)
+                        .getPublicUrl(url);
+
+                      const publicUrl = res.data.publicUrl;
+                      field.onChange(publicUrl);
+                    }
+                  }}
+                />
+              </FormControl>
+              <FormDescription>
+                Загрузите миниатюру для вашего курса
+              </FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        /> */}
         <FormField
           control={form.control}
           name="slug"
