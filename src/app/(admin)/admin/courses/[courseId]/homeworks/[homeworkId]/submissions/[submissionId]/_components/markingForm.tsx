@@ -9,6 +9,7 @@ import TypographyH3 from "@/components/ui/typography/h3";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { inferAsyncReturnType } from "@trpc/server";
+import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -35,15 +36,22 @@ const SubmissionMarkingForm = ({
       },
     });
   const reviewMutation = trpc.review.createReview.useMutation();
-
+  const router = useRouter();
   const markValue = watch("mark");
   const onSubmit = (data: ReviewSchemaType) => {
-    reviewMutation.mutate({
-      type: "TEACHER",
-      submissionId,
-      userId,
-      ...data,
-    });
+    reviewMutation.mutate(
+      {
+        type: "TEACHER",
+        submissionId,
+        userId,
+        ...data,
+      },
+      {
+        onSuccess() {
+          router.refresh();
+        },
+      }
+    );
   };
 
   return (

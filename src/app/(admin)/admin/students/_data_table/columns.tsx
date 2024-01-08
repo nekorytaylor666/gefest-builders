@@ -32,10 +32,6 @@ export type Student = inferAsyncReturnType<
 
 export const columns: ColumnDef<Student>[] = [
   {
-    accessorKey: "fullName",
-    header: "Имя",
-  },
-  {
     accessorKey: "email",
     header: "Почта",
   },

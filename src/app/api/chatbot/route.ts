@@ -1,14 +1,12 @@
 import { db } from "@/lib/db";
 import { openai } from "@/lib/openai";
-import { getSession } from "@auth0/nextjs-auth0";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(
   request: NextRequest,
   { params }: { params: { courseId: string; lessonId: string } }
 ) {
-  const session = await getSession();
-  const userId = session?.user?.id;
+  const userId = "1";
   if (!userId) {
     return NextResponse.json({
       success: false,

@@ -1,5 +1,4 @@
 import React from "react";
-import { NavMenu } from "./navmenu";
 import Image from "next/image";
 import Link from "next/link";
 import { UserNav } from "./user-nav";
@@ -16,7 +15,7 @@ const Navbar = () => {
             alt="logo"
           ></Image>
         </Link>
-        <UserNav></UserNav>
+        <UserNav />
       </div>
     </div>
   );

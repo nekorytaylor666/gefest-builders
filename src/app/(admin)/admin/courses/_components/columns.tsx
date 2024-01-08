@@ -10,11 +10,18 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { ProcedureReturnType } from "@/lib/utils";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { inferAsyncReturnType } from "@trpc/server";
 import Link from "next/link";
+import HomeworkAddForm from "../[courseId]/homeworks/_components/homeworkAddForm";
+import LessonAddForm from "../[courseId]/lessons/_components/lessonAddForm";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -49,7 +56,7 @@ export const columns: ColumnDef<Course>[] = [
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original;
+      const course = row.original;
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -58,10 +65,41 @@ export const columns: ColumnDef<Course>[] = [
               <DotsHorizontalIcon className="h-4 w-4" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Действия</DropdownMenuLabel>
+          <DropdownMenuContent className="flex flex-col" align="end">
             <DropdownMenuItem asChild>
-              <Link href={`/admin/courses/${payment.id}`}>Перейти к курсу</Link>
+              <Button className="text-left" asChild variant={"ghost"}>
+                <Link href={`/admin/courses/${course.id}`}>
+                  Перейти к курсу
+                </Link>
+              </Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Button className="text-left" asChild variant={"ghost"}>
+                <Link href={`/admin/courses/${course.id}/homeworks`}>
+                  Перейти к домашкам
+                </Link>
+              </Button>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant={"ghost"}>Добавить домашнее задание</Button>
+                </PopoverTrigger>
+                <PopoverContent className="w-96">
+                  <HomeworkAddForm courseId={course.id}></HomeworkAddForm>
+                </PopoverContent>
+              </Popover>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <Button variant={"ghost"}>Добавить урок</Button>
+                </PopoverTrigger>
+                <PopoverContent>
+                  <LessonAddForm courseId={course.id}></LessonAddForm>
+                </PopoverContent>
+              </Popover>
+              {/* <Link href={`/admin/courses/${course.id}`}>Перейти к курсу</Link> */}
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

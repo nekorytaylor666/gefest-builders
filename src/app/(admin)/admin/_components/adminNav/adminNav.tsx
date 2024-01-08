@@ -12,6 +12,16 @@ import {
   PersonIcon,
 } from "@radix-ui/react-icons";
 import { NavItem } from "./adminNav.types";
+import TypographyH3 from "@/components/ui/typography/h3";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { trpc } from "@/app/_trpc/client";
+import { NavigationMenuItem } from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
 
 const items: NavItem[] = [
   { title: "Главная", href: "/", icon: HomeIcon },
@@ -26,6 +36,8 @@ const items: NavItem[] = [
 
 export function DashboardNav() {
   const path = usePathname();
+  const { data, isLoading } = trpc.courses.listCourses.useQuery();
+  console.log("courses:", data);
 
   if (!items?.length) {
     return null;

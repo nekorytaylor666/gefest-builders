@@ -16,6 +16,11 @@ export const lessonsRouter = t.router({
         },
       });
     }),
+  getLessonById: publicProcedure.input(z.number()).query(async ({ input }) => {
+    return await db.lesson.findUnique({
+      where: { id: input },
+    });
+  }),
   getLessonByCourseIdAndLessonId: publicProcedure
     .input(
       z.object({
@@ -48,6 +53,19 @@ export const lessonsRouter = t.router({
         data: input.data,
       });
     }),
+  editLessonContent: publicProcedure
+    .input(
+      z.object({
+        lessonId: z.number(),
+        content: z.string(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      return await db.lesson.update({
+        where: { id: input.lessonId },
+        data: { jsonContent: input.content },
+      });
+    }),
   createLesson: publicProcedure
     .input(
       z.object({
@@ -65,6 +83,29 @@ export const lessonsRouter = t.router({
           authorId: "1",
           order: lessonCount + 1,
           courseId: input.courseId,
+        },
+      });
+    }),
+  getLessonsComments: publicProcedure
+    .input(
+      z.object({
+        lessonId: z.number(),
+      })
+    )
+    .query(async ({ input }) => {
+      return await db.comment.findMany({
+        where: { lessonId: input.lessonId },
+        include: {
+          replies: {
+            include: {
+              user: true,
+            },
+          },
+          reactions: {
+            include: {
+              user: true,
+            },
+          },
         },
       });
     }),

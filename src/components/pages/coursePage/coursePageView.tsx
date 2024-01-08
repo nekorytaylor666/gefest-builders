@@ -1,5 +1,5 @@
 import React from "react";
-import CourseMilestoneMap from "@/app/(dashboard)/courses/[slug]/_components/courseMilestoneMap";
+import CourseMilestoneMap from "@/app/(dashboard)/courses/[courseId]/_components/courseMilestoneMap";
 import {
   ArrowLeftIcon,
   CardStackIcon,
@@ -14,27 +14,29 @@ import Image from "next/image";
 import { AppRouter, ReactQueryOptions } from "@/server";
 import { CourseData, CoursePageProps } from "./type";
 import { Progress } from "@/components/ui/progress";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import { trpc } from "@/app/_trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import HomeworkList from "@/app/(dashboard)/courses/[slug]/_components/courseHomeworksList";
+import HomeworkList from "@/app/(dashboard)/courses/[courseId]/_components/courseHomeworksList";
 
 const CoursePageView = (props: { course: CourseData; other?: any }) => {
   const { course } = props;
-  const { user, isLoading: isUserLoading } = useUser();
-  const userId = (user?.id as string) ?? (user?.sid as string);
-  const {
-    data,
-    isLoading: isProgressLoading,
-    error,
-  } = trpc.courses.getCourseDataWithUserProgress.useQuery(
-    {
-      userId,
-      courseSlug: course?.slug as string,
-    },
-    { enabled: !!userId }
-  );
+  if (!course) {
+    return <div></div>;
+  }
+  // const { user, isLoading: isUserLoading } = useUser();
+  // const userId = (user?.id as string) ?? (user?.sid as string);
+  // const {
+  //   data,
+  //   isLoading: isProgressLoading,
+  //   error,
+  // } = trpc.courses.getCourseDataWithUserProgress.useQuery(
+  //   {
+  //     userId,
+  //     courseSlug: course?.slug as string,
+  //   },
+  //   { enabled: !!userId }
+  // );
 
   return (
     <Tabs defaultValue="map">
@@ -60,24 +62,24 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
                 <Image
                   width={250}
                   height={250}
-                  src={"https://gefest.b-cdn.net/" + course?.thumbnailPath}
-                  alt={course?.title ?? "course-thumbnail"}
+                  src={"https://gefest.b-cdn.net/" + course.thumbnailPath}
+                  alt={course.title ?? "course-thumbnail"}
                 />
               </div>
               <p className="text-sm text-muted-foreground">
-                Уроков - {course?.lessons.length}
+                Уроков - {course.lessons.length}
               </p>
-              <TypographyH2>{course?.title}</TypographyH2>
+              <TypographyH2>{course.title}</TypographyH2>
               <CardDescription className="text-md">
-                {course?.description}
+                {course.description}
               </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="pb-2 font-semibold">Прогресс:</p>
-              <CourseProgressBar
+              {/* <CourseProgressBar
                 courseProgress={data?.courseProgress}
                 courseSlug={course?.slug ?? ""}
-              ></CourseProgressBar>
+              ></CourseProgressBar> */}
             </CardContent>
           </Card>
         </div>
@@ -85,15 +87,15 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
           <TabsContent value="map">
             <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth ">
               <CourseMilestoneMap
-                finishedLessons={data?.lessonProgress ?? []}
-                courseSlug={course?.slug ?? ""}
-                lessons={course?.lessons ?? []}
+                finishedLessons={[]}
+                courseId={course.id}
+                lessons={course.lessons ?? []}
               ></CourseMilestoneMap>
             </ScrollArea>
           </TabsContent>
           <TabsContent value="homework">
             <HomeworkList
-              courseSlug={course?.slug ?? ""}
+              courseId={course?.slug ?? ""}
               homeworks={course?.homeworks}
             ></HomeworkList>
           </TabsContent>

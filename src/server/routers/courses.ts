@@ -33,14 +33,16 @@ export const coursesRouter = t.router({
       z.object({
         title: z.string(),
         description: z.string(),
-        thumbnailPath: z.string().optional(),
         authorId: z.string(),
-        slug: z.string(),
       })
     )
     .mutation(async ({ input }) => {
       return await db.course.create({
-        data: input,
+        data: {
+          title: input.title,
+          description: input.description,
+          authorId: input.authorId,
+        },
       });
     }),
   getCourseById: publicProcedure.input(z.number()).query(async ({ input }) => {

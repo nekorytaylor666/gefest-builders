@@ -1,8 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import { UserProvider } from "@auth0/nextjs-auth0/client";
-
 import Provider from "./_trpc/Provider";
 import { Toaster } from "@/components/ui/toaster";
 const inter = Inter({ subsets: ["latin"] });
@@ -40,14 +38,12 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <UserProvider>
-        <Provider>
-          <body className={inter.className}>
-            {children}
-            <Toaster />
-          </body>
-        </Provider>
-      </UserProvider>
+      <Provider>
+        <body className={inter.className}>
+          {children}
+          <Toaster />
+        </body>
+      </Provider>
     </html>
   );
 }

@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 
-import { getSession } from "@auth0/nextjs-auth0";
 import { db } from "@/lib/db";
 import { serverClient } from "@/app/_trpc/serverClient";
 import { APP_CONFIG } from "@/lib/config";

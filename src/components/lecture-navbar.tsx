@@ -3,15 +3,11 @@ import React from "react";
 import { HiMiniXMark, HiFire } from "react-icons/hi2";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
-import { getSession } from "@auth0/nextjs-auth0";
 import { useRouter } from "next/navigation";
-import { useUser } from "@auth0/nextjs-auth0/client";
+import { UserNav } from "./user-nav";
 
 const LectureNavbar = ({ progress }: { progress: number }) => {
-  const session = useUser();
   const router = useRouter();
-  const user = session?.user;
-  console.log(user);
   return (
     <nav className="fixed w-full top-0 z-50 p-4 shadow-sm lg:shadow-none bg-white">
       <div className="flex items-center justify-between w-full gap-2  lg:px-8">
@@ -33,16 +29,7 @@ const LectureNavbar = ({ progress }: { progress: number }) => {
             </h3>
             <HiFire className="text-orange-600 h-6 w-6"></HiFire>
           </div>
-
-          <div className="hidden lg:block relative aspect-square rounded-full w-10 h-10 overflow-hidden flex items-center justify-center bg-gradient-to-t from-green-400 to-green-100">
-            <img
-              className="absolute inset-0 object-cover"
-              width={80}
-              height={80}
-              src={user?.picture ?? ""}
-              alt=""
-            />
-          </div>
+          <UserNav></UserNav>
         </div>
       </div>
     </nav>

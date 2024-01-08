@@ -5,7 +5,6 @@ import MDXRenderer from "./mdx-renderer";
 import TypographyH2 from "@/components/ui/typography/h1";
 import { Button } from "./ui/button";
 import { MDXContent } from "@/lib/mdx-utils";
-import { useUser } from "@auth0/nextjs-auth0/client";
 import LectureNavbar from "./lecture-navbar";
 import { useRouter } from "next/navigation";
 import { trpc } from "@/app/_trpc/client";
@@ -32,8 +31,6 @@ const LectureContent = ({
   const { toast } = useToast();
 
   const [showSuccess, setShowSuccess] = useState(false);
-  const { user } = useUser();
-  const userId = user?.id as string;
 
   const data = trpc.progress.markLessonAsCompleted.useMutation();
 
@@ -46,7 +43,7 @@ const LectureContent = ({
 
     setShowSuccess(true);
     data.mutate(
-      { userId, courseId: course!.id, lessonId },
+      { userId: "1", courseId: course!.id, lessonId },
       {
         onSuccess(res) {
           console.log(res);

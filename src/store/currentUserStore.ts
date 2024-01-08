@@ -1,18 +1,13 @@
-import { create } from "zustand";
+import { User } from "@supabase/supabase-js";
+import { SetState, GetState, create } from "zustand";
 
-type UserState = {
-  currentUser: null | {
-    email: string;
-    fullName: string;
-    phoneNumber: string;
-    picture?: string;
-    metadata?: string;
-    externalUserId?: string;
-  };
-  setCurrentUser: (currentUser: UserState["currentUser"]) => void;
-};
+// Define the state type
+interface UserState {
+  user: User | null;
+  setUser: (user: User) => void;
+}
 
-export const useCurrentUserStore = create<UserState>((set) => ({
-  currentUser: null,
-  setCurrentUser: (currentUser) => set(() => ({ currentUser })),
+export const useStore = create<UserState>((set) => ({
+  user: null,
+  setUser: (user: User) => set({ user }),
 }));
