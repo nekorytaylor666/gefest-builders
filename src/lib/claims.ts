@@ -1,6 +1,10 @@
 import { supabase } from "./supabase";
 
-const set_claim = async (uid: string, claim: string, value: object) => {
+export const setAuthClaims = async (
+  uid: string,
+  claim: string,
+  value: unknown
+) => {
   const { data, error } = await supabase.rpc("set_claim", {
     uid,
     claim,
@@ -8,5 +12,3 @@ const set_claim = async (uid: string, claim: string, value: object) => {
   });
   return { data, error };
 };
-
-const checkForAdmin = async () => {};
