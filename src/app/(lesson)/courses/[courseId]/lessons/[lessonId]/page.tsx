@@ -32,30 +32,10 @@ export default async function Page({
           }
           readonly={true}
         ></Editor>
-        <div className="container  p-4">
+        {/* <div className="container  p-4">
           <Separator className="mt-8 mb-4"></Separator>
           <CommentsSection comments={comments}></CommentsSection>
-        </div>
-
-        {/* <div className="container mt-20">
-          <div
-            className="prose mx-auto"
-            dangerouslySetInnerHTML={{ __html: html }}
-          />
         </div> */}
-        {/* <Editor
-          defaultValue={lesson?.jsonContent}
-          onDebouncedUpdate={(editor) => {
-            const json = editor?.getJSON();
-            const content = JSON.stringify(json);
-            saveContentMutation.mutate({ lessonId: lessonId, content });
-          }}
-        ></Editor> */}
-        {/* <LectureContent
-          course={course}
-          lessonId={parseInt(id)}
-          serializedMdxSections={serializedSections}
-        ></LectureContent> */}
 
         {/* <SheetTrigger className="sticky bottom-4 left-4">
           <Button className="w-16 h-16" variant={"outline"} size={"icon"}>
