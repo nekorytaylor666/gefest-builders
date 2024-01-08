@@ -2,7 +2,9 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Provider from "./_trpc/Provider";
+import React, { Suspense } from "react";
 import { Toaster } from "@/components/ui/toaster";
+import { PHProvider, PostHogPageview } from "../providers/posthog";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -38,12 +40,17 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <Provider>
-        <body className={inter.className}>
-          {children}
-          <Toaster />
-        </body>
-      </Provider>
+      <Suspense>
+        <PostHogPageview />
+      </Suspense>
+      <PHProvider>
+        <Provider>
+          <body className={inter.className}>
+            {children}
+            <Toaster />
+          </body>
+        </Provider>
+      </PHProvider>
     </html>
   );
 }
