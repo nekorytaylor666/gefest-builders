@@ -18,7 +18,7 @@ import ru from "date-fns/locale/ru";
 import { ClockIcon } from "@radix-ui/react-icons";
 interface Props {
   homeworks: any;
-  courseId: string;
+  courseId: number;
 }
 
 const HomeworkList = (props: Props) => {

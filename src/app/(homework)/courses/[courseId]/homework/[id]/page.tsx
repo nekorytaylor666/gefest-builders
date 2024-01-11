@@ -30,17 +30,18 @@ import { APP_CONFIG } from "@/lib/config";
 export default async function Page({
   params,
 }: {
-  params: { slug: string; id: string };
+  params: { slug: string; id: string; courseId: string };
 }) {
-  const { slug, id } = params;
+  const { id, courseId } = params;
   const homework = await serverClient.homework.getHomeworkById(Number(id));
+
   const jsonContent =
     homework && homework.jsonContent && JSON.parse(homework.jsonContent as any);
   return (
     <div className="container lg:h-[80vh] p-4">
       <div className="flex flex-col items-start gap-4">
         <Button asChild className="text-muted-foreground" variant={"ghost"}>
-          <Link href={`/courses/${slug}`}>
+          <Link href={`/courses/${courseId}`}>
             <ArrowLeftIcon className="mr-2"></ArrowLeftIcon>
             Назад
           </Link>

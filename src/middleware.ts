@@ -28,12 +28,11 @@ async function setPremiumClaim(req: NextRequest, session: any) {
   const premiumParam = url.searchParams.get("premium");
 
   const hasPremiumParam = url.searchParams.has("premium");
+  const hasPremiumClaim = session?.user?.app_metadata.premium;
 
   console.log(hasPremiumParam, premiumParam, url.searchParams.get("premium"));
-  if (hasPremiumParam) {
-    console.log(session.user.id);
+  if (hasPremiumParam && !hasPremiumClaim) {
     // Устанавливаем claim "premium" в true
-
     const { data, error } = await supabase.rpc("set_claim", {
       claim: "premium",
       uid: session.user.id,
@@ -64,7 +63,6 @@ export async function middleware(req: NextRequest) {
     const session = await getSession(req);
     await setPremiumClaim(req, session);
 
-    console.log("custom claims", session?.user?.app_metadata); // show custom claims
     return redirectIfNotAuthenticated(session, req);
   }
 }

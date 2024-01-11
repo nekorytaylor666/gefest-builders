@@ -95,7 +95,7 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
           </TabsContent>
           <TabsContent value="homework">
             <HomeworkList
-              courseId={course?.slug ?? ""}
+              courseId={course?.id ?? ""}
               homeworks={course?.homeworks}
             ></HomeworkList>
           </TabsContent>
