@@ -156,3 +156,21 @@ export const getEmbedUrlFromYoutubeUrl = (options: GetEmbedUrlOptions) => {
 
   return outputUrl;
 };
+
+export const LOOM_REGEX = /^(https?:\/\/)?(www\.)?(loom\.com\/share\/)(.+)?$/;
+export const LOOM_REGEX_GLOBAL =
+  /^(https?:\/\/)?(www\.)?(loom\.com\/share\/)(.+)?$/g;
+
+export const isValidLoomUrl = (url: string) => {
+  return LOOM_REGEX.test(url);
+};
+
+export const getEmbedUrlFromLoomUrl = (url: string) => {
+  const matches = LOOM_REGEX.exec(url);
+
+  if (!matches || !matches[4]) {
+    return null;
+  }
+
+  return `https://www.loom.com/embed/${matches[4]}`;
+};

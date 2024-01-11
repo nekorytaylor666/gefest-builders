@@ -44,6 +44,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   const handleSignInWithGoogle = async () => {
     setIsLoading(true);
+    console.log(`${location.origin}/api/auth/callback`);
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {

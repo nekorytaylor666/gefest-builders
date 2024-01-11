@@ -1,14 +1,12 @@
 import { mergeAttributes, Node, nodePasteRule } from "@tiptap/core";
 
-// Импортируйте или определите свои функции для Loom здесь
 import {
-  getEmbedUrlFromLoomUrl,
-  isValidLoomUrl,
-  LOOM_REGEX_GLOBAL,
+  getEmbedUrlFromYoutubeUrl,
+  isValidYoutubeUrl,
+  YOUTUBE_REGEX_GLOBAL,
 } from "./loom-utils";
 
-export interface LoomOptions {
-  // Определите свои опции здесь
+export interface YoutubeOptions {
   addPasteHandler: boolean;
   allowFullscreen: boolean;
   autoplay: boolean;
@@ -32,7 +30,7 @@ export interface LoomOptions {
   width: number;
 }
 
-type SetLoomVideoOptions = {
+type SetYoutubeVideoOptions = {
   src: string;
   width?: number;
   height?: number;
@@ -41,17 +39,18 @@ type SetLoomVideoOptions = {
 
 declare module "@tiptap/core" {
   interface Commands<ReturnType> {
-    loom: {
+    youtube: {
       /**
-       * Insert a loom video
+       * Insert a youtube video
        */
-      setLoomVideo: (options: SetLoomVideoOptions) => ReturnType;
+      setYoutubeVideo: (options: SetYoutubeVideoOptions) => ReturnType;
     };
   }
 }
 
-export const Loom = Node.create<LoomOptions>({
-  name: "loom",
+export const Youtube = Node.create<YoutubeOptions>({
+  name: "youtube",
+
   addOptions() {
     return {
       addPasteHandler: true,
@@ -112,15 +111,13 @@ export const Loom = Node.create<LoomOptions>({
       },
     ];
   },
-  // Определите свои методы здесь, аналогично расширению Youtube
 
   addCommands() {
     return {
-      setLoomVideo:
-        (options: SetLoomVideoOptions) =>
+      setYoutubeVideo:
+        (options: SetYoutubeVideoOptions) =>
         ({ commands }) => {
-          console.log("loom url", options.src);
-          if (!isValidLoomUrl(options.src)) {
+          if (!isValidYoutubeUrl(options.src)) {
             return false;
           }
 
@@ -133,9 +130,13 @@ export const Loom = Node.create<LoomOptions>({
   },
 
   addPasteRules() {
+    if (!this.options.addPasteHandler) {
+      return [];
+    }
+
     return [
       nodePasteRule({
-        find: LOOM_REGEX_GLOBAL,
+        find: YOUTUBE_REGEX_GLOBAL,
         type: this.type,
         getAttributes: (match) => {
           return { src: match.input };
@@ -145,26 +146,53 @@ export const Loom = Node.create<LoomOptions>({
   },
 
   renderHTML({ HTMLAttributes }) {
-    const embedUrl = getEmbedUrlFromLoomUrl(HTMLAttributes.src);
+    const embedUrl = getEmbedUrlFromYoutubeUrl({
+      url: HTMLAttributes.src,
+      allowFullscreen: this.options.allowFullscreen,
+      autoplay: this.options.autoplay,
+      ccLanguage: this.options.ccLanguage,
+      ccLoadPolicy: this.options.ccLoadPolicy,
+      controls: this.options.controls,
+      disableKBcontrols: this.options.disableKBcontrols,
+      enableIFrameApi: this.options.enableIFrameApi,
+      endTime: this.options.endTime,
+      interfaceLanguage: this.options.interfaceLanguage,
+      ivLoadPolicy: this.options.ivLoadPolicy,
+      loop: this.options.loop,
+      modestBranding: this.options.modestBranding,
+      nocookie: this.options.nocookie,
+      origin: this.options.origin,
+      playlist: this.options.playlist,
+      progressBarColor: this.options.progressBarColor,
+      startAt: HTMLAttributes.start || 0,
+    });
 
     HTMLAttributes.src = embedUrl;
 
     return [
       "div",
-      {
-        "data-loom-video": "",
-        class: "aspect-video rounded-lg overflow-hidden bg-zinc-300",
-        style: "position: relative; padding-bottom: 56.25%; height: 0;",
-      },
+      { "data-youtube-video": "" },
       [
         "iframe",
         mergeAttributes(
-          {},
+          this.options.HTMLAttributes,
           {
-            allowfullscreen: true,
-            autoplay: true,
-            style:
-              "position: absolute; top: 0; left: 0; width: 100%; height: 100%;",
+            width: this.options.width,
+            height: this.options.height,
+            allowfullscreen: this.options.allowFullscreen,
+            autoplay: this.options.autoplay,
+            ccLanguage: this.options.ccLanguage,
+            ccLoadPolicy: this.options.ccLoadPolicy,
+            disableKBcontrols: this.options.disableKBcontrols,
+            enableIFrameApi: this.options.enableIFrameApi,
+            endTime: this.options.endTime,
+            interfaceLanguage: this.options.interfaceLanguage,
+            ivLoadPolicy: this.options.ivLoadPolicy,
+            loop: this.options.loop,
+            modestBranding: this.options.modestBranding,
+            origin: this.options.origin,
+            playlist: this.options.playlist,
+            progressBarColor: this.options.progressBarColor,
           },
           HTMLAttributes
         ),

@@ -233,6 +233,19 @@ const getSuggestionItems = ({ query }: { query: string }) => {
         editor.chain().focus().setYoutubeVideo({ src: url }).run();
       },
     },
+    {
+      title: "Loom",
+      description: "Вставить Loom видео.",
+      searchTerms: ["Loom", "video"],
+      icon: <FaYoutube className="w-4 h-4" />,
+      command: ({ editor, range }: CommandProps) => {
+        editor.chain().focus().deleteRange(range).run();
+        // add youtube video
+        const url = prompt("Введите URL Loom видео:");
+        if (!url) return;
+        editor.chain().focus().setLoomVideo({ src: url }).run();
+      },
+    },
 
     {
       title: "Image",

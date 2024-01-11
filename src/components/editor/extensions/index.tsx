@@ -24,7 +24,8 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import SandpackExtension from "./sandpack";
 import DownloadFileExtension from "./uploaded-file";
 import QuizExtension from "./quiz";
-import { Youtube } from "./loom";
+import { Youtube } from "./youtube";
+import { Loom } from "./loom";
 
 const lowlight = createLowlight();
 
@@ -123,6 +124,7 @@ export const defaultExtensions = [
     },
   }),
   Youtube,
+  Loom,
   Placeholder.configure({
     placeholder: ({ node }) => {
       if (node.type.name === "downloadFile") {
