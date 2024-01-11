@@ -11,6 +11,16 @@ const config = {
 
   webpack: (config, options) => {
     config.module.rules.push({
+      test: /\.riv$/,
+      use: {
+        loader: "url-loader",
+        options: {
+          limit: 100000,
+        },
+      },
+    });
+
+    config.module.rules.push({
       test: /\.wasm$/,
       use: ["url-loader"],
     });

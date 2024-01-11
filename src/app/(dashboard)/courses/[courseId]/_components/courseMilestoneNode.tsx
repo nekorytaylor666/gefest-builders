@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import { useCallback } from "react";
+import MilestoneRive from "./milestone.riv";
 
 interface CourseMilestoneNodeButtonProps {
   onClick: () => void;
@@ -23,7 +24,7 @@ function CourseMilestoneNodeButton({
   completed,
 }: CourseMilestoneNodeButtonProps) {
   const { RiveComponent, rive } = useRive({
-    src: "/milestone.riv",
+    src: MilestoneRive,
     stateMachines: "State Machine 1",
     autoplay: true,
     shouldDisableRiveListeners: true,

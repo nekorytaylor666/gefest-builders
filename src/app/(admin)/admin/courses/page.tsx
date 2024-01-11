@@ -3,7 +3,6 @@ import { DashboardShell } from "../_components/dashboardShell";
 import { DashboardHeader } from "../_components/dashboardHeader";
 import { serverClient } from "@/app/_trpc/serverClient";
 import { columns } from "./_components/columns";
-import { Button } from "@/components/ui/button";
 import { DataTable } from "@/components/data-table";
 import CoursePageActions from "./_components/coursePageActions";
 
