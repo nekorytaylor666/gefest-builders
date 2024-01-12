@@ -40,17 +40,18 @@ export default function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <Suspense>
-        <PostHogPageview />
-      </Suspense>
-      <PHProvider>
-        <Provider>
+
+      <Provider>
+        <PHProvider>
+          <Suspense>
+            <PostHogPageview />
+          </Suspense>
           <body className={inter.className}>
             {children}
             <Toaster />
           </body>
-        </Provider>
-      </PHProvider>
+        </PHProvider>
+      </Provider>
     </html>
   );
 }

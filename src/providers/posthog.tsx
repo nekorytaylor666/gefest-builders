@@ -5,6 +5,7 @@ import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
 import { usePathname, useSearchParams } from "next/navigation";
 import React, { useEffect } from "react";
+import { useUser } from "@/lib/hooks/useUserSession";
 
 if (typeof window !== "undefined") {
   posthog.init(process.env.NEXT_PUBLIC_POSTHOG_KEY ?? "", {
@@ -16,6 +17,7 @@ if (typeof window !== "undefined") {
 export function PostHogPageview(): JSX.Element {
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { data } = useUser();
 
   useEffect(() => {
     if (pathname) {
@@ -26,8 +28,10 @@ export function PostHogPageview(): JSX.Element {
       posthog.capture("$pageview", {
         $current_url: url,
       });
+      console.log(data?.user);
+      posthog.identify(data?.user?.id, { email: data?.user?.email });
     }
-  }, [pathname, searchParams]);
+  }, [pathname, searchParams, data]);
 
   return <></>;
 }
