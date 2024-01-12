@@ -241,12 +241,12 @@ const HomeworkSubmission = () => {
             <div className=" mt-4">
               {isSubmitting ? (
                 <Button
-                  type="submit"
+                  disabled
                   size={"lg"}
                   className="w-full"
-                  variant="ghost"
+                  variant="outline"
                 >
-                  <TimerIcon />
+                  <TimerIcon /> Загрузка...
                 </Button>
               ) : (
                 <Button type="submit" size={"lg"} className="w-full">

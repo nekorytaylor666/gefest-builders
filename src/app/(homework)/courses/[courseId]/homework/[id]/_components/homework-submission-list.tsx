@@ -22,7 +22,7 @@ const HomeworkSubmissionsList: FC<HomeworkSubmissionsListProps> = ({
 }) => {
   const { toast } = useToast();
   const { submissions } = trpc.useUtils();
-  const deleteSubmissionMutation =
+  const { isLoading, mutate: deleteSubmissionMutate } =
     trpc.submissions.deleteSubmission.useMutation({
       onSuccess() {
         submissions.invalidate();
@@ -50,8 +50,9 @@ const HomeworkSubmissionsList: FC<HomeworkSubmissionsListProps> = ({
         <div>
           <div className="flex justify-between items-center">
             <Button
+              disabled={isLoading}
               onClick={() => {
-                deleteSubmissionMutation.mutate(submission.id);
+                deleteSubmissionMutate(submission.id);
               }}
             >
               Удалить ответ
