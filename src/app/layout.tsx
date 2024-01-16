@@ -18,7 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="ru">
+    <html lang="ru" className="notranslate" translate="no">
       <head>
         <title>Gefest Builders</title>
         <link
