@@ -1,5 +1,5 @@
 import React from "react";
-
+/* eslint-disable react/no-unescaped-entities */
 const PrivacyPage = () => {
   return (
     <div className="container my-12 prose">
