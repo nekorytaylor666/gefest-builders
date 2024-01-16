@@ -3,16 +3,17 @@ import React from "react";
 import { HiMiniXMark, HiFire } from "react-icons/hi2";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { UserNav } from "./user-nav";
 
 const LectureNavbar = ({ progress }: { progress: number }) => {
   const router = useRouter();
+  const { courseId } = useParams();
   return (
     <nav className="fixed w-full top-0 z-50 p-4 shadow-sm lg:shadow-none bg-white">
       <div className="flex items-center justify-between w-full gap-2  lg:px-8">
         <Button
-          onClick={() => router.back()}
+          onClick={() => router.push("/courses/" + courseId)}
           className="p-0"
           size={"icon"}
           variant={"ghost"}
