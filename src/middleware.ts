@@ -59,10 +59,10 @@ export async function middleware(req: NextRequest) {
     // If the user is not authenticated, redirect them to the login page
   }
   // Получаем текущий URL
-  if (req.nextUrl.pathname.startsWith("/courses")) {
-    const session = await getSession(req);
-    await setPremiumClaim(req, session);
+  // if (req.nextUrl.pathname.startsWith("/courses")) {
+  //   const session = await getSession(req);
+  //   await setPremiumClaim(req, session);
 
-    return redirectIfNotAuthenticated(session, req);
-  }
+  //   return redirectIfNotAuthenticated(session, req);
+  // }
 }

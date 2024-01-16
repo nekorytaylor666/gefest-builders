@@ -2,6 +2,26 @@ import { z } from "zod";
 import { t, publicProcedure } from "../trpc";
 import { db } from "@/lib/db";
 
+const findCourseById = async (id: number) => {
+  return await db.course.findUnique({
+    where: { id },
+    include: {
+      lessons: true,
+      homeworks: true,
+    },
+  });
+};
+
+const findCourseBySlug = async (slug: string) => {
+  return await db.course.findUnique({
+    where: { slug },
+    include: {
+      lessons: true,
+      homeworks: true,
+    },
+  });
+};
+
 export const coursesRouter = t.router({
   listCourses: publicProcedure.query(async () => {
     return await db.course.findMany({
@@ -46,24 +66,12 @@ export const coursesRouter = t.router({
       });
     }),
   getCourseById: publicProcedure.input(z.number()).query(async ({ input }) => {
-    return await db.course.findUnique({
-      where: { id: input },
-      include: {
-        lessons: true,
-        homeworks: true,
-      },
-    });
+    return await findCourseById(input);
   }),
   getCourseBySlug: publicProcedure
     .input(z.string())
     .query(async ({ input }) => {
-      return await db.course.findUnique({
-        where: { slug: input },
-        include: {
-          lessons: true,
-          homeworks: true,
-        },
-      });
+      return await findCourseBySlug(input);
     }),
   getCourseDataWithUserProgress: publicProcedure
     .input(
