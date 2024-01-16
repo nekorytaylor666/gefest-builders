@@ -69,7 +69,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       email,
       options: {
         shouldCreateUser: false,
-        emailRedirectTo: `${location.origin}/auth/callback`,
+        emailRedirectTo: `${location.origin}/api/auth/callback`,
       },
     });
     console.log(data, error);
