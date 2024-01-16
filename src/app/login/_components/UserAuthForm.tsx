@@ -10,6 +10,8 @@ import { FaGoogle, FaSpinner } from "react-icons/fa";
 import { useUser } from "@/lib/hooks/useUserSession";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import { useToast } from "@/components/ui/use-toast";
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
@@ -18,6 +20,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [password, setPassword] = React.useState("");
 
   const router = useRouter();
+  const { toast } = useToast();
 
   const handleSignUp = async () => {
     await supabase.auth.signUp({
@@ -62,17 +65,32 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   async function onSubmit(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
+    const { data, error } = await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        shouldCreateUser: false,
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+    console.log(data, error);
+    toast({
+      title:
+        "Мы отправили ссылку на почту " +
+        email +
+        ". Откройте ссылку, чтобы войти",
+      duration: 60000,
+    });
 
     setTimeout(() => {
       setIsLoading(false);
-    }, 3000);
+    }, 1000);
   }
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      {/* <form onSubmit={onSubmit}> */}
-      {/* <div className="grid gap-2"> */}
-      {/* <div className="grid gap-1">
+      <form onSubmit={onSubmit}>
+        <div className="grid gap-2">
+          <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
               Email
             </Label>
@@ -88,7 +106,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
             />
           </div>
-          <div className="grid gap-1">
+          {/* <div className="grid gap-1">
             <Label className="sr-only" htmlFor="password">
               Пароль
             </Label>
@@ -100,7 +118,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               type="password"
               disabled={isLoading}
             />
-          </div>
+          </div> */}
           <Button onClick={handleSignIn} disabled={isLoading}>
             {isLoading && <FaSpinner className="mr-2 h-4 w-4 animate-spin" />}
             Войти с Email
@@ -116,7 +134,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             Или продолжить с...
           </span>
         </div>
-      </div> */}
+      </div>
       <Button
         onClick={handleSignInWithGoogle}
         variant="outline"
