@@ -26,6 +26,7 @@ import {
 } from "@/components/ui/card";
 import HomeworkMark from "./homemork-mark";
 import HomeworkLoadingSkeleton from "./homework-loading-skeleton";
+import { useUser } from "@/lib/hooks/useUserSession";
 
 const validationSchema = z.object({
   submission: z
@@ -44,7 +45,9 @@ type FormValues = z.infer<typeof validationSchema>;
 const HomeworkSubmission = () => {
   const { id: homeworkId } = useParams();
   const { toast } = useToast();
+  const { data, isLoading } = useUser();
   const router = useRouter();
+  const userId = data?.user?.id;
   const {
     data: submission,
     isLoading: isSubmissionLoading,
@@ -52,9 +55,9 @@ const HomeworkSubmission = () => {
   } = trpc.submissions.getSubmissionOfUserByHomeWorkId.useQuery(
     {
       homeworkId: Number(homeworkId),
-      userId: "1",
+      userId: userId!,
     },
-    { enabled: true }
+    { enabled: !isLoading || !!userId }
   );
   const form = useForm<FormValues>({
     resolver: zodResolver(validationSchema),

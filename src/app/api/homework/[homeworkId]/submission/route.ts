@@ -31,7 +31,7 @@ export async function POST(
   const supabase = createRouteHandlerClient({ cookies: () => cookieStore });
 
   const user = await supabase.auth.getUser();
-  const userId = "1";
+  const userId = user.data.user?.id;
 
   if (!userId) {
     return NextResponse.json({
