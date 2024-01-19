@@ -42,14 +42,6 @@ const LectureContent = ({
     if (!course?.id) return;
 
     setShowSuccess(true);
-    data.mutate(
-      { userId: "1", courseId: course!.id, lessonId },
-      {
-        onSuccess(res) {
-          console.log(res);
-        },
-      }
-    );
   };
 
   const onLectureContentNext = () => {
