@@ -8,14 +8,9 @@ export default function HomeworkLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
-      <head>
-        <title>Homework</title>
-      </head>
-      <body>
-        <Navbar></Navbar>
-        <div className="pt-8">{children}</div>
-      </body>
-    </html>
+    <div>
+      <Navbar></Navbar>
+      <div className="pt-8">{children}</div>
+    </div>
   );
 }

@@ -7,16 +7,16 @@ export const progressRouter = t.router({
     .input(
       z.object({
         userId: z.string(),
-        lessonId: z.number(),
-        courseId: z.number(),
+        lessonId: z.string(),
+        courseId: z.string(),
       })
     )
     .mutation(async ({ input: { userId, lessonId, courseId } }) => {
       const existingProgress = await db.lessonProgress.findFirst({
         where: {
           userId,
-          lessonId,
-          courseId,
+          lessonId: Number(lessonId),
+          courseId: Number(courseId),
         },
       });
 
@@ -24,8 +24,8 @@ export const progressRouter = t.router({
         return await db.lessonProgress.create({
           data: {
             userId,
-            lessonId,
-            courseId,
+            lessonId: Number(lessonId),
+            courseId: Number(courseId),
             completed: true,
           },
         });

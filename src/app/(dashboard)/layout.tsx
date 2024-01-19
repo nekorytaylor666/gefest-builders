@@ -15,14 +15,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html>
-      <head>
-        <title>Gefest Builders</title>
-      </head>
-      <body>
-        <Navbar></Navbar>
-        <div className="pt-8">{children}</div>
-      </body>
-    </html>
+    <div>
+      <Navbar></Navbar>
+      <div className="pt-8">{children}</div>
+    </div>
   );
 }

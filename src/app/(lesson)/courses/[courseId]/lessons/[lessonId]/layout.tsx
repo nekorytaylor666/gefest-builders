@@ -6,14 +6,5 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return (
-    <html>
-      <head>
-        <title>Gefest Builders</title>
-      </head>
-      <body>
-        <div>{children}</div>
-      </body>
-    </html>
-  );
+  return <div>{children}</div>;
 }

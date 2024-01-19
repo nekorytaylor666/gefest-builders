@@ -101,6 +101,7 @@ export default function Editor({
     extensions: [...defaultExtensions, ...extensions],
 
     content: defaultValue,
+
     editorProps: {
       editable: () => !readonly,
       ...defaultEditorProps,
@@ -121,7 +122,7 @@ export default function Editor({
       className={className}
     >
       {editor && !readonly && <EditorBubbleMenu editor={editor} />}
-      {editor && readonly && <ReadonlyBubbleMenu editor={editor} />}
+      {/* {editor && readonly && <ReadonlyBubbleMenu editor={editor} />} */}
       {editor?.isActive("image") && !readonly && (
         <ImageResizer editor={editor} />
       )}
