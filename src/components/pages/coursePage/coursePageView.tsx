@@ -18,26 +18,33 @@ import { trpc } from "@/app/_trpc/client";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import HomeworkList from "@/app/(dashboard)/courses/[courseId]/_components/courseHomeworksList";
+import { useUser } from "@/lib/hooks/useUserSession";
 
 const CoursePageView = (props: { course: CourseData; other?: any }) => {
   const { course } = props;
+  const { data: userData, isLoading: isUserLoading } = useUser();
+
   if (!course) {
     return <div></div>;
   }
-  // const { user, isLoading: isUserLoading } = useUser();
-  // const userId = (user?.id as string) ?? (user?.sid as string);
-  // const {
-  //   data,
-  //   isLoading: isProgressLoading,
-  //   error,
-  // } = trpc.courses.getCourseDataWithUserProgress.useQuery(
-  //   {
-  //     userId,
-  //     courseSlug: course?.slug as string,
-  //   },
-  //   { enabled: !!userId }
-  // );
+  const userId = userData?.user?.id;
 
+  const {
+    data: lessonProgress,
+    isLoading: isProgressLoading,
+    error,
+  } = trpc.courses.getUserLessonProgress.useQuery(
+    {
+      courseId: course.id,
+      userId: userId!,
+    },
+    { enabled: !!userId }
+  );
+
+  const totalLessons = course.lessons.length;
+  const completedLessons = lessonProgress?.length ?? 0;
+
+  const courseProgress = (completedLessons / totalLessons) * 100;
   return (
     <Tabs defaultValue="map">
       <div className="grid grid-cols-1 items-start lg:grid-cols-5 container max-w-screen-xl p-0 gap-8">
@@ -76,10 +83,10 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
             </CardHeader>
             <CardContent>
               <p className="pb-2 font-semibold">Прогресс:</p>
-              {/* <CourseProgressBar
-                courseProgress={data?.courseProgress}
+              <CourseProgressBar
+                courseProgress={courseProgress}
                 courseSlug={course?.slug ?? ""}
-              ></CourseProgressBar> */}
+              ></CourseProgressBar>
             </CardContent>
           </Card>
         </div>
@@ -87,7 +94,7 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
           <TabsContent value="map">
             <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth ">
               <CourseMilestoneMap
-                finishedLessons={[]}
+                finishedLessons={courseProgress}
                 courseId={course.id}
                 lessons={course.lessons ?? []}
               ></CourseMilestoneMap>

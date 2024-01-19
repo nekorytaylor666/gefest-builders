@@ -121,4 +121,22 @@ export const coursesRouter = t.router({
         where: { slug: input },
       });
     }),
+  getUserLessonProgress: publicProcedure
+    .input(
+      z.object({
+        userId: z.string(),
+        courseId: z.number(),
+      })
+    )
+    .query(async ({ input: { userId, courseId } }) => {
+      const lessonProgress = await db.lessonProgress.findMany({
+        where: {
+          userId: userId,
+          courseId: courseId,
+          completed: true,
+        },
+      });
+
+      return lessonProgress;
+    }),
 });
