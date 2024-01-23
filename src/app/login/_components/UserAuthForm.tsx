@@ -47,7 +47,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   const handleSignInWithGoogle = async () => {
     setIsLoading(true);
-    console.log(`${location.origin}/api/auth/callback`);
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
@@ -72,7 +71,6 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         emailRedirectTo: `${location.origin}/api/auth/callback`,
       },
     });
-    console.log(data, error);
     toast({
       title:
         "Мы отправили ссылку на почту " +

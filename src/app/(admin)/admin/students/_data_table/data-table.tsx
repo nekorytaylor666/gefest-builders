@@ -135,7 +135,6 @@ function Filter({
     [column.getFacetedUniqueValues()]
   );
 
-  console.log("column", column.columnDef, firstValue);
   return typeof firstValue === "number" ? (
     <div>
       <div className="flex space-x-2">

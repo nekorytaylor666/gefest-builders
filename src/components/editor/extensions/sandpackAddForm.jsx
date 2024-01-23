@@ -37,7 +37,6 @@ const SandpackAddForm = ({ onSubmit }) => {
       }, {})
     );
     onSubmit(files);
-    console.log(files);
   };
   return (
     <div className="flex items-center justify-center h-full">

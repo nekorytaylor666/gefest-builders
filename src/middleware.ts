@@ -30,7 +30,6 @@ async function setPremiumClaim(req: NextRequest, session: any) {
   const hasPremiumParam = url.searchParams.has("premium");
   const hasPremiumClaim = session?.user?.app_metadata.premium;
 
-  console.log(hasPremiumParam, premiumParam, url.searchParams.get("premium"));
   if (hasPremiumParam && !hasPremiumClaim) {
     // Устанавливаем claim "premium" в true
     const { data, error } = await supabase.rpc("set_claim", {
@@ -38,7 +37,6 @@ async function setPremiumClaim(req: NextRequest, session: any) {
       uid: session.user.id,
       value: true,
     });
-    console.log(data, error);
 
     // Обновляем сессию
     const res = await supabase.auth.refreshSession();

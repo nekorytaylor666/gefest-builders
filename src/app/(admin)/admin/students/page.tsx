@@ -49,7 +49,6 @@ const CoursesPage = () => {
   });
   const [totalStudents] =
     trpc.students.getTotalNumberOfStudents.useSuspenseQuery();
-  console.log(page, take, totalStudents);
   const router = useRouter();
   return (
     <DashboardShell>

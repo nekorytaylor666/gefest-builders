@@ -8,8 +8,6 @@ const AssistantChatContainer = ({
 }: {
   messages: AssistantMessage[];
 }) => {
-  console.log("messages", messages);
-
   return (
     <div className="grid grid-cols-8 gap-8">
       {messages?.map((el) => (

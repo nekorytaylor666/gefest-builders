@@ -94,7 +94,6 @@ export default function Editor({
 
   const debouncedOnSelection = useDebouncedCallback((e) => {
     const selection = e.editor.state.selection;
-    console.log(selection.ranges, selection.content());
   }, 750);
 
   const editor = useEditor({

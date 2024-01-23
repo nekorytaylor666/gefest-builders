@@ -42,7 +42,6 @@ const AssistantChat = () => {
 
     for (const rawMessage of rawMessages) {
       const messageText = rawMessage.content[0].text.value;
-      console.log(messageText);
       const serializedMessage = await serializeMdxContent(messageText);
       rawMessage.serializedContent = serializedMessage;
       //   serializedMessages.push(serializedMessage);
@@ -55,7 +54,6 @@ const AssistantChat = () => {
     enabled: !initialMessagesFetched || !!lastRun,
   });
 
-  console.log("state:", userData, lastRun, data, error);
   const createThreadMutation = useMutation(
     async (payload: { query: string; thread: string }) => {
       const response = await fetch("/api/chatbot", {
@@ -79,8 +77,6 @@ const AssistantChat = () => {
           const run = res.run;
           const thread = res.thread;
           setLastRun(run);
-
-          console.log("response from mutation:", res, thread);
         },
       }
     );

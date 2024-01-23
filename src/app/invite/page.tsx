@@ -19,7 +19,6 @@ const InvitePage = () => {
           uid: session?.user.id,
           value: true,
         });
-        console.log(data, error);
 
         // Обновляем сессию
         const res = await supabase.auth.refreshSession();

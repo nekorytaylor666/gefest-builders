@@ -29,7 +29,6 @@ const VideoEmbed = React.memo(
     );
   },
   (prevProp, nextProp) => {
-    console.log(prevProp, nextProp, prevProp === nextProp);
     return true;
   }
 );

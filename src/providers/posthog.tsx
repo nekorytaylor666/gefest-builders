@@ -28,7 +28,6 @@ export function PostHogPageview(): JSX.Element {
       posthog.capture("$pageview", {
         $current_url: url,
       });
-      console.log(data?.user);
       posthog.identify(data?.user?.id, { email: data?.user?.email });
     }
   }, [pathname, searchParams, data]);

@@ -154,7 +154,6 @@ const HomeworkSubmission = () => {
                   onDragEnter={() => setIsFileHovered(true)}
                   onDragLeave={() => setIsFileHovered(false)}
                   onDropAccepted={(acceptedFiles) => {
-                    console.log(acceptedFiles);
                     onDrop(acceptedFiles);
                     acceptedFiles.map((acceptedFile) => {
                       return append({

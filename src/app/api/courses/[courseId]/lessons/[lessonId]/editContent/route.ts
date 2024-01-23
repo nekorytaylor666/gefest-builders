@@ -56,7 +56,6 @@ export async function POST(
     },
   });
   const purgeRes = await purge(path);
-  console.log(purgeRes);
 
   if (!response.ok) {
     return NextResponse.json({ success: false, error: response.statusText });
@@ -83,7 +82,6 @@ async function purge(filepath: string) {
   try {
     const response = await fetch(purgeUrl, options);
     const data = response.body;
-    console.log("purged:", filepath, data);
     return data;
   } catch (err) {
     console.error(err);

@@ -39,7 +39,6 @@ export const columns: ColumnDef<Student>[] = [
     header: "Когорта",
     accessorFn: (row) => {
       const cohorts = row.userCohorts.map((el) => el.cohort.name).flat();
-      console.log("user cohorts:", cohorts);
       return cohorts;
     },
     filterFn: "includesString",

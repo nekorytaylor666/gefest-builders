@@ -53,9 +53,7 @@ export const CommentForm: FC<CommentFormProps> = ({
       if (!children.isTextblock) break;
       content.push(children.textContent);
     }
-    console.log(selection.content());
     setIsOpen(false);
-    console.log(comment, { anchor, from, to, head, content: content });
   };
   // Autofocus on input by default
   useEffect(() => {

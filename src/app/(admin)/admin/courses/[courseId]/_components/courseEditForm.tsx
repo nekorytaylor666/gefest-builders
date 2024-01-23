@@ -50,7 +50,6 @@ export function CouseEditForm({ course }: { course: Course }) {
   });
   const router = useRouter();
 
-  console.log(form.formState.errors);
   function onSubmit(values: z.infer<typeof formSchema>) {
     alert("hello");
     editCourseMutation.mutate(

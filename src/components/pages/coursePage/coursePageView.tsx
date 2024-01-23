@@ -30,7 +30,7 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
   const userId = userData?.user?.id;
 
   const {
-    data: lessonProgress,
+    data: finishedLessons,
     isLoading: isProgressLoading,
     error,
   } = trpc.courses.getUserLessonProgress.useQuery(
@@ -42,7 +42,7 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
   );
 
   const totalLessons = course.lessons.length;
-  const completedLessons = lessonProgress?.length ?? 0;
+  const completedLessons = finishedLessons?.length ?? 0;
 
   const courseProgress = (completedLessons / totalLessons) * 100;
   return (
@@ -94,7 +94,7 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
           <TabsContent value="map">
             <ScrollArea className="lg:h-[calc(100vh-100px)] scroll-smooth ">
               <CourseMilestoneMap
-                finishedLessons={courseProgress}
+                finishedLessons={finishedLessons ?? []}
                 courseId={course.id}
                 lessons={course.lessons ?? []}
               ></CourseMilestoneMap>

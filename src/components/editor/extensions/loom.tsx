@@ -119,7 +119,6 @@ export const Loom = Node.create<LoomOptions>({
       setLoomVideo:
         (options: SetLoomVideoOptions) =>
         ({ commands }) => {
-          console.log("loom url", options.src);
           if (!isValidLoomUrl(options.src)) {
             return false;
           }

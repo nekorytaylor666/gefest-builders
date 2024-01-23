@@ -41,7 +41,6 @@ const HomeworkEditor = ({
         onDebouncedUpdate={(editor) => {
           const json = editor?.getJSON();
           const html = editor?.getHTML();
-          console.log({ html });
           const content = JSON.stringify(json);
           saveContentMutation.mutate({ homeworkId, content });
         }}

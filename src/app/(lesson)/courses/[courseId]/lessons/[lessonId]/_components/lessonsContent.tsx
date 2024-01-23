@@ -41,7 +41,8 @@ const LessonContent = ({ chunks }: LessonContentProps) => {
     const newCursor = chunkCursor + 1;
     setChunkCursor(newCursor);
     setWrappedContentChunk(updateChunks(newCursor));
-    if (newCursor === chunks.length && userId) {
+    console.log(newCursor, chunks.length, userId);
+    if (newCursor >= chunks.length && userId) {
       markLessonAsCompleted({ courseId, lessonId, userId });
       setIsLessonCompleted(true);
     }

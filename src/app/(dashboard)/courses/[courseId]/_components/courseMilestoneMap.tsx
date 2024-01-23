@@ -16,6 +16,7 @@ const CourseMilestoneMap = (props: Props) => {
   const lessons = props.lessons;
   const courseId = props.courseId;
 
+  const finishedLessons = props.finishedLessons;
   const chunkedLessons = React.useMemo(() => {
     const sortedLessons = [...lessons].sort((a, b) => a.order - b.order);
     const result = [];
@@ -24,7 +25,6 @@ const CourseMilestoneMap = (props: Props) => {
     }
     return result;
   }, [lessons]);
-
   return (
     <div className="lesson-map-container  w-full max-w-[700px] mx-auto">
       {chunkedLessons.map((el) => (
