@@ -4,6 +4,7 @@ import CoursesPageContainer from "@/components/pages/coursesPage/coursesPageCont
 export default async function Home() {
   const courses = await serverClient.courses.listCourses();
   const orderedCourses = courses.sort((a, b) => a.id - b.id);
+
   return <CoursesPageContainer courses={orderedCourses}></CoursesPageContainer>;
 }
 export const dynamic = "force-dynamic";

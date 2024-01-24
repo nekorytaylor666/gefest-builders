@@ -12,6 +12,18 @@ import Image from "next/image";
 import TypographyH1 from "@/components/ui/typography/h1";
 import TypographyH2 from "@/components/ui/typography/h2";
 import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { AssistantInput } from "./assistantInputNew";
+import Chat from "./assistantChatWindow";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Stars, Wand2 } from "lucide-react";
 interface LessonContentProps {
   chunks: any[];
 }
@@ -59,18 +71,29 @@ const LessonContent = ({ chunks }: LessonContentProps) => {
           // Если урок завершен, отобразите компонент успеха
           <SuccessSection />
         ) : (
-          <div className="container max-w-screen-lg mx-auto mb-20">
-            <ContentReader
-              className=""
-              content={wrappedContentChunk}
-              readonly={true}
-            ></ContentReader>
-            <div className="flex justify-end">
-              <Button type="button" onClick={onNextClick}>
-                Дальше
-              </Button>
+          <Dialog>
+            <div className="container p-4 max-w-screen-lg mx-auto mb-20">
+              <ContentReader
+                className="p-0"
+                content={wrappedContentChunk}
+                readonly={true}
+              ></ContentReader>
+              <div className="flex justify-between gap-4 pt-8">
+                <Button variant={"ghost"} asChild>
+                  <DialogTrigger>
+                    <Stars className="mr-2"></Stars> Спросить Гефеста
+                  </DialogTrigger>
+                </Button>
+
+                <Button type="button" onClick={onNextClick}>
+                  Дальше
+                </Button>
+              </div>
             </div>
-          </div>
+            <DialogContent className="h-[80dvh] overflow-y-auto p-0 max-w-screen-sm">
+              <Chat />
+            </DialogContent>
+          </Dialog>
         )}
       </div>
     </main>

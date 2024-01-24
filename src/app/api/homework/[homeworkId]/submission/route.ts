@@ -1,9 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import fs from "fs";
-import AWS from "aws-sdk";
 import { join } from "path";
 import { readFile, writeFile } from "fs/promises";
-import { s3 } from "@/lib/aws";
 import { PrismaClient } from "@prisma/client";
 import { cookies } from "next/headers";
 import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
