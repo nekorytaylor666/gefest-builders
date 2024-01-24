@@ -18,6 +18,7 @@ const AssistantInput = React.forwardRef<HTMLInputElement, InputProps>(
           "flex h-9 w-full rounded-md   bg-transparent px-3 py-1 text-sm  transition-colors    focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
           className
         )}
+        //@ts-ignore
         ref={ref}
         {...props}
       />

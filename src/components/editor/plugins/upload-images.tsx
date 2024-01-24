@@ -1,4 +1,3 @@
-import { PutBlobResult } from "@vercel/blob";
 import { EditorState, Plugin, PluginKey } from "@tiptap/pm/state";
 import { Decoration, DecorationSet, EditorView } from "@tiptap/pm/view";
 import { supabase } from "@/lib/supabase";
