@@ -19,10 +19,11 @@ export async function POST(
   const courseId = Number(params.courseId);
   const data = await request.formData();
   const file = data.get("file");
-  const lesson = await serverClient.lessons.getLessonByCourseIdAndLessonId({
-    courseId,
-    lessonId,
-  });
+  const lesson =
+    await serverClient.lessons.getLessonByCourseIdAndLessonId.query({
+      courseId,
+      lessonId,
+    });
   if (!lesson)
     return NextResponse.json({
       success: false,
@@ -49,7 +50,7 @@ export async function POST(
   const response = await fetch(url, config);
   const body = await response.json();
 
-  const updatedLesson = await serverClient.lessons.editLessonByLessonId({
+  const updatedLesson = await serverClient.lessons.editLessonByLessonId.mutate({
     lessonId,
     data: {
       mdxContentPath: path,

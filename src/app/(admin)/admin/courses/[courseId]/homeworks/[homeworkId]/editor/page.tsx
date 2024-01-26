@@ -15,7 +15,7 @@ async function EditHomeworkPage({
   const courseId = Number(params.courseId);
   const homeworkId = Number(params.homeworkId);
   const homework =
-    await serverClient.homework.getHomeworkByCourseIdAndHomeworkId({
+    await serverClient.homework.getHomeworkByCourseIdAndHomeworkId.query({
       courseId,
       homeworkId,
     });

@@ -33,7 +33,9 @@ export default async function Page({
   params: { slug: string; id: string; courseId: string };
 }) {
   const { id, courseId } = params;
-  const homework = await serverClient.homework.getHomeworkById(Number(id));
+  const homework = await serverClient.homework.getHomeworkById.query(
+    Number(id)
+  );
 
   const jsonContent =
     homework && homework.jsonContent && JSON.parse(homework.jsonContent as any);

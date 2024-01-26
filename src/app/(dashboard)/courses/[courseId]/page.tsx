@@ -5,7 +5,9 @@ import { ProcedureReturnType } from "@/lib/utils";
 async function Page(context: { params: { courseId: string } }) {
   const { courseId } = context.params;
 
-  const course = await serverClient.courses.getCourseById(Number(courseId));
+  const course = await serverClient.courses.getCourseById.query(
+    Number(courseId)
+  );
   return <CoursePageContainer course={course}></CoursePageContainer>;
 }
 

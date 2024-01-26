@@ -19,7 +19,7 @@ import Link from "next/link";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Lesson = inferAsyncReturnType<
-  (typeof serverClient)["submissions"]["listHomeworkSubmissions"]
+  (typeof serverClient)["submissions"]["listHomeworkSubmissions"]["query"]
 >[0];
 
 export const columns: ColumnDef<Lesson>[] = [

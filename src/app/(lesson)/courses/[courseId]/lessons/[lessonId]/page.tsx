@@ -17,7 +17,9 @@ export default async function Page({
   params: { courseId: string; lessonId: string };
 }) {
   const { courseId, lessonId } = params;
-  const lesson = await serverClient.lessons.getLessonById(Number(lessonId));
+  const lesson = await serverClient.lessons.getLessonById.query(
+    Number(lessonId)
+  );
   if (!lesson?.jsonContent) return <div>Нет контента:(</div>;
   const content = JSON.parse(lesson?.jsonContent as string);
   const contentChunks = splitArrayByHorizontalRule(content);

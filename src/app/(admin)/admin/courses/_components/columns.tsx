@@ -26,7 +26,7 @@ import LessonAddForm from "../[courseId]/lessons/_components/lessonAddForm";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Course = inferAsyncReturnType<
-  (typeof serverClient)["courses"]["listCourses"]
+  (typeof serverClient)["courses"]["listCourses"]["query"]
 >[0];
 
 export const columns: ColumnDef<Course>[] = [

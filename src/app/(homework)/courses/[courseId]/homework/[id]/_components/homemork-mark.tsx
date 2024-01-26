@@ -71,7 +71,7 @@ const MARK_EMOJIS: { [key: number]: { label: string; emoji: string } } = {
 
 interface HomeworkMarkProp {
   submission: inferAsyncReturnType<
-    typeof serverClient.submissions.getSubmissionOfUserByHomeWorkId
+    typeof serverClient.submissions.getSubmissionOfUserByHomeWorkId.query
   >;
 }
 

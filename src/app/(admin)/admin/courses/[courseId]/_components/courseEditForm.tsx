@@ -26,7 +26,7 @@ import { useRouter } from "next/navigation";
 import { supabase } from "@/lib/supabase";
 
 type Course = inferAsyncReturnType<
-  (typeof serverClient)["courses"]["listCourses"]
+  (typeof serverClient)["courses"]["listCourses"]["query"]
 >[number];
 
 const formSchema = z.object({

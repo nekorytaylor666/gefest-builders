@@ -16,7 +16,7 @@ export async function POST(
   const data = await request.formData();
   const file = data.get("file");
   const homework =
-    await serverClient.homework.getHomeworkByCourseIdAndHomeworkId({
+    await serverClient.homework.getHomeworkByCourseIdAndHomeworkId.query({
       courseId,
       homeworkId,
     });
@@ -48,12 +48,13 @@ export async function POST(
   const response = await fetch(url, config);
   const body = await response.json();
 
-  const updatedHomework = await serverClient.homework.editHomeworkSubmission({
-    homeworkId,
-    data: {
-      mdxContentPath: path,
-    },
-  });
+  const updatedHomework =
+    await serverClient.homework.editHomeworkSubmission.mutate({
+      homeworkId,
+      data: {
+        mdxContentPath: path,
+      },
+    });
   if (!response.ok) {
     return NextResponse.json({ success: false, error: response.statusText });
   }

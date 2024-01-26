@@ -15,7 +15,7 @@ import { setHours } from "date-fns";
 
 interface LectureContentProps {
   course: ProcedureReturnType<
-    (typeof serverClient)["courses"]["getCourseBySlug"]
+    (typeof serverClient)["courses"]["getCourseBySlug"]["query"]
   >;
   lessonId: number;
   serializedMdxSections: MDXContent[];

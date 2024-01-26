@@ -36,7 +36,7 @@ const CoursesPageView = (props: CoursesPageViewProps) => {
 
 type CourseCardProps = {
   course: ProcedureReturnType<
-    (typeof serverClient)["courses"]["listCourses"]
+    (typeof serverClient)["courses"]["listCourses"]["query"]
   >[number];
 };
 

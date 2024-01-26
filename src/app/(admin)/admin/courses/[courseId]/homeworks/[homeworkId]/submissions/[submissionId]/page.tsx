@@ -21,10 +21,10 @@ const SubmissionDetailsPage = async ({
 }: {
   params: { homeworkId: string; submissionId: string };
 }) => {
-  const submission = await serverClient.submissions.getSubmissionById(
+  const submission = await serverClient.submissions.getSubmissionById.query(
     Number(params.submissionId)
   );
-  const review = await serverClient.review.getReviewForSubmission(
+  const review = await serverClient.review.getReviewForSubmission.query(
     Number(params.submissionId)
   );
 
