@@ -15,7 +15,7 @@ model User {
   fullName             String?
   phoneNumber          String?
   createdAt            DateTime             @default(now())
-  updatedAt            DateTime             @updatedAt 
+  updatedAt            DateTime             @updatedAt
   role                 UserRole             @default(USER)
   externalSourceUserId String?              @unique
   externalMetadata     Json?                @default("{}")
@@ -24,8 +24,10 @@ model User {
   lessonProgress       LessonProgress[]
   reviews              Review[]
   submissions          Submission[]
-  thread               UserAssistantThread?
   userCohorts          UserCohort[]
+  activity             Activity[]
+  leagueId             Int?
+  league               League?              @relation(fields: [leagueId], references: [id])
 
   Comment  Comment[]
   Reply    Reply[]
@@ -100,7 +102,7 @@ model Homework {
   order          Int
   createdAt      DateTime     @default(now())
   mdxContentPath String?
-  jsonContent Json?
+  jsonContent    Json?
   title          String
   updatedAt      DateTime     @updatedAt
   course         Course       @relation(fields: [courseId], references: [id])
@@ -134,15 +136,6 @@ model Review {
   updatedAt    DateTime   @updatedAt
   submission   Submission @relation(fields: [submissionId], references: [id])
   user         User       @relation(fields: [userId], references: [id])
-}
-
-model UserAssistantThread {
-  id        String @id
-  object    String
-  createdAt Int
-  metadata  Json   @default("{}")
-  userId    String @unique
-  user      User   @relation(fields: [userId], references: [id])
 }
 
 model Comment {
@@ -188,4 +181,32 @@ enum UserRole {
 enum ReviewType {
   TEACHER
   AI
+}
+
+model Activity {
+  id             Int          @id @default(autoincrement())
+  userId         String
+  activityTypeId Int
+  createdAt      DateTime     @default(now())
+  experience     Int
+  type           ActivityType @relation(fields: [activityTypeId], references: [id])
+  user           User         @relation(fields: [userId], references: [id])
+}
+
+model ActivityType {
+  id         Int        @id @default(autoincrement())
+  name       String     @unique 
+  experience Int
+  activities Activity[]
+}
+
+enum ActivityName {
+  LESSON_COMPLETED
+  HOMEWORK_SUBMITTED
+}
+model League {
+  id             Int    @id @default(autoincrement())
+  name           String
+  leagueCoverPath String
+  users          User[]
 }
