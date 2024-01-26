@@ -72,7 +72,7 @@ const LessonContent = ({ chunks }: LessonContentProps) => {
           <SuccessSection />
         ) : (
           <Dialog>
-            <div className="container p-4 max-w-screen-lg mx-auto mb-20">
+            <div className="container p-4 max-w-screen-lg mx-auto mb-20 pb-[40dvh]">
               <ContentReader
                 className="p-0"
                 content={wrappedContentChunk}

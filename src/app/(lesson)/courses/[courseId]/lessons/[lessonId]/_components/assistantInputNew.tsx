@@ -1,11 +1,6 @@
 import * as React from "react";
-import { Wand2, Forward } from "lucide-react";
 
 import { cn } from "@/lib/utils";
-import { Card } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 
