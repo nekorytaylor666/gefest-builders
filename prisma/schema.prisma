@@ -186,7 +186,7 @@ enum ReviewType {
 model Activity {
   id             Int          @id @default(autoincrement())
   userId         String
-  activityTypeName String
+  activityTypeName ActivityName
   createdAt      DateTime     @default(now())
   experience     Int
   type           ActivityType @relation(fields: [activityTypeName], references: [name])
@@ -194,7 +194,7 @@ model Activity {
 }
 
 model ActivityType {
-  name       String     @unique         @id
+  name       ActivityName     @unique         @id
   label      String 
   experience Int
   activities Activity[]
