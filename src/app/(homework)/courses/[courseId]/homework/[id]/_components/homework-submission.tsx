@@ -27,6 +27,9 @@ import {
 import HomeworkMark from "./homemork-mark";
 import HomeworkLoadingSkeleton from "./homework-loading-skeleton";
 import { useUser } from "@/lib/hooks/useUserSession";
+import { toast } from "sonner";
+import { Loader } from "lucide-react";
+import { useAddActivity } from "@/app/api/hooks/useAddActivity/useAddActivity";
 
 const validationSchema = z.object({
   submission: z
@@ -44,7 +47,6 @@ type FormValues = z.infer<typeof validationSchema>;
 
 const HomeworkSubmission = () => {
   const { id: homeworkId } = useParams();
-  const { toast } = useToast();
   const { data, isLoading } = useUser();
   const router = useRouter();
   const userId = data?.user?.id;
@@ -59,6 +61,7 @@ const HomeworkSubmission = () => {
     },
     { enabled: !isLoading || !!userId }
   );
+  const addActivity = useAddActivity();
   const form = useForm<FormValues>({
     resolver: zodResolver(validationSchema),
     mode: "onBlur",
@@ -74,9 +77,9 @@ const HomeworkSubmission = () => {
       }),
     {
       onSuccess: () => {
-        toast({
-          title: "Домашнее задание загружено!",
+        toast.success(`Домашнее задание загружено!`, {
           description: "Продолжайте в том же духе :)",
+          position: "top-center",
         });
         refetch();
       },
@@ -108,6 +111,13 @@ const HomeworkSubmission = () => {
     });
 
     submitHomework(formData);
+    addActivity({
+      activityTypeName: "HOMEWORK_SUBMITTED",
+      experience: 60,
+      metadata: {
+        homeworkId,
+      },
+    });
   };
 
   if (isSubmissionLoading) {
@@ -248,7 +258,7 @@ const HomeworkSubmission = () => {
                   className="w-full"
                   variant="outline"
                 >
-                  <TimerIcon /> Загрузка...
+                  <Loader className="animate-spin " /> Загрузка...
                 </Button>
               ) : (
                 <Button type="submit" size={"lg"} className="w-full">

@@ -1,5 +1,5 @@
 import LectureNavbar from "@/components/lecture-navbar";
-import Navbar from "@/components/navbar";
+import Navbar from "@/components/navbar/navbar";
 import { MDXProvider } from "@mdx-js/react";
 
 export default function HomeworkLayout({

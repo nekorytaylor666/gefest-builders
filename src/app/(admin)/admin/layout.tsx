@@ -1,6 +1,6 @@
 import React from "react";
 import { DashboardNav } from "./_components/adminNav/adminNav";
-import { UserNav } from "@/components/user-nav";
+import { UserNav } from "@/components/navbar/user-nav";
 import Link from "next/link";
 import Image from "next/image";
 import Breadcrumb from "@/components/breadcrumbs";

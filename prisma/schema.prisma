@@ -191,6 +191,7 @@ model Activity {
   experience     Int
   type           ActivityType @relation(fields: [activityTypeName], references: [name])
   user           User         @relation(fields: [userId], references: [id])
+  metadata Json?
 }
 
 model ActivityType {

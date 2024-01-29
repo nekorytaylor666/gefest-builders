@@ -1,4 +1,5 @@
 import { serverClient } from "@/app/_trpc/serverClient";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,8 +10,8 @@ import {
 } from "@/components/ui/card";
 import TypographyH2 from "@/components/ui/typography/h2";
 import { ProcedureReturnType } from "@/lib/utils";
-import { Badge, Link } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 
 type CourseCardProps = {
   course: ProcedureReturnType<
