@@ -4,7 +4,11 @@ import { db } from "@/lib/db";
 import { $Enums } from "@prisma/client";
 import { findExistingActivity } from "./activityHelpers";
 import { redis } from "@/lib/redis";
-import { updateScore } from "./leaderbord/leaderbord";
+import {
+  getTop10Scores,
+  getUserPositionAndSurroundings,
+  updateScore,
+} from "./leaderbord/leaderbord";
 
 export const activityRouter = t.router({
   list: publicProcedure.query(async ({ ctx }) => {
@@ -15,6 +19,16 @@ export const activityRouter = t.router({
       where: { userId },
       include: { type: true },
     });
+  }),
+  userRanking: publicProcedure.query(async ({ input, ctx }) => {
+    const user = ctx.session?.user;
+    if (!user) {
+      throw new Error("You must be logged in to add an activity");
+    }
+    const userId = user?.id;
+
+    const scores = await getUserPositionAndSurroundings(userId);
+    return scores;
   }),
   add: publicProcedure
     .input(

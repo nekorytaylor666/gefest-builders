@@ -7,13 +7,19 @@ import { CourseCard } from "./_components/courseCard";
 import TypographyH3 from "@/components/ui/typography/h3";
 import { cva } from "class-variance-authority";
 import { Activity } from "@prisma/client";
+import { trpc } from "@/app/_trpc/client";
+import LeaderboardTable from "./_components/leaderbordTable";
 
 const CoursesPageView = (props: CoursesPageViewProps) => {
   const { courses } = props;
   return (
     <main className="container pt-12 max-w-screen-xl">
       <TypographyH1>Что ты хочешь узнать сегодня?</TypographyH1>
-      <StreakView activities={[]}></StreakView>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div></div>
+        <LeaderboardTable></LeaderboardTable>
+      </div>
       <section className="pt-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {courses.map((course) => (
