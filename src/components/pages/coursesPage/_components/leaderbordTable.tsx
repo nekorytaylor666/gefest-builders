@@ -4,26 +4,47 @@ import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
+import TypographyH2 from "@/components/ui/typography/h2";
 import TypographyH3 from "@/components/ui/typography/h3";
+import TypographyP from "@/components/ui/typography/p";
 import { useUser } from "@/lib/hooks/useUserSession";
 import { cn } from "@/lib/utils";
 import { ArrowUp, Flame } from "lucide-react";
+import Image from "next/image";
 import React, { Suspense } from "react";
 
 const LeaderboardTable = () => {
   return (
     <div>
-      <TypographyH3>Ваша лига</TypographyH3>
+      <TypographyH3>Ваша Лига</TypographyH3>
       <Card className="mt-2">
         <CardContent className="p-4">
-          <Suspense fallback={<Skeleton className="h-96"></Skeleton>}>
-            <div className="h-96 grid grid-rows-2">
-              <div>Текущая лига</div>
+          <Suspense fallback={<Skeleton className="h-[450px]"></Skeleton>}>
+            <div className="h-[450px] grid grid-rows-[auto_1fr]">
+              <UserLeague></UserLeague>
               <LeaderboardTableView></LeaderboardTableView>
             </div>
           </Suspense>
         </CardContent>
       </Card>
+    </div>
+  );
+};
+
+const UserLeague = () => {
+  const [league] = trpc.leagues.current.useSuspenseQuery();
+  return (
+    <div className="flex flex-col items-center p-4">
+      <img
+        className="w-36 aspect-square"
+        width={250}
+        height={250}
+        src={league?.leagueCoverPath}
+      ></img>
+      <h3 className="font-semibold text-xl">{league?.name}</h3>
+      <p className="text-muted-foreground text-sm">
+        Топ 5 игроков перейдут в следующую лигу
+      </p>
     </div>
   );
 };

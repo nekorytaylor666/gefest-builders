@@ -11,6 +11,7 @@ import { reviewRouter } from "./routers/review";
 import { studentsRouter } from "./routers/students";
 import { cohortRouter } from "./routers/cohorts";
 import { activityRouter } from "./routers/activities/activities";
+import { leagueRouter } from "./routers/league";
 
 export const appRouter = router({
   courses: coursesRouter,
@@ -22,6 +23,7 @@ export const appRouter = router({
   students: studentsRouter,
   cohorts: cohortRouter,
   activities: activityRouter,
+  leagues: leagueRouter,
   submissions: submissionsRouter,
 });
 

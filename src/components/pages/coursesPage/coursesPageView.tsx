@@ -16,7 +16,7 @@ const CoursesPageView = (props: CoursesPageViewProps) => {
     <main className="container pt-12 max-w-screen-xl">
       <TypographyH1>Что ты хочешь узнать сегодня?</TypographyH1>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div></div>
         <LeaderboardTable></LeaderboardTable>
       </div>

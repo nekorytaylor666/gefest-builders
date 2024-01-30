@@ -10,15 +10,15 @@ datasource db {
 }
 
 model User {
-  id                   String               @id @default(uuid())
-  email                String               @unique
+  id                   String           @id @default(uuid())
+  email                String           @unique
   fullName             String?
   phoneNumber          String?
-  createdAt            DateTime             @default(now())
-  updatedAt            DateTime             @updatedAt
-  role                 UserRole             @default(USER)
-  externalSourceUserId String?              @unique
-  externalMetadata     Json?                @default("{}")
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime         @updatedAt
+  role                 UserRole         @default(USER)
+  externalSourceUserId String?          @unique
+  externalMetadata     Json?            @default("{}")
   courses              Course[]
   lessons              Lesson[]
   lessonProgress       LessonProgress[]
@@ -26,8 +26,8 @@ model User {
   submissions          Submission[]
   userCohorts          UserCohort[]
   activity             Activity[]
-  leagueId             Int?
-  league               League?              @relation(fields: [leagueId], references: [id])
+  leagueId             Int?             @default(1)
+  league               League?          @relation(fields: [leagueId], references: [id])
 
   Comment  Comment[]
   Reply    Reply[]
@@ -184,19 +184,19 @@ enum ReviewType {
 }
 
 model Activity {
-  id             Int          @id @default(autoincrement())
-  userId         String
+  id               Int          @id @default(autoincrement())
+  userId           String
   activityTypeName ActivityName
-  createdAt      DateTime     @default(now())
-  experience     Int
-  type           ActivityType @relation(fields: [activityTypeName], references: [name])
-  user           User         @relation(fields: [userId], references: [id])
-  metadata Json?
+  createdAt        DateTime     @default(now())
+  experience       Int
+  type             ActivityType @relation(fields: [activityTypeName], references: [name])
+  user             User         @relation(fields: [userId], references: [id])
+  metadata         Json?
 }
 
 model ActivityType {
-  name       ActivityName     @unique         @id
-  label      String 
+  name       ActivityName @id @unique
+  label      String
   experience Int
   activities Activity[]
 }
@@ -205,9 +205,11 @@ enum ActivityName {
   LESSON_COMPLETED
   HOMEWORK_SUBMITTED
 }
+
 model League {
-  id             Int    @id @default(autoincrement())
-  name           String
+  id              Int    @id @default(autoincrement())
+  name            String
   leagueCoverPath String
-  users          User[]
+  order Int @unique 
+  users           User[]
 }
