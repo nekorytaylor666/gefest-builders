@@ -3,6 +3,8 @@ import { t, publicProcedure } from "../../trpc";
 import { db } from "@/lib/db";
 import { $Enums } from "@prisma/client";
 import { findExistingActivity } from "./activityHelpers";
+import { redis } from "@/lib/redis";
+import { updateScore } from "./leaderbord/leaderbord";
 
 export const activityRouter = t.router({
   list: publicProcedure.query(async ({ ctx }) => {
@@ -49,6 +51,8 @@ export const activityRouter = t.router({
           metadata: input.metadata,
         },
       });
+
+      await updateScore(user.id, input.experience);
       return activity;
     }),
 });

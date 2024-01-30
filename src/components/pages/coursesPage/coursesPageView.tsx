@@ -38,7 +38,7 @@ const StreakView = (props: { activities: Activity[] }) => {
   );
 };
 
-const StreakItem = ({ isActive }) => {
+const StreakItem = ({ isActive }: any) => {
   const variant = isActive ? "active" : "default";
   const containerClass = cva(
     "flex flex-col gap-2 p-2 rounded-md  min-w-fit w-0 shadow border",
