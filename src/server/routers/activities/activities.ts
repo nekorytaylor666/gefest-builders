@@ -9,6 +9,7 @@ import {
   getUserPositionAndSurroundings,
   updateScore,
 } from "./leaderbord/leaderbord";
+import { TRPCError } from "@trpc/server";
 
 function calculateLastStreak(groupedByDay: Record<string, Activity[]>) {
   let currentStreak = 0;
@@ -73,7 +74,12 @@ export const activityRouter = t.router({
   userRanking: publicProcedure.query(async ({ input, ctx }) => {
     const user = ctx.session?.user;
     if (!user) {
-      throw new Error("You must be logged in to add an activity");
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An unexpected error occurred, please try again later.",
+        // optional: pass the original error to retain stack trace
+        cause: "You must be logged in to add an activity",
+      });
     }
     const userId = user?.id;
 
@@ -92,7 +98,12 @@ export const activityRouter = t.router({
       const user = ctx.session?.user;
 
       if (!user) {
-        throw new Error("You must be logged in to add an activity");
+        throw new TRPCError({
+          code: "INTERNAL_SERVER_ERROR",
+          message: "An unexpected error occurred, please try again later.",
+          // optional: pass the original error to retain stack trace
+          cause: "You must be logged in to add an activity",
+        });
       }
 
       const existingActivity = await findExistingActivity(

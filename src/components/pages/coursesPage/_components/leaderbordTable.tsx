@@ -1,3 +1,4 @@
+"use client";
 import { trpc } from "@/app/_trpc/client";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
@@ -12,6 +13,7 @@ import { cn } from "@/lib/utils";
 import { ArrowUp, Flame } from "lucide-react";
 import Image from "next/image";
 import React, { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 const LeaderboardTable = () => {
   return (
@@ -19,12 +21,16 @@ const LeaderboardTable = () => {
       <TypographyH3>Ваша Лига</TypographyH3>
       <Card className="mt-2">
         <CardContent className="p-4">
-          <Suspense fallback={<Skeleton className="h-[450px]"></Skeleton>}>
-            <div className="h-[450px] grid grid-rows-[auto_1fr]">
-              <UserLeague></UserLeague>
-              <LeaderboardTableView></LeaderboardTableView>
-            </div>
-          </Suspense>
+          <ErrorBoundary
+            fallback={<div className="h-[450px]">Something went wrong</div>}
+          >
+            <Suspense fallback={<Skeleton className="h-[450px]"></Skeleton>}>
+              <div className="h-[450px] grid grid-rows-[auto_1fr]">
+                <UserLeague></UserLeague>
+                <LeaderboardTableView></LeaderboardTableView>
+              </div>
+            </Suspense>
+          </ErrorBoundary>
         </CardContent>
       </Card>
     </div>

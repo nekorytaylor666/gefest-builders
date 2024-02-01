@@ -13,6 +13,13 @@ const handler = (req: NextRequest) =>
     req,
     router: appRouter,
     createContext: () => createContext(req),
+    onError(opts) {
+      const { error, type, path, input, ctx, req } = opts;
+      console.error("Error:", error);
+      if (error.code === "INTERNAL_SERVER_ERROR") {
+        // send to bug reporting
+      }
+    },
   });
 
 export { handler as GET, handler as POST };
