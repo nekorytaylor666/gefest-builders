@@ -39,10 +39,11 @@ export async function getTop10Scores() {
 export async function getUserPositionAndSurroundings(userId: string) {
   try {
     // Получаем ранг пользователя
-    const rank = await redis.zrevrank("leaderboard", userId);
+    let rank = await redis.zrevrank("leaderboard", userId);
+    const leaderboardSize = await redis.zcard("leaderboard");
 
     if (rank === null) {
-      return null; // Пользователь не найден
+      rank = leaderboardSize; // Пользователь не найден
     }
 
     // Определяем диапазон для получения пользователей вокруг
@@ -56,7 +57,6 @@ export async function getUserPositionAndSurroundings(userId: string) {
     }
 
     // Если пользователь внизу списка, то берем пользователей сверху
-    const leaderboardSize = await redis.zcard("leaderboard");
     if (rank > leaderboardSize - 3) {
       start = leaderboardSize - 5;
       end = leaderboardSize - 1;
