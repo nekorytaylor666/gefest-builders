@@ -136,6 +136,9 @@ export const defaultExtensions = [
       if (node.type.name === "heading") {
         return `Heading ${node.attrs.level}`;
       }
+      if (node.type.name === "sandpack") {
+        return "";
+      }
       return "Press '/' for commands, or '++' for AI autocomplete...";
     },
     includeChildren: true,

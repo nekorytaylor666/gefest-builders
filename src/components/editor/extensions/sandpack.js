@@ -7,8 +7,10 @@ import {
   SandpackCodeEditor,
   SandpackPreview,
   Sandpack,
+  SandpackConsole,
 } from "@codesandbox/sandpack-react";
 import SandpackAddForm from "./sandpackAddForm";
+import { Card, CardContent } from "@/components/ui/card";
 
 const SandpackExtension = Node.create({
   name: "sandpack",
@@ -31,11 +33,11 @@ const SandpackExtension = Node.create({
 
   addAttributes() {
     return {
-      files: {
-        default: {},
-      },
-      template: {
-        default: "static",
+      sandpackAttr: {
+        default: {
+          files: {},
+          template: "static",
+        },
       },
       isFilesUploaded: {
         default: false,
@@ -72,18 +74,36 @@ const SandpackExtension = Node.create({
   addNodeView() {
     return ReactNodeViewRenderer((props) => {
       const { node, updateAttributes } = props;
-      const handleFilesUpload = (files) => {
-        updateAttributes({ files, isFilesUploaded: true });
+      const handleFilesUpload = ({ files, template }) => {
+        console.log("files:", Object.entries(files)[0][1].code);
+        updateAttributes({
+          isFilesUploaded: true,
+          sandpackAttr: {
+            files: {
+              "index.js": Object.entries(files)[0][1].code,
+            },
+            template,
+            options: {
+              layout: "console",
+            },
+          },
+        });
       };
 
       return (
-        <NodeViewWrapper>
+        <NodeViewWrapper as={"div"}>
           {node.attrs.isFilesUploaded ? (
-            <Sandpack options={{ editorHeight: 800 }} {...node.attrs} />
+            <Sandpack
+              options={{ editorHeight: 600 }}
+              theme={"auto"}
+              {...node.attrs.sandpackAttr}
+            ></Sandpack>
           ) : (
-            <div className="border-2 h-52 w-full bg-zinc-200">
-              <SandpackAddForm onSubmit={handleFilesUpload}></SandpackAddForm>
-            </div>
+            <Card>
+              <CardContent className=" h-52 w-full ">
+                <SandpackAddForm onSubmit={handleFilesUpload}></SandpackAddForm>
+              </CardContent>
+            </Card>
           )}
         </NodeViewWrapper>
       );

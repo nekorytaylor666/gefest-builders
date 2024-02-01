@@ -24,7 +24,7 @@ const CoursesPageView = (props: CoursesPageViewProps) => {
           <LeaderboardTable></LeaderboardTable>
         </div>
       </div>
-      <section className="pt-8">
+      <section className="pt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {courses.map((course) => (
             <CourseCard key={course.id} course={course} />

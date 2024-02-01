@@ -8,9 +8,25 @@ import { Editor } from "@tiptap/react";
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useDropzone } from "react-dropzone";
+import {
+  Select,
+  SelectValue,
+  SelectTrigger,
+  SelectItem,
+  SelectContent,
+} from "@/components/ui/select";
+import {
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  Form,
+} from "@/components/ui/form";
 
 const SandpackAddForm = ({ onSubmit }) => {
-  const { handleSubmit, register } = useForm();
+  const form = useForm();
   const { getRootProps, getInputProps, acceptedFiles } = useDropzone();
 
   const onPrepareSubmit = async (data) => {
@@ -36,31 +52,61 @@ const SandpackAddForm = ({ onSubmit }) => {
         return acc;
       }, {})
     );
-    onSubmit(files);
+    onSubmit({ files, ...data });
   };
   return (
-    <div className="flex items-center justify-center h-full">
-      <form
-        className="flex justify-center  h-full flex-col items-center gap-4"
-        onSubmit={handleSubmit(onPrepareSubmit)}
-      >
-        {acceptedFiles.length > 0 && (
-          <ul className="list-disc pl-5">
-            {acceptedFiles.map((file, index) => (
-              <li key={index}>{file.path}</li>
-            ))}
-          </ul>
-        )}
-        <div
-          className="border-2 border-zinc-400 rounded-md p-4 w-full "
-          {...getRootProps()}
+    <Form {...form}>
+      <div className="flex items-center justify-center h-full">
+        <form
+          className="flex justify-center h-full flex-col items-center gap-4 max-w-md"
+          onSubmit={form.handleSubmit(onPrepareSubmit)}
         >
-          <input {...getInputProps()} />
-          <label>Перетащите файлы сюда или кликните для выбора файлов</label>
-        </div>
-        <Button type="submit">Добавить пример кода</Button>
-      </form>
-    </div>
+          <FormField
+            control={form.control}
+            name="template"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Шаблон</FormLabel>
+                <Select
+                  onValueChange={field.onChange}
+                  defaultValue={field.value}
+                >
+                  <FormControl>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Выберите шаблон наиболее подходящий под ваш пример" />
+                    </SelectTrigger>
+                  </FormControl>
+                  <SelectContent>
+                    <SelectItem value="static">HTML/CSS</SelectItem>
+                    <SelectItem value="vanilla">Javascript/Test</SelectItem>
+                    <SelectItem value="node">NodeJS</SelectItem>
+                  </SelectContent>
+                </Select>
+                <FormDescription>
+                  Шаблон влияет какие окна будут видны пользователю.{" "}
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {acceptedFiles.length > 0 && (
+            <ul className="list-disc pl-5">
+              {acceptedFiles.map((file, index) => (
+                <li key={index}>{file.path}</li>
+              ))}
+            </ul>
+          )}
+          <div
+            className="border shadow  rounded-md p-4 w-full "
+            {...getRootProps()}
+          >
+            <input className="hidden" {...getInputProps()} />
+            <label>Перетащите файлы сюда или кликните для выбора файлов</label>
+          </div>
+          <Button type="submit">Добавить пример кода</Button>
+        </form>
+      </div>
+    </Form>
   );
 };
 
