@@ -9,6 +9,7 @@ export const leagueRouter = t.router({
       where: { id: userId },
       include: { league: true },
     });
+    console.log(userWithLeague);
 
     return userWithLeague?.league;
   }),
