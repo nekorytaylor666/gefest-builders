@@ -20,7 +20,10 @@ export async function getTop10Scores() {
       .map((value, index, array) => {
         // Каждый второй элемент в массиве - это оценка, предшествующая ему элемент - идентификатор пользователя
         if (index % 2 === 0) {
-          return { userId: value, score: parseInt(array[index + 1], 10) };
+          return {
+            userId: value as string,
+            score: parseInt(array[index + 1] as string, 10),
+          };
         }
         return null;
       })
@@ -96,7 +99,7 @@ export async function getUserPositionAndSurroundings(userId: string) {
           return {
             rank: start + Math.floor(index / 2) + 1,
             name,
-            score: parseInt(array[index + 1], 10),
+            score: parseInt(array[index + 1] as string, 10),
             isCurrentUser: value === userId,
           };
         }

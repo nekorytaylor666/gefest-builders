@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { t, publicProcedure } from "../../trpc";
 import { db } from "@/lib/db";
-import { $Enums } from "@prisma/client";
+import { $Enums, Activity } from "@prisma/client";
 import { findExistingActivity } from "./activityHelpers";
 import { redis } from "@/lib/redis";
 import {
@@ -10,6 +10,21 @@ import {
   updateScore,
 } from "./leaderbord/leaderbord";
 
+function calculateLastStreak(groupedByDay: Record<string, Activity[]>) {
+  let currentStreak = 0;
+
+  const entries = Object.entries(groupedByDay);
+  for (let index = 0; index < entries.length; index++) {
+    const [key, value] = entries[index];
+    if (value.length) {
+      currentStreak++;
+    } else {
+      break;
+    }
+  }
+
+  return currentStreak;
+}
 export const activityRouter = t.router({
   list: publicProcedure.query(async ({ ctx }) => {
     const user = ctx.session?.user;
@@ -19,6 +34,41 @@ export const activityRouter = t.router({
       where: { userId },
       include: { type: true },
     });
+  }),
+  getActivityStreakAndDetails: publicProcedure.query(async ({ ctx }) => {
+    const user = ctx.session?.user;
+    const userId = user?.id;
+    const activities = await db.activity.findMany({
+      where: { userId },
+      select: { id: true, createdAt: true, activityTypeName: true },
+    });
+
+    // Создаем объект с ключами для последних 100 дней
+    const last100Days: Record<string, any[]> = {};
+    for (let i = 0; i < 100; i++) {
+      const day = new Date();
+      day.setDate(day.getDate() - i);
+      last100Days[day.toISOString().split("T")[0]] = [];
+    }
+
+    // Группируем активности по дням
+    const groupedByDay = activities.reduce(
+      (acc: Record<string, any[]>, activity) => {
+        const day = activity.createdAt.toISOString().split("T")[0];
+        if (!acc[day]) {
+          acc[day] = [];
+        }
+        acc[day].push(activity);
+        return acc;
+      },
+      last100Days
+    );
+
+    const streak = calculateLastStreak(groupedByDay);
+    return {
+      streak,
+      groupedByDay,
+    };
   }),
   userRanking: publicProcedure.query(async ({ input, ctx }) => {
     const user = ctx.session?.user;
