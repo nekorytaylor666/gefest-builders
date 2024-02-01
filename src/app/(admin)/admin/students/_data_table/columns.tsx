@@ -27,7 +27,7 @@ import { Button } from "@/components/ui/button";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 export type Student = inferAsyncReturnType<
-  (typeof serverClient)["students"]["list"]
+  (typeof serverClient)["students"]["list"]["query"]
 >[number];
 
 export const columns: ColumnDef<Student>[] = [

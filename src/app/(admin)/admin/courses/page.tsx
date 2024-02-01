@@ -7,7 +7,7 @@ import { DataTable } from "@/components/data-table";
 import CoursePageActions from "./_components/coursePageActions";
 
 const CoursesPage = async () => {
-  const courses = await serverClient.courses.listCourses();
+  const courses = await serverClient.courses.listCourses.query();
   return (
     <DashboardShell>
       <DashboardHeader heading="Курсы" text="Управляйте своими курсами">

@@ -3,7 +3,7 @@ import { ProcedureReturnType } from "@/lib/utils";
 
 export type CoursePageProps = {
   course: ProcedureReturnType<
-    (typeof serverClient)["courses"]["getCourseBySlug"]
+    (typeof serverClient)["courses"]["getCourseBySlug"]["query"]
   >;
 };
 

@@ -4,7 +4,7 @@ import { HiMiniXMark, HiFire } from "react-icons/hi2";
 import { Button } from "./ui/button";
 import { Progress } from "./ui/progress";
 import { useParams, useRouter } from "next/navigation";
-import { UserNav } from "./user-nav";
+import { UserNav } from "./navbar/user-nav";
 
 const LectureNavbar = ({ progress }: { progress: number }) => {
   const router = useRouter();

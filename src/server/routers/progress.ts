@@ -6,15 +6,18 @@ export const progressRouter = t.router({
   markLessonAsCompleted: publicProcedure
     .input(
       z.object({
-        userId: z.string(),
         lessonId: z.string(),
         courseId: z.string(),
       })
     )
-    .mutation(async ({ input: { userId, lessonId, courseId } }) => {
+    .mutation(async ({ input: { lessonId, courseId }, ctx }) => {
+      const user = ctx.session?.user;
+      if (!user) {
+        throw new Error("You must be logged in to add an activity");
+      }
       const existingProgress = await db.lessonProgress.findFirst({
         where: {
-          userId,
+          userId: user.id,
           lessonId: Number(lessonId),
           courseId: Number(courseId),
         },
@@ -23,7 +26,7 @@ export const progressRouter = t.router({
       if (!existingProgress) {
         return await db.lessonProgress.create({
           data: {
-            userId,
+            userId: user.id,
             lessonId: Number(lessonId),
             courseId: Number(courseId),
             completed: true,

@@ -1,26 +1,22 @@
-import { Sheet } from "@/components/ui/sheet";
-
-import { trpc } from "@/app/_trpc/client";
-
 import { serverClient } from "@/app/_trpc/serverClient";
-import CommentsSection from "./_components/commentsSection";
-import { Separator } from "@/components/ui/separator";
-import {
-  splitArrayByHorizontalRule,
-  wrapChunkOfContent,
-} from "./_utils/contentManipulation";
-import LessonContent from "./_components/lessonsContent";
+import { splitArrayByHorizontalRule } from "./_utils/contentManipulation";
+import LessonContainer from "./_components/lessonContainer";
 
 export default async function Page({
   params,
 }: {
   params: { courseId: string; lessonId: string };
 }) {
-  const { courseId, lessonId } = params;
-  const lesson = await serverClient.lessons.getLessonById(Number(lessonId));
+  const { lessonId } = params;
+  const lesson = await serverClient.lessons.getLessonById.query(
+    Number(lessonId)
+  );
   if (!lesson?.jsonContent) return <div>Нет контента:(</div>;
   const content = JSON.parse(lesson?.jsonContent as string);
   const contentChunks = splitArrayByHorizontalRule(content);
 
-  return <LessonContent chunks={contentChunks}></LessonContent>;
+  console.log(content);
+  return (
+    <LessonContainer chunks={contentChunks} lesson={lesson}></LessonContainer>
+  );
 }

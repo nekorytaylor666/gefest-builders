@@ -9,7 +9,7 @@ import Link from "next/link";
 import { ActivityLogIcon } from "@radix-ui/react-icons";
 
 const CoursePage = async ({ params }: { params: { courseId: number } }) => {
-  const course = await serverClient.courses.getCourseById(
+  const course = await serverClient.courses.getCourseById.query(
     Number(params.courseId)
   );
   if (!course) {

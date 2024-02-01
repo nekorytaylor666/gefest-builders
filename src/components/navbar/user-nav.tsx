@@ -1,6 +1,6 @@
 "use client";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,13 +10,13 @@ import {
   DropdownMenuSeparator,
   DropdownMenuShortcut,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import { Skeleton } from "./ui/skeleton";
+} from "../ui/dropdown-menu";
+import { Skeleton } from "../ui/skeleton";
 import { PersonIcon } from "@radix-ui/react-icons";
 import {
   NavigationMenuLink,
   navigationMenuTriggerStyle,
-} from "./ui/navigation-menu";
+} from "../ui/navigation-menu";
 import { useUser } from "@/lib/hooks/useUserSession";
 import { useRouter } from "next/navigation";
 

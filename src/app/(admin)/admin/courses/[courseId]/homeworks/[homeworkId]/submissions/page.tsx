@@ -12,9 +12,10 @@ const HomeworksPage = async ({
 }: {
   params: { homeworkId: string };
 }) => {
-  const submissions = await serverClient.submissions.listHomeworkSubmissions(
-    Number(params.homeworkId)
-  );
+  const submissions =
+    await serverClient.submissions.listHomeworkSubmissions.query(
+      Number(params.homeworkId)
+    );
   return (
     <DashboardShell>
       <DashboardHeader

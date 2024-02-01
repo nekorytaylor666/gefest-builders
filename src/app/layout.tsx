@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import Provider from "./_trpc/Provider";
 import React, { Suspense } from "react";
-import { Toaster } from "@/components/ui/toaster";
+import { Toaster } from "@/components/ui/sonner";
 import { PHProvider, PostHogPageview } from "../providers/posthog";
 const inter = Inter({ subsets: ["latin"] });
 

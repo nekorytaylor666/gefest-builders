@@ -96,7 +96,7 @@ const CourseMilestonePattern = (props: {
           >
             <path
               d="M124 1.5L10.4044 68.5038C7.76628 70.0599 7.78428 73.8823 10.4369 75.4134L168.977 166.927C170.227 167.648 171.769 167.64 173.011 166.906L227 135"
-              stroke-width="2"
+              strokeWidth="2"
             ></path>
           </svg>
           <div className="flex items-end relative bottom-4 left-4">
@@ -150,7 +150,7 @@ const CourseMilestonePattern = (props: {
           >
             <path
               d="M1.5 133.5L62.4395 97.7102C63.7085 96.9648 65.2844 96.9766 66.5422 97.7408L216.79 189.03C219.373 190.6 219.349 194.359 216.744 195.894L105.5 261.5"
-              stroke-width="2"
+              strokeWidth="2"
             ></path>
           </svg>
         </div>
@@ -166,7 +166,7 @@ const CourseMilestonePattern = (props: {
           >
             <path
               d="M331 1.5L179.357 90.5601C176.728 92.1041 176.724 95.9035 179.349 97.4536L226 125"
-              stroke-width="2"
+              strokeWidth="2"
             ></path>
           </svg>
           <div className="relative ">

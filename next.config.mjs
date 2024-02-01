@@ -2,7 +2,7 @@
 const config = {
   reactStrictMode: true,
   images: {
-    domains: ["gefest.b-cdn.net"],
+    domains: ["gefest.b-cdn.net", "uepcmodmqkhfcsbxctjb.supabase.co"],
   },
 
   future: {

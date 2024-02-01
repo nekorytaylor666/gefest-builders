@@ -9,7 +9,9 @@ import HomeworksPageActions from "./_components/homeworkPageActions";
 
 const HomeworksPage = async ({ params }: { params: { courseId: string } }) => {
   const courseId = Number(params.courseId);
-  const homeworks = await serverClient.homework.listCourseHomeworks(courseId);
+  const homeworks = await serverClient.homework.listCourseHomeworks.query(
+    courseId
+  );
   return (
     <DashboardShell>
       <DashboardHeader heading="Домашние задания" text="Домашние задания курса">

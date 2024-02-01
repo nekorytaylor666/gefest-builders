@@ -13,9 +13,6 @@ export const userRouter = t.router({
   getUserData: publicProcedure.input(z.string()).query(async ({ input }) => {
     return await db.user.findUnique({
       where: { id: input },
-      include: {
-        thread: true,
-      },
     });
   }),
   getUserLessonProgress: publicProcedure
