@@ -21,11 +21,12 @@ import {
 import { callProcedure } from "@trpc/server";
 import { observable } from "@trpc/server/observable";
 import { type TRPCErrorResponse } from "@trpc/server/rpc";
-import { headers } from "next/headers";
+import { headers, cookies } from "next/headers";
 import { cache } from "react";
 import { createTRPCContext } from "@/server/trpc";
 import { transformer } from "./shared";
 import { appRouter, type AppRouter } from "@/server";
+import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -34,6 +35,8 @@ import { appRouter, type AppRouter } from "@/server";
 const createContext = cache(() => {
   const heads = new Headers(headers());
   heads.set("x-trpc-source", "rsc");
+
+  const supabase = createServerComponentClient({ cookies });
 
   return createTRPCContext({
     headers: heads,

@@ -1,17 +1,20 @@
 import {
   createClientComponentClient,
   createRouteHandlerClient,
+  createServerComponentClient,
 } from "@supabase/auth-helpers-nextjs";
 import { type inferAsyncReturnType, initTRPC } from "@trpc/server";
 import { error } from "console";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 
 import superjson from "superjson";
 
 export const createTRPCContext = async (opts: { headers: Headers }) => {
-  const cookieStore = cookies();
-  const supabase = createRouteHandlerClient({
-    cookies: () => cookieStore,
+  const heads = new Headers(headers());
+  heads.set("x-trpc-source", "rsc");
+
+  const supabase = createServerComponentClient({
+    cookies,
   });
   const { data, error } = await supabase.auth.getSession();
   if (error) {
@@ -19,7 +22,7 @@ export const createTRPCContext = async (opts: { headers: Headers }) => {
   }
   return {
     session: data.session,
-    ...opts,
+    headers: heads,
   };
 };
 
