@@ -22,7 +22,11 @@ const LeaderboardTable = () => {
       <Card className="mt-2">
         <CardContent className="p-4">
           <ErrorBoundary
-            fallback={<div className="h-[450px]">Something went wrong</div>}
+            fallback={
+              <div className="h-[450px] flex items-center justify-center">
+                Войдите в аккаунт, чтобы узнать вашу лигу
+              </div>
+            }
           >
             <Suspense fallback={<Skeleton className="h-[450px]"></Skeleton>}>
               <div className="h-[450px] grid grid-rows-[auto_1fr]">
@@ -61,7 +65,7 @@ const LeaderboardTableView = () => {
   const user = data?.user;
 
   return (
-    <ScrollArea className="h-full ">
+    <ScrollArea className="h-full rounded-md">
       {ranking?.map((el, index) => (
         <div key={el?.name}>
           <div
