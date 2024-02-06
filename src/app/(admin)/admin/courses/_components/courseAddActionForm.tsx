@@ -27,6 +27,7 @@ const CourseCreateActionForm = () => {
     resolver: zodResolver(schema),
   });
   const router = useRouter();
+
   const createCourseMutation = trpc.courses.createCourse.useMutation({
     onSuccess(data) {
       toast({

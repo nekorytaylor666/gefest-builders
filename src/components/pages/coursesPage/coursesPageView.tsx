@@ -14,16 +14,17 @@ import StreakTable from "./_components/streakTable";
 
 const CoursesPageView = (props: CoursesPageViewProps) => {
   const { courses } = props;
+  console.log(courses);
   return (
     <main className="container pt-12 max-w-screen-xl">
       <TypographyH1>Что ты хочешь узнать сегодня?</TypographyH1>
 
-      {/* <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
         <StreakTable></StreakTable>
         <div className="col-span-1 lg:col-span-2">
           <LeaderboardTable></LeaderboardTable>
         </div>
-      </div> */}
+      </div>
       <section className="pt-4">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {courses.map((course) => (

@@ -81,7 +81,7 @@ const LeaderboardTableView = () => {
               <Flame className="text-orange-500"></Flame>
             </div>
           </div>
-          {index === 4 && (
+          {el?.rank === 4 && (
             <div className="flex justify-evenly items-center gap-2 p-2">
               <ArrowUp className="h-5 w-5"></ArrowUp>
               <h4 className="flex items-center font-bold">
