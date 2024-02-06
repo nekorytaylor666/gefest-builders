@@ -30,7 +30,14 @@ export const activityRouter = t.router({
   list: publicProcedure.query(async ({ ctx }) => {
     const user = ctx.session?.user;
     const userId = user?.id;
-
+    if (!userId) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An unexpected error occurred, please try again later.",
+        // optional: pass the original error to retain stack trace
+        cause: "You must be logged in to add an activity",
+      });
+    }
     return db.activity.findMany({
       where: { userId },
       include: { type: true },
@@ -39,6 +46,14 @@ export const activityRouter = t.router({
   getActivityStreakAndDetails: publicProcedure.query(async ({ ctx }) => {
     const user = ctx.session?.user;
     const userId = user?.id;
+    if (!userId) {
+      throw new TRPCError({
+        code: "INTERNAL_SERVER_ERROR",
+        message: "An unexpected error occurred, please try again later.",
+        // optional: pass the original error to retain stack trace
+        cause: "You must be logged in to add an activity",
+      });
+    }
     const activities = await db.activity.findMany({
       where: { userId },
       select: { id: true, createdAt: true, activityTypeName: true },

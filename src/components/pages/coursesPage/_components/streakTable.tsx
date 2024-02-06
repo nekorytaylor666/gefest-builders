@@ -13,8 +13,21 @@ import { Flame } from "lucide-react";
 import React from "react";
 
 const StreakTable = () => {
-  const [{ groupedByDay, streak }] =
-    trpc.activities.getActivityStreakAndDetails.useSuspenseQuery();
+  const { data, error } =
+    trpc.activities.getActivityStreakAndDetails.useQuery();
+  if (error) {
+    return (
+      <div className="h-full  flex flex-col">
+        <TypographyH3>Ваш Стрик</TypographyH3>
+        <Card className="h-full mt-2 p-4 flex justify-center items-center pb-4 gap-4 ">
+          <TypographyH3>Войдите, чтобы узнать ваш стрик</TypographyH3>
+        </Card>
+      </div>
+    );
+  }
+  const groupedByDay = data?.groupedByDay ?? {};
+  const streak = data?.streak;
+
   return (
     <div className="h-full  flex flex-col">
       <TypographyH3>Ваш Стрик</TypographyH3>
