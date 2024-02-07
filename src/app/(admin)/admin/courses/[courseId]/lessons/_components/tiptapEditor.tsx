@@ -17,6 +17,13 @@ import { MDXEditor, MDXEditorValues } from "@/components/mdxEditor";
 import Editor from "@/components/editor";
 import { trpc } from "@/app/_trpc/client";
 import SuperJSON from "superjson";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { type Editor as EditorType } from "@tiptap/core";
+import useLocalStorage from "@/lib/hooks/use-local-storage";
+import { toast } from "sonner";
+import { Check } from "lucide-react";
+
 const DraftEditorPageContainer = ({
   courseId,
   lessonId,
@@ -24,31 +31,70 @@ const DraftEditorPageContainer = ({
   lessonId: number;
   courseId: number;
 }) => {
-  const { toast } = useToast();
+  const [editContent, setEditContent] = useState("");
+  const [autoSave, setAutoSave] = useLocalStorage("autoSave", false);
 
   const lesson = trpc.lessons.getLessonByCourseIdAndLessonId.useSuspenseQuery({
     courseId,
     lessonId,
   });
-  const saveContentMutation = trpc.lessons.editLessonContent.useMutation();
+  const { mutate: saveContentMutation, isLoading } =
+    trpc.lessons.editLessonContent.useMutation();
 
+  const handleContentUpdate = (editor: EditorType | undefined) => {
+    const json = editor?.getJSON();
+    const content = JSON.stringify(json);
+    setEditContent(content);
+    if (autoSave) {
+      saveContentMutation({ lessonId: lessonId, content: content });
+    }
+  };
+
+  // Функция сохранения контента
+  const handleSaveContent = () => {
+    saveContentMutation(
+      { lessonId: lessonId, content: editContent },
+      {
+        onSuccess(data, variables, context) {
+          toast("Контент сохранен", { icon: <Check></Check> });
+        },
+      }
+    );
+  };
   const lessonContent = lesson[0]?.jsonContent ?? "";
   const jsonContent = lessonContent && JSON.parse(lessonContent as any);
+
+  const toggleAutoSave = () => {
+    // Переключаем состояние автосохранения
+    setAutoSave(!autoSave);
+  };
+
   return (
     <Suspense fallback={<div>loading...</div>}>
       <DashboardHeader
         heading="Редактирование контента"
         text="Обновление контента урока"
-      ></DashboardHeader>
+      >
+        <div className="flex items-center gap-4">
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="auto-save-mode"
+              checked={autoSave}
+              onCheckedChange={toggleAutoSave}
+            />
+            <Label htmlFor="auto-save-mode">Автосохранение</Label>
+          </div>
+
+          <Button onClick={handleSaveContent} disabled={isLoading}>
+            {isLoading ? "Сохранение..." : "Сохранить"}
+          </Button>
+        </div>
+      </DashboardHeader>
+
       <Separator className="my-4"></Separator>
       <Editor
         defaultValue={jsonContent}
-        onDebouncedUpdate={(editor) => {
-          const json = editor?.getJSON();
-          const html = editor?.getHTML();
-          const content = JSON.stringify(json);
-          saveContentMutation.mutate({ lessonId: lessonId, content });
-        }}
+        onDebouncedUpdate={handleContentUpdate}
       ></Editor>
     </Suspense>
   );

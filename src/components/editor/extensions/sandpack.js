@@ -75,7 +75,6 @@ const SandpackExtension = Node.create({
     return ReactNodeViewRenderer((props) => {
       const { node, updateAttributes } = props;
       const handleFilesUpload = ({ files, template }) => {
-        console.log("files:", Object.entries(files)[0][1].code);
         updateAttributes({
           isFilesUploaded: true,
           sandpackAttr: {

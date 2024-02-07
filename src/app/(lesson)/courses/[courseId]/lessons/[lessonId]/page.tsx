@@ -15,7 +15,6 @@ export default async function Page({
   const content = JSON.parse(lesson?.jsonContent as string);
   const contentChunks = splitArrayByHorizontalRule(content);
 
-  console.log(content);
   return (
     <LessonContainer chunks={contentChunks} lesson={lesson}></LessonContainer>
   );
