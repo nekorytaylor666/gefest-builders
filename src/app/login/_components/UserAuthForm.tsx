@@ -33,29 +33,34 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     router.refresh();
   };
 
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
+  const sendMagicLink = async ({
+    shouldCreateUser,
+  }: {
+    shouldCreateUser: boolean;
+  }) => {
+    setIsLoading(true);
+    await supabase.auth.signInWithOtp({
+      email,
+      options: {
+        data: {
+          email,
+        },
+        shouldCreateUser,
+        emailRedirectTo: `${location.origin}/api/auth/callback`,
+      },
+    });
+    setIsLoading(false);
   };
-  async function handleMagicLink(event: React.SyntheticEvent) {
+
+  const handleMagicLink = async (event: React.SyntheticEvent) => {
     event.preventDefault();
     setIsLoading(true);
-    try {
-      const { data, error } = await supabase.auth.signInWithOtp({
-        email,
-
-        options: {
-          data: {
-            email,
-          },
-          shouldCreateUser: true,
-          emailRedirectTo: `${location.origin}/api/auth/callback`,
-        },
-      });
-      console.log({ error });
-    } catch (error) {
-      console.log({ error });
-    }
+    const { data: userExists } = await supabase
+      .from("User")
+      .select("id")
+      .eq("email", email)
+      .single();
+    await sendMagicLink({ shouldCreateUser: !userExists });
     toast({
       title:
         "Мы отправили ссылку на почту " +
@@ -67,7 +72,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     setTimeout(() => {
       setIsLoading(false);
     }, 1000);
-  }
+  };
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
