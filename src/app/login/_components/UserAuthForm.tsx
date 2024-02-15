@@ -17,33 +17,9 @@ interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
 
   const router = useRouter();
   const { toast } = useToast();
-
-  const handleSignUp = async () => {
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
-    });
-    router.refresh();
-  };
-
-  const handleSignIn = async () => {
-    await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
-    });
-
-    router.refresh();
-  };
 
   const handleSignInWithGoogle = async () => {
     setIsLoading(true);
@@ -61,16 +37,25 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     await supabase.auth.signOut();
     router.refresh();
   };
-  async function onSubmit(event: React.SyntheticEvent) {
+  async function handleMagicLink(event: React.SyntheticEvent) {
     event.preventDefault();
     setIsLoading(true);
-    const { data, error } = await supabase.auth.signInWithOtp({
-      email,
-      options: {
-        shouldCreateUser: false,
-        emailRedirectTo: `${location.origin}/api/auth/callback`,
-      },
-    });
+    try {
+      const { data, error } = await supabase.auth.signInWithOtp({
+        email,
+
+        options: {
+          data: {
+            email,
+          },
+          shouldCreateUser: true,
+          emailRedirectTo: `${location.origin}/api/auth/callback`,
+        },
+      });
+      console.log({ error });
+    } catch (error) {
+      console.log({ error });
+    }
     toast({
       title:
         "Мы отправили ссылку на почту " +
@@ -86,7 +71,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
 
   return (
     <div className={cn("grid gap-6", className)} {...props}>
-      <form onSubmit={onSubmit}>
+      <div>
         <div className="grid gap-2">
           <div className="grid gap-1">
             <Label className="sr-only" htmlFor="email">
@@ -117,12 +102,12 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
             />
           </div> */}
-          <Button onClick={handleSignIn} disabled={isLoading}>
+          <Button onClick={handleMagicLink} disabled={isLoading}>
             {isLoading && <FaSpinner className="mr-2 h-4 w-4 animate-spin" />}
             Войти с Email
           </Button>
         </div>
-      </form>
+      </div>
       <div className="relative">
         <div className="absolute inset-0 flex items-center">
           <span className="w-full border-t" />
