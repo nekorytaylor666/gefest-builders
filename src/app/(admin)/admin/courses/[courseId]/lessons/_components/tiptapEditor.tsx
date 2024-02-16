@@ -22,7 +22,17 @@ import { Label } from "@/components/ui/label";
 import { type Editor as EditorType } from "@tiptap/core";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
 import { toast } from "sonner";
-import { Check } from "lucide-react";
+import { Blocks, Check, Edit3 } from "lucide-react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Skeleton } from "@/components/ui/skeleton";
+import ToolboxGrid from "@/components/toolbox/toolboxGrid";
 
 const DraftEditorPageContainer = ({
   courseId,
@@ -70,32 +80,62 @@ const DraftEditorPageContainer = ({
   };
 
   return (
-    <Suspense fallback={<div>loading...</div>}>
-      <DashboardHeader
-        heading="Редактирование контента"
-        text="Обновление контента урока"
-      >
-        <div className="flex items-center gap-4">
-          <div className="flex items-center space-x-2">
-            <Switch
-              id="auto-save-mode"
-              checked={autoSave}
-              onCheckedChange={toggleAutoSave}
-            />
-            <Label htmlFor="auto-save-mode">Автосохранение</Label>
-          </div>
-
-          <Button onClick={handleSaveContent} disabled={isLoading}>
-            {isLoading ? "Сохранение..." : "Сохранить"}
-          </Button>
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen">
+          <Skeleton className="h-8 w-32"></Skeleton>
+          <Skeleton className="h-[calc(80vh)]"></Skeleton>
         </div>
-      </DashboardHeader>
+      }
+    >
+      <Dialog>
+        <div className="p-4 mb-[calc(20vh)]">
+          <DashboardHeader
+            heading="Редактирование контента"
+            text="Обновление контента урока"
+          >
+            <div className="flex items-center gap-4">
+              <div className="flex items-center space-x-2">
+                <Switch
+                  id="auto-save-mode"
+                  checked={autoSave}
+                  onCheckedChange={toggleAutoSave}
+                />
+                <Label htmlFor="auto-save-mode">Автосохранение</Label>
+              </div>
 
-      <Separator className="my-4"></Separator>
-      <Editor
-        defaultValue={jsonContent}
-        onDebouncedUpdate={handleContentUpdate}
-      ></Editor>
+              <Button onClick={handleSaveContent} disabled={isLoading}>
+                {isLoading ? "Сохранение..." : "Сохранить"}
+              </Button>
+            </div>
+          </DashboardHeader>
+
+          <Separator className="my-4"></Separator>
+          <Editor
+            defaultValue={jsonContent}
+            onDebouncedUpdate={handleContentUpdate}
+          ></Editor>
+          <DialogTrigger asChild>
+            <Button
+              size={"lg"}
+              className="w-full text-lg h-auto p-4"
+              variant={"outline"}
+            >
+              <Blocks className="mr-2"></Blocks>
+              Добавить блок
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Выберите блок</DialogTitle>
+              <DialogDescription>
+                Выберите блок, который хотите добавить в урок
+              </DialogDescription>
+            </DialogHeader>
+            <ToolboxGrid></ToolboxGrid>
+          </DialogContent>
+        </div>
+      </Dialog>
     </Suspense>
   );
 };
