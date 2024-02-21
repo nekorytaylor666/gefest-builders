@@ -1,5 +1,5 @@
 import React from "react";
-import { Tool, toolsList } from "./tools";
+import { GBlock, blocksList } from "./tools";
 import {
   Tooltip,
   TooltipContent,
@@ -8,12 +8,13 @@ import {
 } from "../ui/tooltip";
 import { Button } from "../ui/button";
 import { Card } from "../ui/card";
+
 const ToolboxGrid = ({
-  tools = [...toolsList],
+  tools = [...Object.values(blocksList)],
   onToolClick,
 }: {
-  tools: Tool[];
-  onToolClick: (tool: Tool) => void;
+  tools?: GBlock[];
+  onToolClick: (tool: GBlock) => void;
 }) => {
   return (
     <div className="grid grid-cols-4 gap-4">

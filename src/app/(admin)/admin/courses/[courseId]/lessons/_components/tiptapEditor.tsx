@@ -6,7 +6,6 @@ import { Separator } from "@/components/ui/separator";
 import { Textarea } from "@/components/ui/textarea";
 import { MDXContent, serializeMdxContent } from "@/lib/mdx-utils";
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import ErrorBoundary from "@/components/error-boundary";
 import { useMutation } from "@tanstack/react-query";
@@ -22,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { type Editor as EditorType } from "@tiptap/core";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
 import { toast } from "sonner";
-import { Blocks, Check, Edit3 } from "lucide-react";
+import { Blocks, Check, Cross, Edit3, Trash, X } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -33,21 +32,32 @@ import {
 } from "@/components/ui/dialog";
 import { Skeleton } from "@/components/ui/skeleton";
 import ToolboxGrid from "@/components/toolbox/toolboxGrid";
+import { GBlock, GBlockType, blocksList } from "@/components/toolbox/tools";
+import { Card } from "@/components/ui/card";
+import {
+  GBlockInstance,
+  useContentStoryEditorStore,
+} from "@/store/contentStoryEditorStore";
+import { useStore } from "@/store/customUseStore";
+import { Lesson } from "@prisma/client";
 
 const DraftEditorPageContainer = ({
   courseId,
   lessonId,
+  lesson,
 }: {
   lessonId: number;
   courseId: number;
+  lesson: Lesson;
 }) => {
+  const content = useStore(useContentStoryEditorStore, (state) => state);
+  const blocks = content?.lessonsBlocks[lessonId] || []; // Fetch blocks for the current lesson
+
   const [editContent, setEditContent] = useState("");
   const [autoSave, setAutoSave] = useLocalStorage("autoSave", false);
+  // const [blocks, setBlocks] = useState<GBlockType[]>([]);
+  const [toolboxDialog, setToolboxDialog] = useState(false);
 
-  const lesson = trpc.lessons.getLessonByCourseIdAndLessonId.useSuspenseQuery({
-    courseId,
-    lessonId,
-  });
   const { mutate: saveContentMutation, isLoading } =
     trpc.lessons.editLessonContent.useMutation();
 
@@ -71,12 +81,25 @@ const DraftEditorPageContainer = ({
       }
     );
   };
-  const lessonContent = lesson[0]?.jsonContent ?? "";
+  const lessonContent = lesson?.jsonContent ?? "";
   const jsonContent = lessonContent && JSON.parse(lessonContent as any);
 
   const toggleAutoSave = () => {
     // Переключаем состояние автосохранения
     setAutoSave(!autoSave);
+  };
+  const handleAddBlock = (tool: GBlock) => {
+    const newBlock: GBlockInstance = {
+      id: Date.now().toString(),
+      content: "",
+      type: tool.type,
+    }; // Generate a unique ID for the block
+    content?.addBlock(lessonId.toString(), newBlock);
+    setToolboxDialog(false);
+  };
+
+  const handleRemoveblock = (blockId: string) => {
+    content?.removeBlock(lessonId.toString(), blockId);
   };
 
   return (
@@ -88,8 +111,8 @@ const DraftEditorPageContainer = ({
         </div>
       }
     >
-      <Dialog>
-        <div className="p-4 mb-[calc(20vh)]">
+      <Dialog open={toolboxDialog} onOpenChange={setToolboxDialog}>
+        <div className="p-4 mb-[calc(20vh)] container mx-auto max-w-screen-md">
           <DashboardHeader
             heading="Редактирование контента"
             text="Обновление контента урока"
@@ -104,21 +127,47 @@ const DraftEditorPageContainer = ({
                 <Label htmlFor="auto-save-mode">Автосохранение</Label>
               </div>
 
-              <Button onClick={handleSaveContent} disabled={isLoading}>
+              <Button
+                variant={"secondary"}
+                onClick={handleSaveContent}
+                disabled={isLoading}
+              >
                 {isLoading ? "Сохранение..." : "Сохранить"}
               </Button>
             </div>
           </DashboardHeader>
-
-          <Separator className="my-4"></Separator>
-          <Editor
-            defaultValue={jsonContent}
-            onDebouncedUpdate={handleContentUpdate}
-          ></Editor>
+          <div className="mt-8"></div>
+          {blocks.map((block, index) => {
+            return (
+              <div key={index}>
+                <div className="relative">
+                  {blocksList[block.type].component({
+                    value: block.content,
+                    onValueChange: (value) => {
+                      console.log(value);
+                      content?.updateBlock(
+                        lessonId.toString(),
+                        block.id,
+                        value
+                      );
+                    },
+                  })}
+                  <Button
+                    onClick={() => handleRemoveblock(block.id)}
+                    variant={"ghost"}
+                    className="absolute top-0 -right-14"
+                  >
+                    <X></X>
+                  </Button>
+                </div>
+                <Separator className="my-8"></Separator>
+              </div>
+            );
+          })}
           <DialogTrigger asChild>
             <Button
               size={"lg"}
-              className="w-full text-lg h-auto p-4"
+              className="w-full text-lg h-auto p-4 mt-8"
               variant={"outline"}
             >
               <Blocks className="mr-2"></Blocks>
@@ -132,7 +181,7 @@ const DraftEditorPageContainer = ({
                 Выберите блок, который хотите добавить в урок
               </DialogDescription>
             </DialogHeader>
-            <ToolboxGrid></ToolboxGrid>
+            <ToolboxGrid onToolClick={handleAddBlock}></ToolboxGrid>
           </DialogContent>
         </div>
       </Dialog>
