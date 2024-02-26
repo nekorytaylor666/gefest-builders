@@ -34,9 +34,6 @@ export const CourseCard: React.FC<CourseCardProps> = ({ course }) => (
     <CardContent className="min-h-[200px]">
       {course.disabled ? null : (
         <div className="flex items-center flex-wrap justify-between">
-          <span className="font-medium text-muted-foreground ">
-            Уроков {course.lessons.length}
-          </span>{" "}
           <Badge className="bg-accent text-accent-foreground">
             Рекомендовано
           </Badge>

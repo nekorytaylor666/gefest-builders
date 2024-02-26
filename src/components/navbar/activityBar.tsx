@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
-import { Flame, Loader } from "lucide-react";
+import { Loader } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Button } from "../ui/button";
 import {
@@ -17,6 +17,7 @@ import { format, formatDistance } from "date-fns";
 import ru from "date-fns/locale/ru";
 import { trpc } from "@/app/_trpc/client";
 import { Activity, ActivityType } from "@prisma/client";
+import { HiFire } from "react-icons/hi2";
 
 const ActivitiesBar = () => {
   return (
@@ -68,7 +69,7 @@ const ActivityItem = ({
         <p className="font-medium text-orange-600 text-sm">
           +{activity.experience}
         </p>
-        <Flame className="text-orange-600 w-5 h-5"></Flame>
+        <HiFire className="text-orange-600 w-5 h-5"></HiFire>
       </div>
     </div>
   );
@@ -80,7 +81,7 @@ const ActivityTrigger = () => (
       <Tooltip>
         <TooltipTrigger>
           <Button size={"icon"} variant={"outline"}>
-            <Flame></Flame>
+            <HiFire className="text-orange-600"></HiFire>
           </Button>
         </TooltipTrigger>
         <TooltipContent>

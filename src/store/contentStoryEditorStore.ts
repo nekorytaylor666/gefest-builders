@@ -17,12 +17,27 @@ interface ContentStoryEditorState {
   addBlock: (lessonId: string, block: GBlockInstance) => void;
   updateBlock: (lessonId: string, blockId: string, newContent: any) => void;
   removeBlock: (lessonId: string, blockId: string) => void;
+  setLessonBlocksForLessonId: (
+    lessonId: string,
+    blocks: GBlockInstance[]
+  ) => void;
 }
 
 export const useContentStoryEditorStore = create<ContentStoryEditorState>()(
   persist(
     (set) => ({
       lessonsBlocks: {},
+      setLessonBlocksForLessonId: (
+        lessonId: string,
+        blocks: GBlockInstance[]
+      ) => {
+        set((state) => ({
+          lessonsBlocks: {
+            ...state.lessonsBlocks,
+            [lessonId]: blocks,
+          },
+        }));
+      },
       addBlock: (lessonId, block) =>
         set((state) => ({
           lessonsBlocks: {

@@ -414,8 +414,9 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
 }
 
 .drag-handle {
-  position: fixed;
+  position: absolute;
   opacity: 1;
+  background-color: red;
   transition: opacity ease-in 0.2s;
   border-radius: 0.25rem;
 
@@ -428,10 +429,10 @@ ul[data-type="taskList"] li[data-checked="true"] > div > p {
   z-index: 50;
   cursor: grab;
 
-  &:hover {
+  /* &:hover {
     background-color: var(--stone-100);
     transition: background-color 0.2s;
-  }
+  } */
 
   &:active {
     background-color: var(--stone-200);

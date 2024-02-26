@@ -1,24 +1,19 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { cn } from "@/lib/utils";
-import { Flame } from "lucide-react";
-import QuizEditor from "./quizEditor";
-
-interface QuizProps {
-  question: string;
-  options: { content: string; correct: boolean }[];
-  correctAnswer: string;
-  onSuccess: () => void;
-}
+import QuizEditor, { QuizEditorValue } from "./quizEditor";
+import Editor from "@/components/editor";
+import { HiFire } from "react-icons/hi2";
 
 interface QuestionComponentProps {
-  question: string;
-  options: { content: string; correct: boolean }[];
-  selectedOption: number | null;
-  setSelectedOption: (value: number) => void;
+  question: QuizEditorValue["questionContent"];
+  options: QuizEditorValue["answers"];
+  selectedOption: string | null;
+  setSelectedOption: (value: string) => void;
   isSubmitted: boolean;
   showCorrectAnswer: boolean;
+  correctAnswerId: string;
 }
 
 interface FeedbackComponentProps {
@@ -38,19 +33,20 @@ const QuestionComponent = ({
   setSelectedOption,
   isSubmitted,
   showCorrectAnswer,
+  correctAnswerId,
 }: QuestionComponentProps) => {
   return (
     <div>
-      <div className="p-4 prose w-max">{question}</div>
+      <Editor className="w-full p-4" readonly defaultValue={question}></Editor>
       <RadioGroup
-        onValueChange={(value) => setSelectedOption(Number(value))}
+        onValueChange={(value) => setSelectedOption(value)}
         defaultValue={selectedOption?.toString()}
         className="flex flex-col pt-4"
         disabled={isSubmitted} // Disable the RadioGroup if the answer has been submitted
       >
         {options.map((option, index) => (
           <label
-            key={option.content}
+            key={option.answerId}
             className={cn("cursor-pointer", {
               "pointer-events-none": isSubmitted,
             })}
@@ -60,17 +56,18 @@ const QuestionComponent = ({
                 "grid grid-cols-[auto_1fr] gap-2 px-4 py-2 transition-colors ease-in-out duration-250 hover:bg-zinc-200",
                 {
                   "bg-zinc-200":
-                    (options[selectedOption as number] === option &&
+                    (options.find((el) => el.answerId === selectedOption) ===
+                      option &&
                       !showCorrectAnswer) ||
-                    (showCorrectAnswer && option.correct),
+                    (showCorrectAnswer && option.answerId === correctAnswerId),
                 }
               )}
             >
               <RadioGroupItem
                 className="aspect-square"
-                value={index.toString()}
+                value={option.answerId}
                 disabled={isSubmitted}
-              />{" "}
+              />
               {/* Disable individual items if submitted */}
               <div className="font-normal">{option.content}</div>
             </div>
@@ -88,7 +85,7 @@ const FeedbackComponent = ({
   if (!showCorrectAnswer) return null;
   const correctAnswerComponent = () => (
     <div className="flex items-center gap-1 ">
-      <Flame className="w-8 h-8 text-orange-500" />
+      <HiFire className="w-8 h-8 text-orange-600" />
       <span className="font-bold">Правильно</span>
     </div>
   );
@@ -118,45 +115,39 @@ const SubmitButtonComponent = ({
 };
 
 export function Quiz({
-  question,
-  options,
-  correctAnswer,
-  onSuccess,
-}: QuizProps) {
-  const [selectedOption, setSelectedOption] = useState<number | null>(null);
+  answers,
+  correctAnswerId,
+  points,
+  questionContent,
+}: QuizEditorValue) {
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [showCorrectAnswer, setShowCorrectAnswer] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false); // Track if the answer has been submitted
 
-  const isCorrectAnswer =
-    selectedOption !== null ? options[selectedOption].correct : false;
+  const isCorrectAnswer = answers.some(
+    (el) => el.answerId === selectedOption && el.answerId === correctAnswerId
+  );
 
-  const handleSubmit = useCallback(() => {
+  const handleAnswer = (value: string) => {
+    setSelectedOption(value);
     setShowCorrectAnswer(true);
-    setIsSubmitted(true); // Mark as submitted
-    if (isCorrectAnswer) {
-      onSuccess();
-    }
-  }, [isCorrectAnswer, onSuccess]);
-  return <QuizEditor></QuizEditor>;
-  // return (
-  //   // <div className="my-6 bg-zinc-100 rounded-md w-full max-w-4xl">
-  //   {
-  //     /* <QuestionComponent
-  //       question={question}
-  //       options={options}
-  //       selectedOption={selectedOption}
-  //       setSelectedOption={setSelectedOption}
-  //       isSubmitted={isSubmitted}
-  //       showCorrectAnswer={showCorrectAnswer}
-  //     />
-  //     <FeedbackComponent
-  //       showCorrectAnswer={showCorrectAnswer}
-  //       isCorrectAnswer={isCorrectAnswer}
-  //     />
-  //     <SubmitButtonComponent
-  //       handleSubmit={handleSubmit}
-  //       isSubmitted={isSubmitted}
-  //     /> */
-  //   }
-  // );
+    setIsSubmitted(true);
+  };
+  return (
+    <div className="my-6 bg-zinc-100 rounded-md w-1/2 mx-auto pb-4">
+      <QuestionComponent
+        question={questionContent}
+        options={answers}
+        selectedOption={selectedOption}
+        setSelectedOption={handleAnswer}
+        isSubmitted={isSubmitted}
+        showCorrectAnswer={showCorrectAnswer}
+        correctAnswerId={correctAnswerId}
+      />
+      <FeedbackComponent
+        showCorrectAnswer={showCorrectAnswer}
+        isCorrectAnswer={isCorrectAnswer}
+      />
+    </div>
+  );
 }

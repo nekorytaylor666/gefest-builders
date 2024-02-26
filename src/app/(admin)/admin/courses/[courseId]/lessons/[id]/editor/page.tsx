@@ -2,7 +2,7 @@ import React from "react";
 import { Suspense } from "react";
 import { serverClient } from "@/app/_trpc/serverClient";
 
-import DraftEditorPageContainer from "../../_components/tiptapEditor";
+import DraftEditorPageContainer from "../../_components/lessonEditor";
 
 async function EditLessonPage({
   params,

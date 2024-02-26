@@ -24,11 +24,7 @@ const findCourseBySlug = async (slug: string) => {
 
 export const coursesRouter = t.router({
   listCourses: publicProcedure.query(async () => {
-    return await db.course.findMany({
-      include: {
-        lessons: true,
-      },
-    });
+    return await db.course.findMany();
   }),
   editCourse: publicProcedure
     .input(

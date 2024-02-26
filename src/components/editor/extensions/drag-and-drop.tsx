@@ -128,7 +128,7 @@ function DragHandle(options: DragHandleOptions) {
       });
 
       hideDragHandle();
-
+      view?.dom?.parentElement?.classList.add("relative");
       view?.dom?.parentElement?.appendChild(dragHandleElement);
 
       return {

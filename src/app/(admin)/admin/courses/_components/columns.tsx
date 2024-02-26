@@ -43,11 +43,6 @@ export const columns: ColumnDef<Course>[] = [
     header: "Описания",
   },
   {
-    accessorKey: "lessons",
-    header: "Количество уроков",
-    cell: ({ row }) => `${row.original.lessons.length}`,
-  },
-  {
     accessorKey: "disabled",
     header: "Публичная",
     cell: ({ row }) => `${row.original.disabled ? "Нет" : "Да"}`,
