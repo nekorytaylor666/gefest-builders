@@ -11,21 +11,8 @@ async function EditLessonPage({
 }) {
   const courseId = Number(params.courseId);
   const lessonId = Number(params.id);
-  const lesson =
-    await serverClient.lessons.getLessonByCourseIdAndLessonId.query({
-      courseId,
-      lessonId,
-    });
-  if (!lesson) return <div>Lesson not found</div>;
-  return (
-    <Suspense fallback={null}>
-      <DraftEditorPageContainer
-        lessonId={lessonId}
-        courseId={courseId}
-        lesson={lesson}
-      />
-    </Suspense>
-  );
+
+  return <DraftEditorPageContainer lessonId={lessonId} courseId={courseId} />;
 }
 
 export const dynamic = "force-dynamic";

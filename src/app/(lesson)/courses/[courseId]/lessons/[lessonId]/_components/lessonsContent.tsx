@@ -54,10 +54,12 @@ const LessonContent = ({ content, onLessonComplete }: LessonContentProps) => {
       <div className="px-0 mt-20 ">
         <Dialog>
           <div className="container p-4 max-w-screen-lg mx-auto mb-20 pb-[40dvh]">
-            {content?.slice(0, chunkCursor).map((block, index) => {
+            {content?.slice(0, chunkCursor).map((block: any, index: number) => {
               return (
                 <div key={index}>
-                  {blocksList[block.type].readComponent({
+                  {blocksList[
+                    block.type as keyof typeof blocksList
+                  ].readComponent({
                     value: block.content,
                   })}
                   <div className="my-8"></div>

@@ -27,25 +27,33 @@ import { Lesson } from "@prisma/client";
 const DraftEditorPageContainer = ({
   courseId,
   lessonId,
-  lesson,
 }: {
   lessonId: number;
   courseId: number;
-  lesson: Lesson;
 }) => {
   const content = useStore(useContentStoryEditorStore, (state) => state);
   const blocks = content?.lessonsBlocks[lessonId] || []; // Fetch blocks for the current lesson
 
   const [toolboxDialog, setToolboxDialog] = useState(false);
-
-  useEffect(() => {
-    if (lesson.jsonContent) {
-      content?.setLessonBlocksForLessonId(
-        lessonId.toString(),
-        JSON.parse((lesson.jsonContent as string) || "[]") as GBlockInstance[]
-      );
-    }
-  }, [lesson.jsonContent]);
+  const { data: lesson, isLoading: lessonIsLoading } =
+    trpc.lessons.getLessonByCourseIdAndLessonId.useQuery(
+      {
+        courseId,
+        lessonId,
+      },
+      {
+        staleTime: 10000,
+        onSuccess(lesson) {
+          if (!lesson) return;
+          content?.setLessonBlocksForLessonId(
+            lessonId.toString(),
+            JSON.parse(
+              (lesson.jsonContent as string) || "[]"
+            ) as GBlockInstance[]
+          );
+        },
+      }
+    );
 
   const { mutate: saveContentMutation, isLoading } =
     trpc.lessons.editLessonContent.useMutation();
@@ -66,7 +74,7 @@ const DraftEditorPageContainer = ({
       id: Date.now().toString(),
       content: "",
       type: tool.type,
-    }; // Generate a unique ID for the block
+    };
     content?.addBlock(lessonId.toString(), newBlock);
     setToolboxDialog(false);
   };
@@ -75,32 +83,32 @@ const DraftEditorPageContainer = ({
     content?.removeBlock(lessonId.toString(), blockId);
   };
 
+  if (lessonIsLoading)
+    return (
+      <div className="h-screen">
+        <Skeleton className="h-28 w-1/2"></Skeleton>
+        <Skeleton className="h-[calc(80vh)] mt-8"></Skeleton>
+      </div>
+    );
   return (
-    <Suspense
-      fallback={
-        <div className="flex items-center justify-center h-screen">
-          <Skeleton className="h-8 w-32"></Skeleton>
-          <Skeleton className="h-[calc(80vh)]"></Skeleton>
-        </div>
-      }
-    >
-      <Dialog open={toolboxDialog} onOpenChange={setToolboxDialog}>
-        <div className="p-4 mb-[calc(20vh)] ">
-          <DashboardHeader
-            heading="Редактирование контента"
-            text="Обновление контента урока"
-          >
-            <div className="flex items-center gap-4">
-              <Button
-                variant={"secondary"}
-                onClick={handleSaveContent}
-                disabled={isLoading}
-              >
-                {isLoading ? "Сохранение..." : "Сохранить"}
-              </Button>
-            </div>
-          </DashboardHeader>
-          <div className="mt-8"></div>
+    <Dialog open={toolboxDialog} onOpenChange={setToolboxDialog}>
+      <div className="p-4 mb-[calc(20vh)] ">
+        <DashboardHeader
+          heading="Редактирование контента"
+          text="Обновление контента урока"
+        >
+          <div className="flex items-center gap-4">
+            <Button
+              variant={"secondary"}
+              onClick={handleSaveContent}
+              disabled={isLoading}
+            >
+              {isLoading ? "Сохранение..." : "Сохранить"}
+            </Button>
+          </div>
+        </DashboardHeader>
+        <div className="mt-8"></div>
+        <div className="container max-w-screen-2xl">
           {blocks?.map((block, index) => {
             return (
               <div key={index}>
@@ -128,28 +136,28 @@ const DraftEditorPageContainer = ({
               </div>
             );
           })}
-          <DialogTrigger asChild>
-            <Button
-              size={"lg"}
-              className="w-full text-lg h-auto p-4 mt-8"
-              variant={"outline"}
-            >
-              <Blocks className="mr-2"></Blocks>
-              Добавить блок
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Выберите блок</DialogTitle>
-              <DialogDescription>
-                Выберите блок, который хотите добавить в урок
-              </DialogDescription>
-            </DialogHeader>
-            <ToolboxGrid onToolClick={handleAddBlock}></ToolboxGrid>
-          </DialogContent>
         </div>
-      </Dialog>
-    </Suspense>
+        <DialogTrigger asChild>
+          <Button
+            size={"lg"}
+            className="w-full text-lg h-auto p-4 mt-8"
+            variant={"outline"}
+          >
+            <Blocks className="mr-2"></Blocks>
+            Добавить блок
+          </Button>
+        </DialogTrigger>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Выберите блок</DialogTitle>
+            <DialogDescription>
+              Выберите блок, который хотите добавить в урок
+            </DialogDescription>
+          </DialogHeader>
+          <ToolboxGrid onToolClick={handleAddBlock}></ToolboxGrid>
+        </DialogContent>
+      </div>
+    </Dialog>
   );
 };
 

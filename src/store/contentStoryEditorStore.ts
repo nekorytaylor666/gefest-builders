@@ -26,6 +26,9 @@ interface ContentStoryEditorState {
 export const useContentStoryEditorStore = create<ContentStoryEditorState>()(
   persist(
     (set) => ({
+      fetchLessonBlocksForLessonId: (lessonId: string) => {
+        // Fetch lesson blocks from the API
+      },
       lessonsBlocks: {},
       setLessonBlocksForLessonId: (
         lessonId: string,
