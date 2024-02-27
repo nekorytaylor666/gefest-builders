@@ -53,7 +53,7 @@ const QuestionComponent = ({
           >
             <div
               className={cn(
-                "grid grid-cols-[auto_1fr] gap-2 px-4 py-2 transition-colors ease-in-out duration-250 hover:bg-zinc-200",
+                "grid grid-cols-[auto_1fr] gap-2 px-4 py-2 transition-colors ease-in-out duration-250 hover:bg-zinc-200 dark:hover:bg-zinc-500",
                 {
                   "bg-zinc-200":
                     (options.find((el) => el.answerId === selectedOption) ===
@@ -134,7 +134,7 @@ export function Quiz({
     setIsSubmitted(true);
   };
   return (
-    <div className="my-6 bg-zinc-100 rounded-md w-1/2 mx-auto pb-4">
+    <div className="my-6 dark:bg-zinc-800 bg-zinc-100 rounded-md w-1/2 mx-auto pb-4">
       <QuestionComponent
         question={questionContent}
         options={answers}

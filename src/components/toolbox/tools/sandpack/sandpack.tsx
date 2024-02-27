@@ -28,12 +28,7 @@ const CustomEditor = () => {
           showNavigator
           style={{ height: "600px" }}
           showOpenInCodeSandbox={false}
-        >
-          <SandpackConsole
-            showResetConsoleButton={false}
-            style={{ height: "300px" }}
-          />
-        </SandpackPreview>
+        ></SandpackPreview>
       </SandpackLayout>
     </>
   );
@@ -46,7 +41,7 @@ export const SandpackClient = ({ files }: { files: SandpackFiles }) => {
       customSetup={{
         entry: "/index.html",
       }}
-      template="vanilla"
+      template="static"
       files={files}
     >
       <CustomEditor />

@@ -13,14 +13,17 @@ export default function RootLayout({
     <div className="flex min-h-screen flex-col space-y-6">
       <header className="sticky top-0 z-40 border-b bg-background">
         <div className="container flex h-16 items-center justify-between py-4">
-          <Link className="cursor-pointer" href={"/"}>
+          <Link className="cursor-pointer flex items-center" href={"/"}>
             <Image
-              className="block "
+              className="block w-8 h-8 object-contain"
               width={150}
               height={47}
-              src={"/logo.svg"}
+              src={"/logo.png"}
               alt="logo"
             ></Image>
+            <span className="text-xl font-bold tracking-tight">
+              Gefest Builders
+            </span>
           </Link>
         </div>
       </header>

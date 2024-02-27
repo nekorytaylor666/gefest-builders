@@ -96,7 +96,7 @@ export default function Chat() {
       </div>
 
       <form
-        className="sticky bottom-0 bg-white flex gap-2 h-auto items-center py-4 "
+        className="sticky bottom-0 bg-background flex gap-2 h-auto items-center py-4 "
         onSubmit={(e) => handleSubmit(e)}
       >
         <AssistantInput
