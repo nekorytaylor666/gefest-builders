@@ -55,7 +55,7 @@ const QuestionComponent = ({
               className={cn(
                 "grid grid-cols-[auto_1fr] gap-2 px-4 py-2 transition-colors ease-in-out duration-250 hover:bg-zinc-200 dark:hover:bg-zinc-500",
                 {
-                  "bg-zinc-200":
+                  "dark:bg-zinc-500 bg-zinc-200":
                     (options.find((el) => el.answerId === selectedOption) ===
                       option &&
                       !showCorrectAnswer) ||
