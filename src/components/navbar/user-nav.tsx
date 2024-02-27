@@ -19,9 +19,13 @@ import {
 } from "../ui/navigation-menu";
 import { useUser } from "@/lib/hooks/useUserSession";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
+import { Switch } from "../ui/switch";
 
 export function UserNav() {
   const { isLoading, data, supabase } = useUser();
+  const { setTheme, theme } = useTheme();
+
   const router = useRouter();
   if (isLoading) {
     return <Skeleton className="w-10 h-10 rounded-full" />;
@@ -62,6 +66,13 @@ export function UserNav() {
           <DropdownMenuItem>Настройки</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
+        <DropdownMenuItem className="flex items-center justify-between">
+          <span>Темная тема</span>
+          <Switch
+            checked={theme === "dark"}
+            onCheckedChange={(checked) => setTheme(checked ? "dark" : "light")}
+          />
+        </DropdownMenuItem>
         <DropdownMenuItem
           className="hover:bg-destructive hover:text-destructive-foreground"
           onClick={async () => {

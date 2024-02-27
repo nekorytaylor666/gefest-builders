@@ -3,9 +3,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { UserNav } from "./user-nav";
 import ActivitiesBar from "./activityBar";
+import { MoonIcon, SunIcon } from "@radix-ui/react-icons";
+import { useTheme } from "next-themes";
+
+import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+
 const Navbar = () => {
   return (
-    <div className=" bg-white  py-4 px-4 lg:px-16 container">
+    <div className="   py-4 px-4 lg:px-16 container">
       <div className="flex items-center justify-between w-full">
         <Link className="cursor-pointer" href={"/"}>
           <Image
@@ -24,5 +35,7 @@ const Navbar = () => {
     </div>
   );
 };
+
+
 
 export default Navbar;

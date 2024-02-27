@@ -1,11 +1,12 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import Provider from "./_trpc/Provider";
+import TRPCProvider from "./_trpc/Provider";
 import React, { Suspense, cache } from "react";
 import { Toaster } from "@/components/ui/sonner";
 import { PHProvider, PostHogPageview } from "../providers/posthog";
 import { headers } from "next/headers";
+import { ThemeProvider } from "@/components/theme-provider";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -43,17 +44,24 @@ export default function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
 
-      <Provider headersPromise={getHeaders()}>
+      <TRPCProvider headersPromise={getHeaders()}>
         <PHProvider>
           <Suspense>
             <PostHogPageview />
           </Suspense>
-          <body className={inter.className}>
-            {children}
-            <Toaster />
-          </body>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <body className={inter.className}>
+              {children}
+              <Toaster />
+            </body>
+          </ThemeProvider>
         </PHProvider>
-      </Provider>
+      </TRPCProvider>
     </html>
   );
 }
