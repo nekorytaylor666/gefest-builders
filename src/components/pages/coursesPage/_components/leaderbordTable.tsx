@@ -10,10 +10,11 @@ import TypographyH3 from "@/components/ui/typography/h3";
 import TypographyP from "@/components/ui/typography/p";
 import { useUser } from "@/lib/hooks/useUserSession";
 import { cn } from "@/lib/utils";
-import { ArrowUp, Flame } from "lucide-react";
+import { ArrowUp } from "lucide-react";
 import Image from "next/image";
 import React, { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { HiFire } from "react-icons/hi2";
 
 const LeaderboardTable = () => {
   return (
@@ -82,7 +83,7 @@ const LeaderboardTableView = () => {
               <span className="text-zinc-500 align-bottom text-sm font-medium">
                 {el?.score}{" "}
               </span>{" "}
-              <Flame className="text-orange-500"></Flame>
+              <HiFire className="text-orange-600"></HiFire>
             </div>
           </div>
           {el?.rank === 4 && (

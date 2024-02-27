@@ -2,7 +2,7 @@ import React from "react";
 import { Suspense } from "react";
 import { serverClient } from "@/app/_trpc/serverClient";
 
-import DraftEditorPageContainer from "../../_components/tiptapEditor";
+import DraftEditorPageContainer from "../../_components/lessonEditor";
 
 async function EditLessonPage({
   params,
@@ -11,11 +11,8 @@ async function EditLessonPage({
 }) {
   const courseId = Number(params.courseId);
   const lessonId = Number(params.id);
-  return (
-    <Suspense fallback={null}>
-      <DraftEditorPageContainer lessonId={lessonId} courseId={courseId} />
-    </Suspense>
-  );
+
+  return <DraftEditorPageContainer lessonId={lessonId} courseId={courseId} />;
 }
 
 export const dynamic = "force-dynamic";

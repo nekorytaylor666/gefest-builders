@@ -24,34 +24,29 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Stars, Wand2 } from "lucide-react";
+import { blocksList } from "@/components/toolbox/tools";
 interface LessonContentProps {
-  chunks: any[];
+  content: any[];
   onLessonComplete: () => void;
 }
-const LessonContent = ({ chunks, onLessonComplete }: LessonContentProps) => {
+const LessonContent = ({ content, onLessonComplete }: LessonContentProps) => {
   const [chunkCursor, setChunkCursor] = useState(1);
-
-  const updateChunks = (cursor: number) => {
-    const newChunksUntilCursor = chunks.slice(0, cursor).flat(1);
-    return wrapChunkOfContent(newChunksUntilCursor);
-  };
-
-  const [wrappedContentChunk, setWrappedContentChunk] = useState(
-    updateChunks(chunkCursor)
-  );
 
   const onNextClick = () => {
     const newCursor = chunkCursor + 1;
     setChunkCursor(newCursor);
-    setWrappedContentChunk(updateChunks(newCursor));
 
-    if (newCursor >= chunks.length) {
+    window.scrollTo({
+      top: window.scrollY + 500,
+      behavior: "smooth",
+    });
+
+    if (newCursor > content.length) {
       onLessonComplete();
     }
   };
 
-  // Calculate progress
-  const progress = Math.round((chunkCursor / chunks.length) * 100);
+  const progress = Math.round((chunkCursor / content.length) * 100);
 
   return (
     <main className="">
@@ -59,11 +54,18 @@ const LessonContent = ({ chunks, onLessonComplete }: LessonContentProps) => {
       <div className="px-0 mt-20 ">
         <Dialog>
           <div className="container p-4 max-w-screen-lg mx-auto mb-20 pb-[40dvh]">
-            <ContentReader
-              className="p-0"
-              content={wrappedContentChunk}
-              readonly={true}
-            ></ContentReader>
+            {content?.slice(0, chunkCursor).map((block: any, index: number) => {
+              return (
+                <div key={index}>
+                  {blocksList[
+                    block.type as keyof typeof blocksList
+                  ].readComponent({
+                    value: block.content,
+                  })}
+                  <div className="my-8"></div>
+                </div>
+              );
+            })}
             <div className="flex justify-between gap-4 pt-8">
               <Button variant={"ghost"} asChild>
                 <DialogTrigger>

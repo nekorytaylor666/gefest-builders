@@ -40,3 +40,10 @@ export function getUrlFromString(str: string) {
     return null;
   }
 }
+
+export function uuid() {
+  return (
+    Math.random().toString(36).substring(2, 15) +
+    Math.random().toString(36).substring(2, 15)
+  );
+}

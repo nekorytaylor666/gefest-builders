@@ -9,8 +9,8 @@ import {
 } from "@/components/ui/tooltip";
 import TypographyH3 from "@/components/ui/typography/h3";
 import { cva } from "class-variance-authority";
-import { Flame } from "lucide-react";
 import React from "react";
+import { HiFire } from "react-icons/hi2";
 
 const StreakTable = () => {
   const { data, error } =
@@ -33,7 +33,7 @@ const StreakTable = () => {
       <TypographyH3>Ваш Стрик</TypographyH3>
       <Card className="h-full mt-2 p-4 grid grid-rows-[1fr_auto] pb-4 gap-4">
         <div className="flex items-center ">
-          <Flame className="text-orange-500 w-10 h-10"></Flame>
+          <HiFire className="text-orange-600 w-10 h-10"></HiFire>
           <h2 className="font-bold text-3xl ">{streak} дней стриков</h2>
         </div>
         <div className="w-full ">

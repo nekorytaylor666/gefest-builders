@@ -1,6 +1,5 @@
 import { cn } from "@/lib/utils";
 import React from "react";
-import { Quiz } from "./quiz";
 import TypographyInlineCode from "./ui/typography/code";
 import TypographyH2 from "./ui/typography/h2";
 import TypographyP from "./ui/typography/p";
@@ -42,7 +41,6 @@ const MDXRenderer = React.forwardRef<HTMLDivElement, MDXRendererProps>(
         return <TypographyInlineCode {...props}></TypographyInlineCode>;
       },
       Sandpack: (props: any) => <Sandpack {...props} />,
-      Quiz: (props: any) => <Quiz {...props} onSuccess={onNext} />,
       VideoEmbed: (props: any) => <VideoEmbed {...props}></VideoEmbed>,
 
       Next: (props: any) => (

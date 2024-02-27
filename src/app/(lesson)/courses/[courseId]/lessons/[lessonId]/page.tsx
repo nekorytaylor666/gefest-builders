@@ -13,10 +13,7 @@ export default async function Page({
   );
   if (!lesson?.jsonContent) return <div>Нет контента:(</div>;
   const content = JSON.parse(lesson?.jsonContent as string);
-  const contentChunks = splitArrayByHorizontalRule(content);
-
+  // const contentChunks = splitArrayByHorizontalRule(content);
   console.log(content);
-  return (
-    <LessonContainer chunks={contentChunks} lesson={lesson}></LessonContainer>
-  );
+  return <LessonContainer content={content} lesson={lesson}></LessonContainer>;
 }

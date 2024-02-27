@@ -9,11 +9,10 @@ import Link from "next/link";
 import Image from "next/image";
 import { Lesson } from "@prisma/client";
 import { toast } from "sonner";
-import { Flame } from "lucide-react";
 import { useAddActivity } from "@/app/api/hooks/useAddActivity/useAddActivity";
 
 interface LessonContainerProps {
-  chunks: any[];
+  content: any[];
   lesson: Lesson;
 }
 const LessonContainer = (props: LessonContainerProps) => {
@@ -45,7 +44,7 @@ const LessonContainer = (props: LessonContainerProps) => {
         <SuccessSection />
       ) : (
         <LessonContent
-          chunks={props.chunks}
+          content={props.content}
           onLessonComplete={onLessonComplete}
         ></LessonContent>
       )}

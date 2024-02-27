@@ -36,7 +36,6 @@ const items: NavItem[] = [
 
 export function DashboardNav() {
   const path = usePathname();
-  const { data, isLoading } = trpc.courses.listCourses.useQuery();
 
   if (!items?.length) {
     return null;
