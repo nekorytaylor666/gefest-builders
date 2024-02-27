@@ -76,7 +76,7 @@ const StreakBox = ({
   const boxClass = cva("w-full aspect-square   rounded-md", {
     variants: {
       variant: {
-        default: "bg-zinc-300",
+        default: "dark:bg-zinc-500 bg-zinc-300",
         active: intensity,
       },
     },
