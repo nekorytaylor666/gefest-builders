@@ -35,14 +35,17 @@ const DraftEditorPageContainer = ({
   const blocks = content?.lessonsBlocks[lessonId] || []; // Fetch blocks for the current lesson
 
   const [toolboxDialog, setToolboxDialog] = useState(false);
-  const { data: lesson, isLoading: lessonIsLoading } =
+  const { isLoading: lessonIsLoading } =
     trpc.lessons.getLessonByCourseIdAndLessonId.useQuery(
       {
         courseId,
         lessonId,
       },
       {
-        staleTime: 10000,
+        refetchOnWindowFocus: false,
+        refetchOnReconnect: false,
+        refetchOnMount: false,
+        staleTime: Infinity,
         onSuccess(lesson) {
           if (!lesson) return;
           content?.setLessonBlocksForLessonId(

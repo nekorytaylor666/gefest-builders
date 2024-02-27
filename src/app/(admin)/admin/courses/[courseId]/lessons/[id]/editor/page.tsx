@@ -12,7 +12,11 @@ async function EditLessonPage({
   const courseId = Number(params.courseId);
   const lessonId = Number(params.id);
 
-  return <DraftEditorPageContainer lessonId={lessonId} courseId={courseId} />;
+  return (
+    <Suspense fallback={null}>
+      <DraftEditorPageContainer lessonId={lessonId} courseId={courseId} />
+    </Suspense>
+  );
 }
 
 export const dynamic = "force-dynamic";
