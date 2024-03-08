@@ -3,7 +3,7 @@ import { DashboardNav } from "./_components/adminNav/adminNav";
 import { UserNav } from "@/components/navbar/user-nav";
 import Link from "next/link";
 import Image from "next/image";
-import Breadcrumb from "@/components/breadcrumbs";
+import Breadcrumbs from "@/components/breadcrumbs";
 export default function RootLayout({
   children,
 }: {
@@ -32,7 +32,7 @@ export default function RootLayout({
           <DashboardNav />
         </aside>
         <main className="flex w-full flex-1 flex-col overflow-hidden">
-          <Breadcrumb></Breadcrumb>
+          <Breadcrumbs></Breadcrumbs>
           {children}
         </main>
       </div>

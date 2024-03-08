@@ -2,35 +2,44 @@
 import Link from "next/link";
 import { useParams, usePathname, useRouter } from "next/navigation";
 import React from "react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
+import { ChevronRight, SlashIcon } from "lucide-react";
 
-const Breadcrumb = () => {
+const Breadcrumbs = () => {
   const { courseId, id } = useParams();
   const pathname = usePathname();
 
   const crumbs = pathname.split("/").filter(Boolean);
 
   return (
-    <nav className="p-2">
-      <ul className="flex text-muted-foreground font-medium ">
+    <Breadcrumb>
+      <BreadcrumbList className="sm:gap-1">
         {crumbs.map((crumb, index) => {
           const path = `/${crumbs.slice(0, index + 1).join("/")}`;
 
           return (
-            <li key={index}>
-              <Link href={path}>{crumb}</Link>
-              <span
-                className={`mx-1 ${
-                  index === crumbs.length - 1 ? "hidden" : ""
-                }`}
-              >
-                /
-              </span>
-            </li>
+            <>
+              <BreadcrumbItem key={index}>
+                <BreadcrumbLink href={path}>{crumb}</BreadcrumbLink>
+              </BreadcrumbItem>
+              {index !== crumbs.length - 1 && (
+                <BreadcrumbSeparator>
+                  <ChevronRight className="w-4 h-4" />
+                </BreadcrumbSeparator>
+              )}
+            </>
           );
         })}
-      </ul>
-    </nav>
+      </BreadcrumbList>
+    </Breadcrumb>
   );
 };
 
-export default Breadcrumb;
+export default Breadcrumbs;

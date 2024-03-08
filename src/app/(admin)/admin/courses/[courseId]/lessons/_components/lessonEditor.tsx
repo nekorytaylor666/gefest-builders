@@ -34,6 +34,7 @@ const DraftEditorPageContainer = ({
   const content = useStore(useContentStoryEditorStore, (state) => state);
   const blocks = content?.lessonsBlocks[lessonId] || []; // Fetch blocks for the current lesson
 
+  console.log(blocks);
   const [toolboxDialog, setToolboxDialog] = useState(false);
   const { isLoading: lessonIsLoading } =
     trpc.lessons.getLessonByCourseIdAndLessonId.useQuery(
