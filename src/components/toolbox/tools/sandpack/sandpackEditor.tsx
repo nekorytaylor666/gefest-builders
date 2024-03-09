@@ -28,8 +28,6 @@ import {
 } from "@codesandbox/sandpack-react";
 import { sandpackDark } from "@codesandbox/sandpack-themes";
 import { useEffect, useRef, useState } from "react";
-//@ts-ignore
-// import { SandpackFileExplorer } from "sandpack-file-explorer";
 
 const CustomEditor = ({
   onSave,
