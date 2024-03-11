@@ -107,16 +107,6 @@ const getSuggestionItems = ({ query }: { query: string }) => {
       },
     },
     {
-      title: "Quiz",
-      description: "Create a quiz.",
-      searchTerms: ["quiz", "test", "question"],
-      icon: <CheckIcon className="w-4 h-4" />,
-      command: ({ editor, range }: CommandProps) => {
-        //@ts-ignore
-        editor.chain().focus().deleteRange(range).addQuiz().run();
-      },
-    },
-    {
       title: "Heading 1",
       description: "Big section heading.",
       searchTerms: ["title", "big", "large"],
@@ -199,28 +189,6 @@ const getSuggestionItems = ({ query }: { query: string }) => {
         editor.chain().focus().deleteRange(range).toggleCodeBlock().run(),
     },
     {
-      title: "Sandpack",
-      description: "Create a sandpack.",
-      searchTerms: ["sandpack", "codesandbox"],
-      command: ({ editor, range }: CommandProps) => {
-        editor.chain().focus().deleteRange(range).run();
-        // add sandpack
-        editor
-          .chain()
-          .focus()
-          //@ts-ignore
-          .addSandpack({
-            files: {
-              "/index.html": {
-                code: "<h1>Всем привет</h1>",
-              },
-            },
-            template: "static",
-          })
-          .run();
-      },
-    },
-    {
       title: "YouTube",
       description: "Вставить YouTube видео.",
       searchTerms: ["youtube", "video"],
@@ -246,7 +214,6 @@ const getSuggestionItems = ({ query }: { query: string }) => {
         editor.chain().focus().setLoomVideo({ src: url }).run();
       },
     },
-
     {
       title: "Image",
       description: "Upload an image from your computer.",
