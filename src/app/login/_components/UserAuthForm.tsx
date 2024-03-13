@@ -1,43 +1,23 @@
 "use client";
 
 import * as React from "react";
-
-import { cn } from "@/lib/utils";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { FaGoogle, FaSpinner } from "react-icons/fa";
-import { useUser } from "@/lib/hooks/useUserSession";
 import { supabase } from "@/lib/supabase";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import { useToast } from "@/components/ui/use-toast";
+import { InitialScreen } from "./InitialScreen";
+import { VerifyOTPScreen } from "./VerifyOTPScreen";
+
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [email, setEmail] = React.useState("");
+  const [emailSent, setEmailSent] = React.useState<boolean>(false); // New state variable to track if email has been sent
+  const [timeoutRemaining, setTimeoutRemaining] = React.useState(0); // New state for timeout
 
   const router = useRouter();
-  const { toast } = useToast();
 
-  const handleSignInWithGoogle = async () => {
-    setIsLoading(true);
-    await supabase.auth.signInWithOAuth({
-      provider: "google",
-      options: {
-        redirectTo: `${location.origin}/api/auth/callback`,
-      },
-    });
-    setIsLoading(false);
-    router.refresh();
-  };
-
-  const sendMagicLink = async ({
-    shouldCreateUser,
-  }: {
-    shouldCreateUser: boolean;
-  }) => {
+  const sendOTP = async () => {
     setIsLoading(true);
     await supabase.auth.signInWithOtp({
       email,
@@ -45,97 +25,60 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
         data: {
           email,
         },
-        shouldCreateUser,
         emailRedirectTo: `${location.origin}/api/auth/callback`,
       },
     });
+    toast.info(
+      "Мы отправили ссылку на почту " + email + ". Откройте ссылку, чтобы войти"
+    );
     setIsLoading(false);
+    setEmailSent(true); // Set emailSent to true after sending the email
+    setTimeoutRemaining(60); // Start the timeout for 60 seconds after sending the OTP
   };
 
-  const handleMagicLink = async (event: React.SyntheticEvent) => {
-    event.preventDefault();
-    setIsLoading(true);
-    const { data: userExists } = await supabase
-      .from("User")
-      .select("id")
-      .eq("email", email)
-      .single();
-    await sendMagicLink({ shouldCreateUser: !userExists });
-    toast({
-      title:
-        "Мы отправили ссылку на почту " +
-        email +
-        ". Откройте ссылку, чтобы войти",
-      duration: 60000,
+  const verifyOTP = async (value: string) => {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email,
+      token: value,
+      type: "email",
     });
-
-    setTimeout(() => {
+    if (error) {
+      console.error(error);
+      toast.error("Неправильный код");
       setIsLoading(false);
-    }, 1000);
+      return;
+    }
+    if (data) {
+      setIsLoading(false);
+      router.push("/");
+      console.log(data);
+      return;
+    }
   };
+  React.useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timeoutRemaining > 0) {
+      interval = setInterval(() => {
+        setTimeoutRemaining((current) => current - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timeoutRemaining]);
 
   return (
-    <div className={cn("grid gap-6", className)} {...props}>
-      <div>
-        <div className="grid gap-2">
-          <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="email">
-              Email
-            </Label>
-            <Input
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              id="email"
-              placeholder="name@example.com"
-              type="email"
-              autoCapitalize="none"
-              autoComplete="email"
-              autoCorrect="off"
-              disabled={isLoading}
-            />
-          </div>
-          {/* <div className="grid gap-1">
-            <Label className="sr-only" htmlFor="password">
-              Пароль
-            </Label>
-            <Input
-              placeholder="Пароль"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              id="password"
-              type="password"
-              disabled={isLoading}
-            />
-          </div> */}
-          <Button onClick={handleMagicLink} disabled={isLoading}>
-            {isLoading && <FaSpinner className="mr-2 h-4 w-4 animate-spin" />}
-            Войти с Email
-          </Button>
-        </div>
-      </div>
-      <div className="relative">
-        <div className="absolute inset-0 flex items-center">
-          <span className="w-full border-t" />
-        </div>
-        <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-background px-2 text-muted-foreground">
-            Или продолжить с...
-          </span>
-        </div>
-      </div>
-      <Button
-        onClick={handleSignInWithGoogle}
-        variant="outline"
-        type="button"
-        disabled={isLoading}
-      >
-        {isLoading ? (
-          <FaSpinner className="mr-2 h-4 w-4 animate-spin" />
-        ) : (
-          <FaGoogle className="mr-2 h-4 w-4" />
-        )}{" "}
-        Google
-      </Button>
-    </div>
+    <>
+      {emailSent ? (
+        <VerifyOTPScreen verifyOTP={verifyOTP} setEmailSent={setEmailSent} />
+      ) : (
+        <InitialScreen
+          setIsLoading={setIsLoading}
+          email={email}
+          setEmail={setEmail}
+          isLoading={isLoading}
+          sendOTP={sendOTP}
+          timeoutRemaining={timeoutRemaining} // Pass the timeoutRemaining state to InitialScreen
+        />
+      )}
+    </>
   );
 }

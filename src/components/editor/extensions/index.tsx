@@ -75,8 +75,6 @@ export const defaultExtensions = [
     lowlight,
   }),
   DownloadFileExtension,
-  // SandpackExtension,
-  // patch to fix horizontal rule bug: https://github.com/ueberdosis/tiptap/pull/3859#issuecomment-1536799740
   HorizontalRule.extend({
     addInputRules() {
       return [
@@ -150,18 +148,5 @@ export const defaultExtensions = [
   Highlight.configure({
     multicolor: true,
   }),
-  // TaskList.configure({
-  //   HTMLAttributes: {
-  //     class: "not-prose pl-2",
-  //   },
-  // }),
-  // TaskItem.configure({
-  //   HTMLAttributes: {
-  //     class: "flex items-start my-4",
-  //   },
-  //   nested: true,
-  // }),
-
   CustomKeymap,
-  // DragAndDrop,
 ];

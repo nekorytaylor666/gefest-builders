@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
 import { setAuthClaims } from "./lib/claims";
+import jwt from "jsonwebtoken"; // Ensure this import is at the top of your file
 
 async function getSession(req: NextRequest) {
   const res = NextResponse.next();
@@ -9,6 +10,12 @@ async function getSession(req: NextRequest) {
   const {
     data: { session },
   } = await supabase.auth.getSession();
+
+  if (session) {
+    const jwtToken = jwt.decode(session?.access_token);
+    console.log("token", jwtToken);
+  }
+
   return session;
 }
 
