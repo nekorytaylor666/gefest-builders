@@ -31,10 +31,21 @@ export const userRouter = t.router({
     )
     .mutation(async ({ input }) => {
       // Assuming there's a "premium" field on the User model to update
-      const updatedUser = await db.user_roles.update({
+      const userRole = await db.user_roles.findFirst({
         where: { user_id: input.userId },
+      });
+      if (!userRole) {
+        return await db.user_roles.create({
+          data: { user_id: input.userId, role: app_role.moderator },
+        });
+      }
+      const roleId = userRole?.id;
+
+      const updatedUser = await db.user_roles.update({
+        where: { id: roleId },
         data: { role: app_role.moderator },
       });
+
       return updatedUser;
     }),
 });
