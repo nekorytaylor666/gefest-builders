@@ -11,6 +11,7 @@ import { CheckCircledIcon } from "@radix-ui/react-icons";
 import { useRive, useStateMachineInput } from "@rive-app/react-canvas";
 import { useCallback } from "react";
 import MilestoneRive from "./milestone.riv";
+import { BookCheck, Star } from "lucide-react";
 
 interface CourseMilestoneNodeButtonProps {
   onClick: () => void;
@@ -81,7 +82,14 @@ function CourseMilestoneNodeButton({
         onTouchEnd={handleTouchEnd}
       >
         <div className="relative flex items-center justify-center">
-          <RiveComponent className="h-24 w-24" />
+          {/* <RiveComponent className="h-24 w-24" /> */}
+          <Button
+            size={"icon"}
+            variant={"secondary"}
+            className="w-16 h-16 mt-4 hover:bg-primary/100 hover:text-primary-foreground border border-secondary-foreground hover:border-primary-foreground"
+          >
+            <BookCheck></BookCheck>
+          </Button>
           <p className="absolute text-sm font-semibold w-40 text-center top-24">
             {label}
           </p>

@@ -66,7 +66,7 @@
     "@types/react": "18.2.21",
     "@types/react-dom": "18.2.7",
     "@upstash/redis": "^1.28.2",
-    "ai": "^2.2.31",
+    "ai": "^3.0.11",
     "autoprefixer": "10.4.15",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.0.0",

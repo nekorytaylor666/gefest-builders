@@ -10,6 +10,11 @@ import Image from "next/image";
 import { Lesson } from "@prisma/client";
 import { toast } from "sonner";
 import { useAddActivity } from "@/app/api/hooks/useAddActivity/useAddActivity";
+import { useActions, useUIState } from "ai/rsc";
+import { AI } from "../action";
+import { Input } from "@/components/ui/input";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { PersonIcon } from "@radix-ui/react-icons";
 
 interface LessonContainerProps {
   content: any[];
@@ -19,6 +24,9 @@ const LessonContainer = (props: LessonContainerProps) => {
   const [isLessonCompleted, setIsLessonCompleted] = useState(false);
   const { mutate: markLessonAsCompleted } =
     trpc.progress.markLessonAsCompleted.useMutation();
+  const [inputValue, setInputValue] = useState("");
+  const [messages, setMessages] = useUIState<typeof AI>();
+  const { submitUserMessage } = useActions<typeof AI>();
 
   const addActivity = useAddActivity();
   const { courseId, lessonId } = useParams() as {
@@ -38,15 +46,73 @@ const LessonContainer = (props: LessonContainerProps) => {
       },
     });
   };
+
   return (
     <>
       {isLessonCompleted ? (
         <SuccessSection />
       ) : (
-        <LessonContent
-          content={props.content}
-          onLessonComplete={onLessonComplete}
-        ></LessonContent>
+        <div>
+          <div className="container p-4 max-w-screen-lg mx-auto mb-20 pb-[40dvh]">
+            <LessonContent
+              content={props.content}
+              onLessonComplete={onLessonComplete}
+            ></LessonContent>
+            <div className="mt-4">
+              {
+                // View messages in UI state
+                messages.map((message) => (
+                  <div className="my-4" key={message.id}>
+                    {message.display}
+                  </div>
+                ))
+              }
+
+              <form
+                onSubmit={async (e) => {
+                  e.preventDefault();
+
+                  // Add user message to UI state
+                  setMessages((currentMessages) => [
+                    ...currentMessages,
+                    {
+                      id: Date.now(),
+                      display: (
+                        <div className="flex items-center gap-4">
+                          <Avatar className="h-10 w-10">
+                            <AvatarFallback className="bg-accent font-bold">
+                              <PersonIcon className=""></PersonIcon>
+                            </AvatarFallback>
+                          </Avatar>
+                          <div className="prose max-w-full text-white">
+                            {inputValue}
+                          </div>
+                        </div>
+                      ),
+                    },
+                  ]);
+
+                  // Submit and get response message
+                  const responseMessage = await submitUserMessage(inputValue);
+                  setMessages((currentMessages) => [
+                    ...currentMessages,
+                    responseMessage,
+                  ]);
+
+                  setInputValue("");
+                }}
+              >
+                <Input
+                  placeholder="Send a message..."
+                  value={inputValue}
+                  onChange={(event) => {
+                    setInputValue(event.target.value);
+                  }}
+                />
+              </form>
+            </div>
+          </div>
+        </div>
       )}
     </>
   );

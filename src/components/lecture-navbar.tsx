@@ -10,7 +10,7 @@ const LectureNavbar = ({ progress }: { progress: number }) => {
   const router = useRouter();
   const { courseId } = useParams();
   return (
-    <nav className="fixed w-full top-0 z-50 p-4 shadow-sm lg:shadow-none  bg-background">
+    <nav className="fixed container p-4 max-w-screen-lg mx-auto  top-0 z-50 shadow-sm lg:shadow-none  bg-background">
       <div className="flex items-center justify-between w-full gap-2  lg:px-8">
         <Button
           onClick={() => router.push("/courses/" + courseId)}

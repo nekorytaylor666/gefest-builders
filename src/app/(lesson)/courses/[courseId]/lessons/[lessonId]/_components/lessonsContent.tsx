@@ -1,29 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import Editor from "@/components/editor";
 import LectureNavbar from "@/components/lecture-navbar";
-import { wrapChunkOfContent } from "../_utils/contentManipulation";
 import { Button } from "@/components/ui/button";
-import ContentReader from "@/components/editor/reader";
-import { trpc } from "@/app/_trpc/client";
-import { useParams } from "next/navigation";
-import { useUser } from "@/lib/hooks/useUserSession";
-import Image from "next/image";
-import TypographyH1 from "@/components/ui/typography/h1";
-import TypographyH2 from "@/components/ui/typography/h2";
-import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import { AssistantInput } from "./assistantInputNew";
-import Chat from "./assistantChatWindow";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Stars, Wand2 } from "lucide-react";
 import { blocksList } from "@/components/toolbox/tools";
 interface LessonContentProps {
   content: any[];
@@ -49,39 +27,28 @@ const LessonContent = ({ content, onLessonComplete }: LessonContentProps) => {
   const progress = Math.round((chunkCursor / content.length) * 100);
 
   return (
-    <main className="">
+    <main>
       <LectureNavbar progress={progress}></LectureNavbar>
       <div className="px-0 mt-20 ">
-        <Dialog>
-          <div className="container p-4 max-w-screen-lg mx-auto mb-20 pb-[40dvh]">
-            {content?.slice(0, chunkCursor).map((block: any, index: number) => {
-              return (
-                <div key={index}>
-                  {blocksList[
-                    block.type as keyof typeof blocksList
-                  ].readComponent({
-                    value: block.content,
-                  })}
-                  <div className="my-8"></div>
-                </div>
-              );
-            })}
-            <div className="flex justify-between gap-4 pt-8">
-              <Button variant={"ghost"} asChild>
-                <DialogTrigger>
-                  <Stars className="mr-2"></Stars> Спросить Гефеста
-                </DialogTrigger>
-              </Button>
-
-              <Button type="button" onClick={onNextClick}>
-                Дальше
-              </Button>
-            </div>
+        <div className="">
+          {content?.slice(0, chunkCursor).map((block: any, index: number) => {
+            return (
+              <div key={index}>
+                {blocksList[
+                  block.type as keyof typeof blocksList
+                ].readComponent({
+                  value: block.content,
+                })}
+                <div className="my-8"></div>
+              </div>
+            );
+          })}
+          <div className="flex justify-end gap-4 pt-8">
+            <Button type="button" onClick={onNextClick}>
+              Дальше
+            </Button>
           </div>
-          <DialogContent className="h-[80dvh] overflow-y-auto p-0 max-w-screen-sm">
-            <Chat />
-          </DialogContent>
-        </Dialog>
+        </div>
       </div>
     </main>
   );
