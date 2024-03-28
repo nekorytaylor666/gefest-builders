@@ -10,7 +10,7 @@ export async function POST(request: Request) {
 
   const { data } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${requestUrl.origin}/auth/callback` },
+    options: { redirectTo: `${requestUrl.origin}/api/auth/callback` },
   });
 
   return NextResponse.json({ data }, { status: 200 });

@@ -8,7 +8,7 @@ const Navbar = () => {
   return (
     <div className="   py-4 px-4 lg:px-16 container">
       <div className="flex items-center justify-between w-full">
-        <Link className="cursor-pointer flex items-center" href={"/"}>
+        <Link className="cursor-pointer flex items-center" href={"/courses"}>
           <Image
             className="block w-8 h-8 object-contain"
             width={150}

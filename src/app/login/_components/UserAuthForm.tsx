@@ -29,7 +29,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
       },
     });
     toast.info(
-      "Мы отправили ссылку на почту " + email + ". Откройте ссылку, чтобы войти"
+      "Мы отправили код на почту " + email + ". Откройте ссылку, чтобы войти"
     );
     setIsLoading(false);
     setEmailSent(true); // Set emailSent to true after sending the email
@@ -50,7 +50,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
     }
     if (data) {
       setIsLoading(false);
-      router.push("/");
+      router.push("/courses");
       console.log(data);
       return;
     }
