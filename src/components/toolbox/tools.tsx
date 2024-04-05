@@ -13,12 +13,28 @@ import { SandpackClient } from "./tools/sandpack/sandpack";
 
 import VideoTool from "./tools/video/video";
 import VideoClient from "./tools/video/videoClient";
+import { Textarea } from "../ui/textarea";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "../ui/card";
+import { Button } from "../ui/button";
 /**
  * This list contains all the available blocks that can be added to the toolbox and rendered to user as lesson.
  * Each block has a name, an icon, and a tooltip for description.
  */
 
-export const blockTypes = ["text", "sandbox", "loom", "quiz"] as const;
+export const blockTypes = [
+  "text",
+  "sandbox",
+  "loom",
+  "quiz",
+  "openQuestion",
+] as const;
 export const blocksList: Record<GBlockType, GBlock> = {
   text: {
     name: "Текст",
@@ -62,6 +78,58 @@ export const blocksList: Record<GBlockType, GBlock> = {
     }) => <QuizEditor value={value} onValueChange={onValueChange}></QuizEditor>,
     readComponent: ({ value }: { value: QuizEditorValue }) => {
       return <Quiz {...value}></Quiz>;
+    },
+  },
+  openQuestion: {
+    name: "Открытый вопрос",
+    type: "openQuestion",
+    icon: () => <Pen></Pen>,
+    tooltip: "Добавить открытый вопрос",
+    readComponent: ({ value }: { value: string }) => {
+      return (
+        <Card className="w-full lg:w-1/2 mx-auto">
+          <CardHeader>
+            <CardTitle>Открытый вопрос</CardTitle>
+            <CardDescription>Ответьте на этот вопрос</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Editor className="w-full" defaultValue={value} readonly></Editor>
+          </CardContent>
+          <CardFooter>
+            <Textarea></Textarea>
+            <Button>Ответить</Button>
+          </CardFooter>
+        </Card>
+      );
+    },
+    component: ({
+      value,
+      onValueChange,
+    }: {
+      value: string;
+      onValueChange: (value: string) => void;
+    }) => {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle>Открытый вопрос</CardTitle>
+            <CardDescription>
+              Вставьте открытый вопрос в это поле
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Editor
+              defaultValue={value}
+              onDebouncedUpdate={(editor) => {
+                if (!editor) return;
+                const html = editor.getHTML();
+                onValueChange(html);
+              }}
+              debounceDuration={500}
+            ></Editor>
+          </CardContent>
+        </Card>
+      );
     },
   },
   sandbox: {

@@ -1,3 +1,4 @@
+"use client";
 import { useState, useCallback, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
@@ -134,7 +135,7 @@ export function Quiz({
     setIsSubmitted(true);
   };
   return (
-    <div className="my-6 dark:bg-zinc-800 bg-zinc-100 rounded-md w-1/2 mx-auto pb-4">
+    <div className="my-6 dark:bg-zinc-800 bg-zinc-100 rounded-md w-full lg:w-1/2 mx-auto pb-4">
       <QuestionComponent
         question={questionContent}
         options={answers}

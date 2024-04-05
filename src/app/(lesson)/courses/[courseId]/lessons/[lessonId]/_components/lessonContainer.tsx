@@ -26,6 +26,7 @@ const LessonContainer = (props: LessonContainerProps) => {
     trpc.progress.markLessonAsCompleted.useMutation();
   const [inputValue, setInputValue] = useState("");
   const [messages, setMessages] = useUIState<typeof AI>();
+  //@ts-ignore
   const { submitUserMessage } = useActions<typeof AI>();
 
   const addActivity = useAddActivity();
@@ -93,7 +94,10 @@ const LessonContainer = (props: LessonContainerProps) => {
                   ]);
 
                   // Submit and get response message
-                  const responseMessage = await submitUserMessage(inputValue);
+                  const responseMessage = await submitUserMessage(inputValue, {
+                    courseId: Number(courseId),
+                    lessonId: Number(lessonId),
+                  });
                   setMessages((currentMessages) => [
                     ...currentMessages,
                     responseMessage,

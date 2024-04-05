@@ -16,11 +16,14 @@ import {
 } from "@codesandbox/sandpack-react";
 import { sandpackDark } from "@codesandbox/sandpack-themes";
 import { UserNav } from "@/components/navbar/user-nav";
+import { Button } from "@/components/ui/button";
+import { Eye, Play, PlayCircle, PlayIcon, Undo } from "lucide-react";
 
 const DEFAULT_PANEL_SIZE = {
   editor: 30,
   codePanel: 70,
   codeEditor: 85,
+  CodeEditorHeight: 25,
   fileExplorer: 15,
   preview: 25,
 };
@@ -38,7 +41,25 @@ const FileExplorerPanel = () => (
 );
 
 const PreviewPanel = () => (
-  <ResizablePanel defaultSize={DEFAULT_PANEL_SIZE.preview}>
+  <ResizablePanel defaultSize={40}>
+    <div className="p-2 flex items-center gap-2 bg-background border-b">
+      <Button variant={"default"} size={"sm"}>
+        <PlayCircle className="w-4 h-4 mr-1"></PlayCircle>
+        Завершить
+      </Button>
+      <Button variant={"secondary"} size={"sm"}>
+        <PlayCircle className="w-4 h-4 mr-1"></PlayCircle>
+        Проверить
+      </Button>
+      <Button variant={"secondary"} size={"sm"}>
+        <Eye className="w-4 h-4 mr-1"></Eye>
+        Ответ
+      </Button>
+      <Button variant={"secondary"} size={"sm"}>
+        <Undo className="w-4 h-4 mr-1"></Undo>
+        Сбросить
+      </Button>
+    </div>
     <SandpackPreview className="h-full" />
   </ResizablePanel>
 );
@@ -55,7 +76,7 @@ const ExerciseContainer = () => {
   return (
     <div className="h-screen grid grid-rows-[4rem_1fr]">
       <ExerciseNavbar />
-      <div className="h-full border">
+      <div className="h-full  container max-w-screen-2xl">
         <SandpackProvider
           style={{ height: "100%" }}
           theme={sandpackDark}
@@ -82,7 +103,7 @@ const ExerciseContainer = () => {
               <ResizableHandle />
               <ResizablePanel defaultSize={DEFAULT_PANEL_SIZE.codePanel}>
                 <ResizablePanelGroup direction="vertical">
-                  <ResizablePanel defaultSize={75}>
+                  <ResizablePanel defaultSize={60}>
                     <ResizablePanelGroup direction="horizontal">
                       <CodeEditorPanel />
                       <ResizableHandle />
@@ -90,6 +111,7 @@ const ExerciseContainer = () => {
                     </ResizablePanelGroup>
                   </ResizablePanel>
                   <ResizableHandle />
+
                   <PreviewPanel />
                 </ResizablePanelGroup>
               </ResizablePanel>

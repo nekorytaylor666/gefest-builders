@@ -71,6 +71,13 @@ export async function middleware(req: NextRequest) {
 
     return redirectIfNotAuthenticated(session, req);
   }
+  if (req.nextUrl.pathname === "/") {
+    const session = await getSession(req);
+    if (!session) {
+      return NextResponse.redirect(new URL("/login", req.url));
+    }
+    return NextResponse.redirect(new URL("/courses", req.url));
+  }
 }
 export const config = {
   matcher: [

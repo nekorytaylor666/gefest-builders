@@ -80,6 +80,7 @@ const DraftEditorPageContainer = ({
       type: tool.type,
     };
     content?.addBlock(lessonId.toString(), newBlock);
+
     setToolboxDialog(false);
   };
 

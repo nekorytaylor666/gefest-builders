@@ -1,120 +1,132 @@
 import { OpenAI } from "openai";
-import { createAI, getMutableAIState, render } from "ai/rsc";
+import {
+  createAI,
+  createStreamableUI,
+  getMutableAIState,
+  render,
+} from "ai/rsc";
 import { z } from "zod";
 import Markdown from "react-markdown";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { PersonIcon } from "@radix-ui/react-icons";
+import { nanoid } from "ai";
+import { Quiz } from "@/components/toolbox/tools/quiz/quiz";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
+export function createSubmitUserMessage(lessonContent: string) {
+  return async function submitUserMessage(userInput: string) {
+    "use server";
 
-// An example of a spinner component. You can also import your own components,
-// or 3rd party component libraries.
-function Spinner() {
-  return <div>Loading...</div>;
-}
+    const aiState = getMutableAIState<typeof AI>();
 
-// An example of a flight card component.
-function FlightCard({ flightInfo }) {
-  return (
-    <div>
-      <h2>Flight Information</h2>
-      <p>Flight Number: {flightInfo.flightNumber}</p>
-      <p>Departure: {flightInfo.departure}</p>
-      <p>Arrival: {flightInfo.arrival}</p>
-    </div>
-  );
-}
+    // Update the AI state with the new user message.
+    aiState.update([
+      ...aiState.get(),
 
-// An example of a function that fetches flight information from an external API.
-async function getFlightInfo(flightNumber: string) {
-  return {
-    flightNumber,
-    departure: "New York",
-    arrival: "San Francisco",
-  };
-}
+      {
+        role: "user",
+        content: userInput,
+      },
+    ]);
 
-async function submitUserMessage(userInput: string) {
-  "use server";
-
-  const aiState = getMutableAIState<typeof AI>();
-
-  // Update the AI state with the new user message.
-  aiState.update([
-    ...aiState.get(),
-    {
-      role: "user",
-      content: userInput,
-    },
-  ]);
-
-  // The `render()` creates a generated, streamable UI.
-  const ui = render({
-    model: "gpt-4-0125-preview",
-    provider: openai,
-    messages: [
-      { role: "system", content: "You are a flight assistant" },
-      { role: "user", content: userInput },
-    ],
-    // `text` is called when an AI returns a text response (as opposed to a tool call).
-    // Its content is streamed from the LLM, so this function will be called
-    // multiple times with `content` being incremental.
-    text: ({ content, done }) => {
-      // When it's the final content, mark the state as done and ready for the client to access.
-      if (done) {
-        aiState.done([
-          ...aiState.get(),
-          {
-            role: "assistant",
-            content,
-          },
-        ]);
-      }
-
-      return (
-        <div className="flex items-start gap-4">
-          <Avatar>
-            <AvatarImage src="/gefestAi.png" alt="@shadcn" />
-            <AvatarFallback>CN</AvatarFallback>
-          </Avatar>
-          <Markdown className="prose max-w-full text-white">{content}</Markdown>
-        </div>
-      );
-    },
-    tools: {
-      create_quiz: {
-        description: "Generate quiz on topic from HTML, CSS, Javascript",
-        parameters: z.object({}).required(),
-        render: async function* ({ flightNumber }) {
-          // Show a spinner on the client while we wait for the response.
-          yield <Spinner />;
-
-          // Fetch the flight information from an external API.
-          const flightInfo = await getFlightInfo(flightNumber);
-
-          // Update the final AI state.
+    // The `render()` creates a generated, streamable UI.
+    const ui = render({
+      model: "gpt-4-0125-preview",
+      provider: openai,
+      messages: [
+        {
+          role: "system",
+          content: `Ты учитель программирования. Помогаешь ученикам с HTML, CSS, Javascript. Ты помогаешь студенту понять этот урок: ${lessonContent}`,
+        },
+        { role: "user", content: userInput },
+      ],
+      // `text` is called when an AI returns a text response (as opposed to a tool call).
+      // Its content is streamed from the LLM, so this function will be called
+      // multiple times with `content` being incremental.
+      text: ({ content, done }) => {
+        // When it's the final content, mark the state as done and ready for the client to access.
+        if (done) {
           aiState.done([
             ...aiState.get(),
             {
-              role: "function",
-              name: "get_flight_info",
-              // Content can be any string to provide context to the LLM in the rest of the conversation.
-              content: JSON.stringify(flightInfo),
+              role: "assistant",
+              content,
             },
           ]);
+        }
 
-          // Return the flight card to the client.
-          return <FlightCard flightInfo={flightInfo} />;
+        return (
+          <div className="flex items-start gap-4">
+            <Avatar>
+              <AvatarImage src="/gefestAi.png" alt="@shadcn" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
+            <Markdown
+              components={{
+                code: ({ children }) => (
+                  <code className="rounded-md bg-stone-200 px-1.5 py-1 font-mono font-medium text-stone-900">
+                    {children}
+                  </code>
+                ),
+              }}
+              className="prose max-w-full text-white"
+            >
+              {content}
+            </Markdown>
+          </div>
+        );
+      },
+      tools: {
+        generateQuiz: {
+          description:
+            "Generate a multiple choice quiz question with possible answers and indicate the correct answer.",
+          parameters: z.object({
+            question: z.string().describe("The quiz question text"),
+            answers: z
+              .array(z.string())
+              .describe("An array of possible answer choices"),
+            correctAnswer: z
+              .string()
+              .describe("The correct answer to the question"),
+          }),
+          render: async function* ({ question, answers, correctAnswer }) {
+            yield <Skeleton className="h-96 w-full"></Skeleton>;
+
+            aiState.done([
+              ...aiState.get(),
+              {
+                id: nanoid(),
+                role: "function",
+                name: "generateQuiz",
+                content: JSON.stringify({ question, answers, correctAnswer }),
+              },
+            ]);
+            const answersWithId = answers.map((answer, index) => ({
+              content: answer,
+              answerId: nanoid(),
+            }));
+            const correctAnswerId =
+              answersWithId.find((answer) => answer.content === correctAnswer)
+                ?.answerId ?? answersWithId[0].answerId;
+            return (
+              <Quiz
+                questionContent={question}
+                answers={answersWithId}
+                correctAnswerId={correctAnswerId}
+                points={1}
+              ></Quiz>
+            );
+          },
         },
       },
-    },
-  });
+    });
 
-  return {
-    id: Date.now(),
-    display: ui,
+    return {
+      id: Date.now(),
+      display: ui,
+    };
   };
 }
 
@@ -139,9 +151,7 @@ const initialUIState: {
 
 // AI is a provider you wrap your application with so you can access AI and UI state in your components.
 export const AI = createAI({
-  actions: {
-    submitUserMessage,
-  },
+  actions: {},
   // Each state can be any shape of object, but for chat applications
   // it makes sense to have an array of messages. Or you may prefer something like { id: number, messages: Message[] }
   initialUIState,
