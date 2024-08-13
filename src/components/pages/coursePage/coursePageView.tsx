@@ -69,7 +69,7 @@ const CoursePageView = (props: { course: CourseData; other?: any }) => {
                 <Image
                   width={250}
                   height={250}
-                  src={"https://gefest.b-cdn.net/" + course.thumbnailPath}
+                  src={course.thumbnailPath}
                   alt={course.title ?? "course-thumbnail"}
                 />
               </div>
