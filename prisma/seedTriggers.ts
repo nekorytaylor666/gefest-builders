@@ -15,8 +15,6 @@ async function main() {
         begin
             insert into public."User" (id, email, "fullName", "externalSourceUserId", "externalMetadata", "createdAt", "updatedAt")
             values (new.id, new.raw_user_meta_data->>'email', new.raw_user_meta_data->>'full_name', new.raw_user_meta_data->>'provider_id', json_build_object('avatar_url', new.raw_user_meta_data->>'avatar_url', 'email_verified', new.raw_user_meta_data->>'email_verified', 'phone_verified', new.raw_user_meta_data->>'phone_verified'), now(), now());
-            
-            perform public.set_claim(new.id, 'claims_admin', 'false');
             return new;
         end;
         $$ language plpgsql security definer;

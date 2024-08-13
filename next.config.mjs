@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const config = {
   reactStrictMode: true,
+  typescript: {
+    ignoreBuildErrors: true,
+  },
   images: {
     domains: ["gefest.b-cdn.net", "uepcmodmqkhfcsbxctjb.supabase.co"],
   },

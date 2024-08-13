@@ -1,7 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { useEditor, EditorContent, JSONContent } from "@tiptap/react";
+import {
+  useEditor,
+  EditorContent,
+  JSONContent,
+  Editor as ReactEditor,
+} from "@tiptap/react";
 import { defaultEditorProps } from "./props";
 import { defaultExtensions } from "./extensions";
 import useLocalStorage from "@/lib/hooks/use-local-storage";
@@ -55,15 +60,17 @@ export default function Editor({
   /**
    * A callback function that is called whenever the editor is updated.
    * Defaults to () => {}.
+   * @param editor - The editor instance.
    */
   // eslint-disable-next-line no-unused-vars
-  onUpdate?: (editor?: EditorClass) => void | Promise<void>;
+  onUpdate?: (editor?: ReactEditor) => void | Promise<void>;
   /**
    * A callback function that is called whenever the editor is updated, but only after the defined debounce duration.
    * Defaults to () => {}.
+   * @param editor - The editor instance.
    */
   // eslint-disable-next-line no-unused-vars
-  onDebouncedUpdate?: (editor?: EditorClass) => void | Promise<void>;
+  onDebouncedUpdate?: (editor?: ReactEditor) => void | Promise<void>;
   /**
    * The duration (in milliseconds) to debounce the onDebouncedUpdate callback.
    * Defaults to 750.
@@ -108,7 +115,7 @@ export default function Editor({
       onUpdate(e.editor);
       debouncedUpdates(e);
     },
-  });
+  }) as ReactEditor | null;
 
   return (
     <div

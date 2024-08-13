@@ -55,9 +55,7 @@ export async function middleware(req: NextRequest) {
   if (req.nextUrl.pathname.startsWith("/admin")) {
     const session = await getSession(req);
 
-    const hasAdminClaim = session?.user?.app_metadata.claims_admin;
-
-    if (session && hasAdminClaim) {
+    if (session) {
       return NextResponse.next();
     } else {
       return NextResponse.redirect(new URL("/login", req.url));

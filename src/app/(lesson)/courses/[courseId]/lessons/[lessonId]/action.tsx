@@ -71,7 +71,7 @@ export function createSubmitUserMessage(lessonContent: string) {
                   </code>
                 ),
               }}
-              className="prose max-w-full text-white"
+              className="prose max-w-full text-white prose-headings:text-white prose-strong:text-white"
             >
               {content}
             </Markdown>
