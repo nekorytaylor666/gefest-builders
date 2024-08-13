@@ -33,7 +33,7 @@ export function createSubmitUserMessage(lessonContent: string) {
 
     // The `render()` creates a generated, streamable UI.
     const ui = render({
-      model: "gpt-4-0125-preview",
+      model: "gpt-4o-mini",
       provider: openai,
       messages: [
         {
@@ -71,7 +71,7 @@ export function createSubmitUserMessage(lessonContent: string) {
                   </code>
                 ),
               }}
-              className="prose max-w-full text-white prose-headings:text-white prose-strong:text-white"
+              className="prose max-w-full"
             >
               {content}
             </Markdown>

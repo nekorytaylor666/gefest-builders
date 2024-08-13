@@ -85,9 +85,7 @@ const LessonContainer = (props: LessonContainerProps) => {
                               <PersonIcon className=""></PersonIcon>
                             </AvatarFallback>
                           </Avatar>
-                          <div className="prose max-w-full text-white">
-                            {inputValue}
-                          </div>
+                          <div className="prose max-w-full">{inputValue}</div>
                         </div>
                       ),
                     },
